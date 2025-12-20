@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Your existing Info.plist content goes here -->
+    
+    <!-- Quick Actions (3D Touch / Haptic Touch) -->
+    <key>UIApplicationShortcutItems</key>
+    <array>
+        <dict>
+            <key>UIApplicationShortcutItemType</key>
+            <string>$(PRODUCT_BUNDLE_IDENTIFIER).flipcoin</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Flip Coin</string>
+            <key>UIApplicationShortcutItemSubtitle</key>
+            <string>Get heads or tails</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypePlay</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemType</key>
+            <string>$(PRODUCT_BUNDLE_IDENTIFIER).yesno</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Yes or No</string>
+            <key>UIApplicationShortcutItemSubtitle</key>
+            <string>Make a decision</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeSearch</string>
+        </dict>
+        <dict>
+            <key>UIApplicationShortcutItemType</key>
+            <string>$(PRODUCT_BUNDLE_IDENTIFIER).custom</string>
+            <key>UIApplicationShortcutItemTitle</key>
+            <string>Random Choice</string>
+            <key>UIApplicationShortcutItemSubtitle</key>
+            <string>Pick from options</string>
+            <key>UIApplicationShortcutItemIconType</key>
+            <string>UIApplicationShortcutIconTypeShuffle</string>
+        </dict>
+    </array>
+    
+    <!-- URL Schemes for deep linking -->
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>yesnogo</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>
