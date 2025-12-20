@@ -76,9 +76,10 @@ struct ContentView: View {
     @State private var dragOffset: CGSize = .zero
     @State private var selectedIndex: Int = 0
     @State private var shimmerOffset: CGFloat = -200
+    @State private var showCredits = false
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase
-    
+
     private let modes = ["coin", "yesno", "custom"]
     private let modeLabels = ["Coin Flip", "Yes / No", "Custom"]
     private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle"]
@@ -373,6 +374,19 @@ struct ContentView: View {
             if newPhase == .active {
                 handlePendingQuickAction()
             }
+        }
+        .overlay(alignment: .topTrailing) {
+            Button(action: {
+                showCredits = true
+            }) {
+                Image(systemName: "info.circle")
+                    .font(.title2)
+                    .foregroundColor(primaryTextColor.opacity(0.7))
+                    .padding(20)
+            }
+        }
+        .sheet(isPresented: $showCredits) {
+            CreditsView()
         }
     }
     
@@ -690,7 +704,7 @@ struct ContentView: View {
             if coinResult == "TAILS" {
                 playSound("eagle")
             } else {
-                playSound("success")
+                playSound("crown")
             }
         }
     }
@@ -763,12 +777,98 @@ struct ContentView: View {
         case "success":
             AudioServicesPlaySystemSound(1025) // PhotoShutter - success sound
         case "eagle":
-            AudioServicesPlaySystemSound(1016) // Swoosh sound - closest to eagle screech
+            if let url = Bundle.main.url(forResource: "eagle-sound-by-torma-368637", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
+        case "crown":
+            if let url = Bundle.main.url(forResource: "descent-whoosh-long-cinematic-sound-effect-405921", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
         case "error":
             AudioServicesPlaySystemSound(1053) // Error sound
         default:
             break
         }
     }
-    
+
+}
+
+// MARK: - Credits View
+struct CreditsView: View {
+    @Environment(\.dismiss) private var dismiss
+
+    private var appVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
+    }
+
+    private var buildNumber: String {
+        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+    }
+
+    var body: some View {
+        NavigationView {
+            List {
+                Section(header: Text("Sound Effects")) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Eagle Sound")
+                            .font(.headline)
+                        Text("by Torma")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Cinematic Whoosh")
+                            .font(.headline)
+                        Text("Descent Whoosh Long")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                }
+
+                Section(header: Text("About")) {
+                    Text("Yes? No? Go! helps you make quick decisions with a coin flip, yes/no, or custom choices.")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+
+                    HStack {
+                        Text("Version")
+                        Spacer()
+                        Text("\(appVersion) (\(buildNumber))")
+                            .foregroundColor(.secondary)
+                    }
+
+                    Link(destination: URL(string: "https://www.loweffortapps.dev")!) {
+                        HStack {
+                            Text("Website")
+                            Spacer()
+                            Text("loweffortapps.dev")
+                                .foregroundColor(.secondary)
+                            Image(systemName: "arrow.up.right.square")
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Credits")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+    }
 }
