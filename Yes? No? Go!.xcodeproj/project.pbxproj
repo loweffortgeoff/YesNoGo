@@ -7,16 +7,58 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3A1855102EB7F5E400A711F2 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A18550F2EB7F5E400A711F2 /* WidgetKit.framework */; };
-		3A1855122EB7F5E400A711F2 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1855112EB7F5E400A711F2 /* SwiftUI.framework */; };
+		3ACB9DC02EF665C4001488F6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A18550F2EB7F5E400A711F2 /* WidgetKit.framework */; };
+		3ACB9DC12EF665C4001488F6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1855112EB7F5E400A711F2 /* SwiftUI.framework */; };
+		3ACB9DD22EF665C4001488F6 /* YesNoGoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3AC6FEC92EF660D3003FB22A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A50387F2EB6C3A400D411FF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3A18550C2EB7F5E400A711F2;
+			remoteInfo = YesNoGoWidgetExtensionExtension;
+		};
+		3ACB9DD02EF665C4001488F6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A50387F2EB6C3A400D411FF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3ACB9DBE2EF665C4001488F6;
+			remoteInfo = YesNoGoWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3AC6FEC82EF660B3003FB22A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3ACB9DD22EF665C4001488F6 /* YesNoGoWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		3A18550D2EB7F5E400A711F2 /* YesNoGoWidgetExtensionExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YesNoGoWidgetExtensionExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A18550F2EB7F5E400A711F2 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3A1855112EB7F5E400A711F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3A5038872EB6C3A400D411FF /* Yes? No? Go!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Yes? No? Go!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YesNoGoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3ACB9DD32EF665C4001488F6 /* Exceptions for "YesNoGoWidget" folder in "YesNoGoWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3ACB9DBE2EF665C4001488F6 /* YesNoGoWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A5038892EB6C3A400D411FF /* Yes? No? Go! */ = {
@@ -24,22 +66,35 @@
 			path = "Yes? No? Go!";
 			sourceTree = "<group>";
 		};
+		3ACB9DA62EF66444001488F6 /* YesNoGoWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = YesNoGoWidget;
+			sourceTree = "<group>";
+		};
+		3ACB9DC22EF665C4001488F6 /* YesNoGoWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3ACB9DD32EF665C4001488F6 /* Exceptions for "YesNoGoWidget" folder in "YesNoGoWidgetExtension" target */,
+			);
+			path = YesNoGoWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		3A18550A2EB7F5E400A711F2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3A1855122EB7F5E400A711F2 /* SwiftUI.framework in Frameworks */,
-				3A1855102EB7F5E400A711F2 /* WidgetKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3A5038842EB6C3A400D411FF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3ACB9DBC2EF665C4001488F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3ACB9DC12EF665C4001488F6 /* SwiftUI.framework in Frameworks */,
+				3ACB9DC02EF665C4001488F6 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,6 +114,8 @@
 			isa = PBXGroup;
 			children = (
 				3A5038892EB6C3A400D411FF /* Yes? No? Go! */,
+				3ACB9DA62EF66444001488F6 /* YesNoGoWidget */,
+				3ACB9DC22EF665C4001488F6 /* YesNoGoWidget */,
 				3A18550E2EB7F5E400A711F2 /* Frameworks */,
 				3A5038882EB6C3A400D411FF /* Products */,
 			);
@@ -68,7 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				3A5038872EB6C3A400D411FF /* Yes? No? Go!.app */,
-				3A18550D2EB7F5E400A711F2 /* YesNoGoWidgetExtensionExtension.appex */,
+				3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,25 +133,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		3A18550C2EB7F5E400A711F2 /* YesNoGoWidgetExtensionExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 3A1855212EB7F5E500A711F2 /* Build configuration list for PBXNativeTarget "YesNoGoWidgetExtensionExtension" */;
-			buildPhases = (
-				3A1855092EB7F5E400A711F2 /* Sources */,
-				3A18550A2EB7F5E400A711F2 /* Frameworks */,
-				3A18550B2EB7F5E400A711F2 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = YesNoGoWidgetExtensionExtension;
-			packageProductDependencies = (
-			);
-			productName = YesNoGoWidgetExtensionExtension;
-			productReference = 3A18550D2EB7F5E400A711F2 /* YesNoGoWidgetExtensionExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
-		};
 		3A5038862EB6C3A400D411FF /* Yes? No? Go! */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A5038922EB6C3A500D411FF /* Build configuration list for PBXNativeTarget "Yes? No? Go!" */;
@@ -102,10 +140,13 @@
 				3A5038832EB6C3A400D411FF /* Sources */,
 				3A5038842EB6C3A400D411FF /* Frameworks */,
 				3A5038852EB6C3A400D411FF /* Resources */,
+				3AC6FEC82EF660B3003FB22A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3AC6FECA2EF660D3003FB22A /* PBXTargetDependency */,
+				3ACB9DD12EF665C4001488F6 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				3A5038892EB6C3A400D411FF /* Yes? No? Go! */,
@@ -117,6 +158,28 @@
 			productReference = 3A5038872EB6C3A400D411FF /* Yes? No? Go!.app */;
 			productType = "com.apple.product-type.application";
 		};
+		3ACB9DBE2EF665C4001488F6 /* YesNoGoWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3ACB9DD42EF665C4001488F6 /* Build configuration list for PBXNativeTarget "YesNoGoWidgetExtension" */;
+			buildPhases = (
+				3ACB9DBB2EF665C4001488F6 /* Sources */,
+				3ACB9DBC2EF665C4001488F6 /* Frameworks */,
+				3ACB9DBD2EF665C4001488F6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				3ACB9DC22EF665C4001488F6 /* YesNoGoWidget */,
+			);
+			name = YesNoGoWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = YesNoGoWidgetExtension;
+			productReference = 3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -124,14 +187,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2600;
-				LastUpgradeCheck = 2600;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
 				TargetAttributes = {
-					3A18550C2EB7F5E400A711F2 = {
-						CreatedOnToolsVersion = 26.0.1;
-					};
 					3A5038862EB6C3A400D411FF = {
 						CreatedOnToolsVersion = 26.0.1;
+					};
+					3ACB9DBE2EF665C4001488F6 = {
+						CreatedOnToolsVersion = 26.2;
 					};
 				};
 			};
@@ -150,20 +213,20 @@
 			projectRoot = "";
 			targets = (
 				3A5038862EB6C3A400D411FF /* Yes? No? Go! */,
-				3A18550C2EB7F5E400A711F2 /* YesNoGoWidgetExtensionExtension */,
+				3ACB9DBE2EF665C4001488F6 /* YesNoGoWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		3A18550B2EB7F5E400A711F2 /* Resources */ = {
+		3A5038852EB6C3A400D411FF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3A5038852EB6C3A400D411FF /* Resources */ = {
+		3ACB9DBD2EF665C4001488F6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -173,14 +236,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		3A1855092EB7F5E400A711F2 /* Sources */ = {
+		3A5038832EB6C3A400D411FF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3A5038832EB6C3A400D411FF /* Sources */ = {
+		3ACB9DBB2EF665C4001488F6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -189,74 +252,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3AC6FECA2EF660D3003FB22A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			targetProxy = 3AC6FEC92EF660D3003FB22A /* PBXContainerItemProxy */;
+		};
+		3ACB9DD12EF665C4001488F6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3ACB9DBE2EF665C4001488F6 /* YesNoGoWidgetExtension */;
+			targetProxy = 3ACB9DD02EF665C4001488F6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		3A1855222EB7F5E500A711F2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2R5TZD4XAH;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = YesNoGoWidgetExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = YesNoGoWidgetExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidgetExtension";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = xros;
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "xros xrsimulator";
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 7;
-				XROS_DEPLOYMENT_TARGET = 26.0;
-			};
-			name = Debug;
-		};
-		3A1855232EB7F5E500A711F2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2R5TZD4XAH;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = YesNoGoWidgetExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = YesNoGoWidgetExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidgetExtension";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = xros;
-				SKIP_INSTALL = YES;
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SUPPORTED_PLATFORMS = "xros xrsimulator";
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 7;
-				VALIDATE_PRODUCT = YES;
-				XROS_DEPLOYMENT_TARGET = 26.0;
-			};
-			name = Release;
-		};
 		3A5038902EB6C3A500D411FF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -291,6 +299,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 2R5TZD4XAH;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -314,6 +323,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -353,6 +363,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 2R5TZD4XAH;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -369,6 +380,7 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
@@ -380,6 +392,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2R5TZD4XAH;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -404,7 +417,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
-				SDKROOT = auto;
+				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -424,6 +437,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = 2R5TZD4XAH;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -448,7 +462,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
-				SDKROOT = auto;
+				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -461,18 +475,74 @@
 			};
 			name = Release;
 		};
+		3ACB9DD52EF665C4001488F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2R5TZD4XAH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YesNoGoWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YesNoGoWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3ACB9DD62EF665C4001488F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2R5TZD4XAH;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YesNoGoWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = YesNoGoWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		3A1855212EB7F5E500A711F2 /* Build configuration list for PBXNativeTarget "YesNoGoWidgetExtensionExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3A1855222EB7F5E500A711F2 /* Debug */,
-				3A1855232EB7F5E500A711F2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		3A5038822EB6C3A400D411FF /* Build configuration list for PBXProject "Yes? No? Go!" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -487,6 +557,15 @@
 			buildConfigurations = (
 				3A5038932EB6C3A500D411FF /* Debug */,
 				3A5038942EB6C3A500D411FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3ACB9DD42EF665C4001488F6 /* Build configuration list for PBXNativeTarget "YesNoGoWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3ACB9DD52EF665C4001488F6 /* Debug */,
+				3ACB9DD62EF665C4001488F6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
