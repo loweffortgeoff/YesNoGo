@@ -102,15 +102,14 @@ struct YesNoGoWidgetEntryView : View {
 
             HStack(spacing: 12) {
                 Link(destination: URL(string: "yesnogo://coin")!) {
-                    HStack(spacing: 6) {
+                    VStack(spacing: 4) {
                         Image(systemName: "circle.circle")
-                            .font(.title3)
-                        Text("Coin Flip")
-                            .font(.subheadline)
+                            .font(.title2)
+                        Text("Flip")
+                            .font(.caption)
                             .fontWeight(.medium)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(
                         LinearGradient(
                             colors: [.yellow, .orange],
@@ -123,15 +122,14 @@ struct YesNoGoWidgetEntryView : View {
                 }
 
                 Link(destination: URL(string: "yesnogo://yesno")!) {
-                    HStack(spacing: 6) {
+                    VStack(spacing: 4) {
                         Image(systemName: "hand.thumbsup")
-                            .font(.title3)
-                        Text("Yes / No")
-                            .font(.subheadline)
+                            .font(.title2)
+                        Text("Yes/No")
+                            .font(.caption)
                             .fontWeight(.medium)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(
                         LinearGradient(
                             colors: [.blue, .cyan],
@@ -144,17 +142,14 @@ struct YesNoGoWidgetEntryView : View {
                 }
 
                 Link(destination: URL(string: "yesnogo://custom")!) {
-                    HStack(spacing: 6) {
+                    VStack(spacing: 4) {
                         Image(systemName: "list.bullet")
-                            .font(.title3)
+                            .font(.title2)
                         Text("Custom")
-                            .font(.subheadline)
+                            .font(.caption)
                             .fontWeight(.medium)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.8)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(
                         LinearGradient(
                             colors: [.green, .mint],
