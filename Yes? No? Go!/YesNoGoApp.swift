@@ -26,6 +26,9 @@ struct YesNoGoApp: App {
                 .onContinueUserActivity("CustomChoiceIntent") { _ in
                     QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").custom"
                 }
+                .onContinueUserActivity("RPSIntent") { _ in
+                    QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rps"
+                }
         }
     }
     
@@ -45,6 +48,8 @@ struct YesNoGoApp: App {
             QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").yesno"
         case "custom":
             QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").custom"
+        case "rps":
+            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rps"
         default:
             break
         }

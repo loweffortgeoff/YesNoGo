@@ -160,6 +160,26 @@ struct YesNoGoWidgetEntryView : View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
+
+                Link(destination: URL(string: "yesnogo://rps")!) {
+                    VStack(spacing: 4) {
+                        Image(systemName: "hand.raised")
+                            .font(.title2)
+                        Text("RPS")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(
+                        LinearGradient(
+                            colors: [.purple, .pink],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                }
             }
         }
         .padding(16)

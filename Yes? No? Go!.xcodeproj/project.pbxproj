@@ -10,6 +10,9 @@
 		3ACB9DC02EF665C4001488F6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A18550F2EB7F5E400A711F2 /* WidgetKit.framework */; };
 		3ACB9DC12EF665C4001488F6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1855112EB7F5E400A711F2 /* SwiftUI.framework */; };
 		3ACB9DD22EF665C4001488F6 /* YesNoGoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		3ADE27A32EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3ADE27A12EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 */; };
+		3ADE27A42EF9EE7900F7F8B7 /* thud-82914.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3ADE27A22EF9EE7900F7F8B7 /* thud-82914.mp3 */; };
+		3ADE27A62EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3ADE27A52EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +51,9 @@
 		3A1855112EB7F5E400A711F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3A5038872EB6C3A400D411FF /* Yes? No? Go!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Yes? No? Go!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YesNoGoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		3ADE27A12EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "steel-blade-slice-4-188216.mp3"; sourceTree = "<group>"; };
+		3ADE27A22EF9EE7900F7F8B7 /* thud-82914.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "thud-82914.mp3"; sourceTree = "<group>"; };
+		3ADE27A52EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "crumping-paper-109585.mp3"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -113,6 +119,9 @@
 		3A50387E2EB6C3A400D411FF = {
 			isa = PBXGroup;
 			children = (
+				3ADE27A12EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 */,
+				3ADE27A22EF9EE7900F7F8B7 /* thud-82914.mp3 */,
+				3ADE27A52EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 */,
 				3A5038892EB6C3A400D411FF /* Yes? No? Go! */,
 				3ACB9DA62EF66444001488F6 /* YesNoGoWidget */,
 				3ACB9DC22EF665C4001488F6 /* YesNoGoWidget */,
@@ -223,6 +232,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ADE27A32EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 in Resources */,
+				3ADE27A42EF9EE7900F7F8B7 /* thud-82914.mp3 in Resources */,
+				3ADE27A62EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,7 +426,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -460,7 +472,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -495,7 +507,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -527,7 +539,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;

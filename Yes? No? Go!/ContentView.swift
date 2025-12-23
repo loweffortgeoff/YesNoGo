@@ -80,9 +80,9 @@ struct ContentView: View {
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase
 
-    private let modes = ["coin", "yesno", "custom"]
-    private let modeLabels = ["Coin Flip", "Yes / No", "Custom"]
-    private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle"]
+    private let modes = ["coin", "yesno", "custom", "rps"]
+    private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS"]
+    private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle", "hand.raised"]
     
     // Haptic feedback generators (iOS only)
     #if canImport(UIKit)
@@ -106,12 +106,16 @@ struct ContentView: View {
                 [.blue, .cyan, .purple] : 
                 [.blue, .cyan, .indigo]
         case "custom":
-            return systemColorScheme == .dark ? 
-                [.green, .mint, .teal] : 
+            return systemColorScheme == .dark ?
+                [.green, .mint, .teal] :
                 [.green, .mint, .cyan]
+        case "rps":
+            return systemColorScheme == .dark ?
+                [.purple, .pink, .orange] :
+                [.purple, .indigo, .pink]
         default:
-            return systemColorScheme == .dark ? 
-                [.purple, .pink, .red] : 
+            return systemColorScheme == .dark ?
+                [.purple, .pink, .red] :
                 [.purple, .pink, .blue]
         }
     }
@@ -207,7 +211,18 @@ struct ContentView: View {
                 resetResult()
             }
             // Don't auto-execute custom since it needs user input
-            
+
+        case "\(bundleId).rps":
+            // Switch to RPS mode and play immediately
+            withAnimation(.bouncy(duration: 0.4)) {
+                activeMode = "rps"
+                selectedIndex = 3
+                resetResult()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                playRPS()
+            }
+
         default:
             break
         }
@@ -248,7 +263,7 @@ struct ContentView: View {
                     
                     // Glass chip selector with swipe functionality
                     VStack(spacing: 0) {
-                        HStack(spacing: 8) {
+                        HStack(spacing: 6) {
                             ForEach(modes.indices, id: \.self) { index in
                                 Button(action: {
                                     triggerSelectionFeedback()
@@ -259,15 +274,17 @@ struct ContentView: View {
                                         resetResult()
                                     }
                                 }) {
-                                    HStack(spacing: 6) {
+                                    VStack(spacing: 4) {
                                         Image(systemName: modeIcons[index])
-                                            .font(.system(size: 14))
+                                            .font(.system(size: 18))
                                         Text(modeLabels[index])
                                             .fontWeight(.semibold)
-                                            .font(.system(size: 12))
+                                            .font(.system(size: 10))
+                                            .lineLimit(1)
+                                            .minimumScaleFactor(0.8)
                                     }
                                     .frame(maxWidth: .infinity)
-                                    .padding(.horizontal, 16)
+                                    .padding(.horizontal, 8)
                                     .padding(.vertical, 10)
                                     .background(
                                         // Glass effect background with dynamic theming
@@ -343,8 +360,10 @@ struct ContentView: View {
                             coinFlipView()
                         } else if activeMode == "yesno" {
                             yesNoView()
-                        } else {
+                        } else if activeMode == "custom" {
                             customChoiceView()
+                        } else {
+                            rpsView()
                         }
                     }
                     .padding(32)
@@ -669,6 +688,96 @@ struct ContentView: View {
         }
     }
     
+    private func rpsView() -> some View {
+        let thinkingLabel = isAnimating ? "Choosing rock, paper, or scissors" : "Hand emojis, ready to play"
+        let thinkingHint = isAnimating ? "Wait while a choice is being made" : "Tap the button below to see what the opponent chose"
+
+        return VStack(spacing: 30) {
+            HStack(spacing: 20) {
+                Text("🪨")
+                    .font(.system(size: 48))
+                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                    .opacity(isAnimating ? 0.5 : 1.0)
+                Text("📄")
+                    .font(.system(size: 48))
+                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                    .opacity(isAnimating ? 0.5 : 1.0)
+                Text("✂️")
+                    .font(.system(size: 48))
+                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                    .opacity(isAnimating ? 0.5 : 1.0)
+            }
+            .animation(.easeInOut(duration: 0.4).repeatForever(autoreverses: true), value: isAnimating)
+            .accessibilityLabel(thinkingLabel)
+            .accessibilityHint(thinkingHint)
+
+            Text("Think of your choice...")
+                .font(.title3)
+                .foregroundColor(secondaryTextColor)
+
+            if showResult {
+                VStack(spacing: 12) {
+                    Text("Opponent chose:")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                        .foregroundColor(primaryTextColor)
+
+                    Text(rpsEmoji(for: result))
+                        .font(.system(size: 80))
+
+                    Text(result)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(primaryTextColor)
+                }
+                .transition(.scale.combined(with: .opacity))
+                .animation(.bouncy(duration: 0.6), value: showResult)
+                .accessibilityLabel("Opponent chose \(result)")
+                .accessibilityHint("Compare this to your mental choice to see if you won")
+            }
+
+            let playButtonLabel = isAnimating ? "Choosing..." : "Shoot!"
+            let playA11yLabel = isAnimating ? "Making choice" : "Reveal opponent's choice"
+            let playA11yHint = isAnimating ? "Please wait while a choice is being made" : "Tap to see what the opponent chose"
+
+            Button(action: {
+                triggerImpactFeedback()
+                playSound("decision")
+                playRPS()
+            }) {
+                Text(playButtonLabel)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                    .background(
+                        LinearGradient(
+                            colors: currentGradientColors,
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(Capsule())
+                    .scaleEffect(isAnimating ? 0.95 : 1.0)
+                    .shadow(radius: 8)
+            }
+            .disabled(isAnimating)
+            .opacity(isAnimating ? 0.5 : 1.0)
+            .accessibilityLabel(playA11yLabel)
+            .accessibilityHint(playA11yHint)
+        }
+    }
+
+    private func rpsEmoji(for choice: String) -> String {
+        switch choice {
+        case "Rock": return "🪨"
+        case "Paper": return "📄"
+        case "Scissors": return "✂️"
+        default: return "❓"
+        }
+    }
+
     private func addChoice() {
         if customChoices.count < 6 {
             customChoices.append("")
@@ -755,7 +864,39 @@ struct ContentView: View {
             playSound("success")
         }
     }
-    
+
+    private func playRPS() {
+        isAnimating = true
+        showResult = false
+
+        let choices = ["Rock", "Paper", "Scissors"]
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            let rpsResult = choices.randomElement()!
+            result = rpsResult
+            isAnimating = false
+
+            withAnimation(.bouncy(duration: 0.6)) {
+                showResult = true
+            }
+
+            // Success haptic feedback and sound when result is shown
+            triggerNotificationFeedback(.success)
+
+            // Play different sounds based on RPS result
+            switch rpsResult {
+            case "Rock":
+                playSound("thud")
+            case "Paper":
+                playSound("paper")
+            case "Scissors":
+                playSound("slick")
+            default:
+                playSound("success")
+            }
+        }
+    }
+
     private func resetResult() {
         withAnimation(.easeOut(duration: 0.3)) {
             showResult = false
@@ -786,6 +927,24 @@ struct ContentView: View {
                 audioPlayer = try? AVAudioPlayer(contentsOf: url)
                 audioPlayer?.play()
             }
+        case "thud":
+            // Rock sound - heavy thud
+            if let url = Bundle.main.url(forResource: "thud-82914", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
+        case "slick":
+            // Scissors sound - slick cutting
+            if let url = Bundle.main.url(forResource: "steel-blade-slice-4-188216", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
+        case "paper":
+            // Paper sound - crumpling paper
+            if let url = Bundle.main.url(forResource: "crumping-paper-109585", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
         case "error":
             AudioServicesPlaySystemSound(1053) // Error sound
         default:
@@ -798,14 +957,6 @@ struct ContentView: View {
 // MARK: - Credits View
 struct CreditsView: View {
     @Environment(\.dismiss) private var dismiss
-
-    private var appVersion: String {
-        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
-    }
-
-    private var buildNumber: String {
-        Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
-    }
 
     var body: some View {
         NavigationView {
@@ -834,31 +985,45 @@ struct CreditsView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
-                }
 
-                Section(header: Text("About")) {
-                    Text("Yes? No? Go! helps you make quick decisions with a coin flip, yes/no, or custom choices.")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-
-                    HStack {
-                        Text("Version")
-                        Spacer()
-                        Text("\(appVersion) (\(buildNumber))")
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Thud Sound")
+                            .font(.headline)
+                        Text("Rock Paper Scissors - Rock")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    .padding(.vertical, 4)
 
-                    Link(destination: URL(string: "https://www.loweffortapps.dev")!) {
-                        HStack {
-                            Text("Website")
-                            Spacer()
-                            Text("loweffortapps.dev")
-                                .foregroundColor(.secondary)
-                            Image(systemName: "arrow.up.right.square")
-                                .foregroundColor(.secondary)
-                        }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Steel Blade Slice")
+                            .font(.headline)
+                        Text("Rock Paper Scissors - Scissors")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
+                    .padding(.vertical, 4)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Crumpling Paper")
+                            .font(.headline)
+                        Text("Rock Paper Scissors - Paper")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
                 }
+
+                AboutSectionView(currentAppName: "Yes? No? Go!")
             }
             .navigationTitle("Credits")
             .navigationBarTitleDisplayMode(.inline)

@@ -66,6 +66,21 @@ struct CustomChoiceIntent: AppIntent {
     }
 }
 
+// MARK: - Rock Paper Scissors Intent
+struct RPSIntent: AppIntent {
+    static var title: LocalizedStringResource = "Rock Paper Scissors"
+    static var description = IntentDescription("Get a random rock, paper, or scissors choice")
+    static var openAppWhenRun: Bool = false
+
+    func perform() async throws -> some IntentResult & ProvidesDialog {
+        let choices = ["Rock", "Paper", "Scissors"]
+        let emojis = ["🪨", "📄", "✂️"]
+        let index = Int.random(in: 0..<3)
+
+        return .result(dialog: "\(emojis[index]) \(choices[index])!")
+    }
+}
+
 // MARK: - App Intent Error
 enum AppIntentError: Swift.Error, CustomLocalizedStringResourceConvertible {
     case custom(String)
@@ -112,6 +127,17 @@ struct YesNoGoShortcuts: AppShortcutsProvider {
             ],
             shortTitle: "Random Choice",
             systemImageName: "shuffle"
+        )
+
+        AppShortcut(
+            intent: RPSIntent(),
+            phrases: [
+                "Rock paper scissors in \(.applicationName)",
+                "Play rock paper scissors with \(.applicationName)",
+                "RPS in \(.applicationName)"
+            ],
+            shortTitle: "Rock Paper Scissors",
+            systemImageName: "hand.raised"
         )
     }
 }
