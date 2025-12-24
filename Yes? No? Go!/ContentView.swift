@@ -79,6 +79,12 @@ struct ContentView: View {
     @State private var showCredits = false
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
+
+    private var isHighContrast: Bool {
+        colorSchemeContrast == .increased
+    }
 
     private let modes = ["coin", "yesno", "custom", "rps"]
     private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS"]
@@ -120,13 +126,25 @@ struct ContentView: View {
         }
     }
     
-    // Adaptive text colors
+    // Adaptive text colors with high contrast support
     private var primaryTextColor: Color {
-        systemColorScheme == .dark ? .white : .black
+        if isHighContrast {
+            return systemColorScheme == .dark ? .white : .black
+        }
+        return systemColorScheme == .dark ? .white : .black
     }
-    
+
     private var secondaryTextColor: Color {
-        systemColorScheme == .dark ? .white.opacity(0.9) : .black.opacity(0.7)
+        if isHighContrast {
+            // Full opacity for high contrast mode
+            return systemColorScheme == .dark ? .white : .black
+        }
+        return systemColorScheme == .dark ? .white.opacity(0.9) : .black.opacity(0.7)
+    }
+
+    // High contrast border color for better visibility
+    private var highContrastBorderColor: Color {
+        systemColorScheme == .dark ? .white : .black
     }
     
     // Adaptive background materials
@@ -164,6 +182,13 @@ struct ContentView: View {
     
     private enum NotificationFeedbackType {
         case success, error
+    }
+
+    // MARK: - Accessibility Announcement Helper
+    private func announceForVoiceOver(_ message: String) {
+        #if canImport(UIKit)
+        UIAccessibility.post(notification: .announcement, argument: message)
+        #endif
     }
     
     // MARK: - Quick Action Handling
@@ -253,13 +278,16 @@ struct ContentView: View {
                             .fontWeight(.bold)
                             .foregroundColor(primaryTextColor)
                             .multilineTextAlignment(.center)
-                        
+                            .accessibilityAddTraits(.isHeader)
+
                         Text("Let chance decide your next move!")
                             .foregroundColor(secondaryTextColor)
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.top, 60)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Yes? No? Go! Let chance decide your next move!")
                     
                     // Glass chip selector with swipe functionality
                     VStack(spacing: 0) {
@@ -295,23 +323,27 @@ struct ContentView: View {
                                                     // Selected state gets mode color accent
                                                     if selectedIndex == index {
                                                         RoundedRectangle(cornerRadius: 20)
-                                                            .fill(currentGradientColors.first?.opacity(0.15) ?? Color.clear)
+                                                            .fill(isHighContrast ? Color.clear : (currentGradientColors.first?.opacity(0.15) ?? Color.clear))
                                                     }
-                                                    
+
                                                     RoundedRectangle(cornerRadius: 20)
                                                         .stroke(
-                                                            selectedIndex == index ?
-                                                            (currentGradientColors.first?.opacity(0.8) ?? Color.primary.opacity(0.6)) :
-                                                                Color.primary.opacity(0.2),
-                                                            lineWidth: selectedIndex == index ? 2 : 1
+                                                            isHighContrast ?
+                                                                highContrastBorderColor :
+                                                                (selectedIndex == index ?
+                                                                    (currentGradientColors.first?.opacity(0.8) ?? Color.primary.opacity(0.6)) :
+                                                                    Color.primary.opacity(0.2)),
+                                                            lineWidth: isHighContrast ? 2 : (selectedIndex == index ? 2 : 1)
                                                         )
                                                 }
                                             )
                                     )
                                     .foregroundColor(
-                                        systemColorScheme == .dark ?
-                                            (selectedIndex == index ? .white : .white.opacity(0.85)) :
-                                            (selectedIndex == index ? .black : .black.opacity(0.85))
+                                        isHighContrast ?
+                                            (systemColorScheme == .dark ? .white : .black) :
+                                            (systemColorScheme == .dark ?
+                                                (selectedIndex == index ? .white : .white.opacity(0.85)) :
+                                                (selectedIndex == index ? .black : .black.opacity(0.85)))
                                     )
                                     .scaleEffect(selectedIndex == index ? 1.05 : 1.0)
                                 }
@@ -403,6 +435,8 @@ struct ContentView: View {
                     .foregroundColor(primaryTextColor.opacity(0.7))
                     .padding(20)
             }
+            .accessibilityLabel("Credits and information")
+            .accessibilityHint("View sound credits and app information")
         }
         .sheet(isPresented: $showCredits) {
             CreditsView()
@@ -438,12 +472,13 @@ struct ContentView: View {
                     )
             }
             .rotation3DEffect(
-                .degrees(isAnimating ? 1440 : 0), // 4 full rotations
+                .degrees(isAnimating && !reduceMotion ? 1440 : 0), // 4 full rotations
                 axis: (x: 1, y: 0, z: 0) // Flip around X-axis for realistic coin flip
             )
-            .offset(y: isAnimating ? -50 : 0) // Coin goes up then comes down
+            .offset(y: isAnimating && !reduceMotion ? -50 : 0) // Coin goes up then comes down
+            .opacity(isAnimating && reduceMotion ? 0.5 : 1.0) // Fade instead of animate when reduce motion is on
             .animation(
-                isAnimating ?
+                isAnimating && !reduceMotion ?
                     .easeInOut(duration: 1.8)
                     .repeatCount(1, autoreverses: false) :
                         .none,
@@ -487,8 +522,12 @@ struct ContentView: View {
                         )
                     )
                     .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
+                    )
                     .scaleEffect(isAnimating ? 0.95 : 1.0)
-                    .shadow(radius: 8)
+                    .shadow(radius: isHighContrast ? 0 : 8)
             }
             .disabled(isAnimating)
             .opacity(isAnimating ? 0.5 : 1.0)
@@ -504,9 +543,9 @@ struct ContentView: View {
         return VStack(spacing: 30) {
             Text("🤔")
                 .font(.system(size: 128))
-                .scaleEffect(isAnimating ? 1.25 : 1.0)
+                .scaleEffect(isAnimating && !reduceMotion ? 1.25 : 1.0)
                 .opacity(isAnimating ? 0.5 : 1.0)
-                .animation(.easeInOut(duration: 0.8), value: isAnimating)
+                .animation(reduceMotion ? .none : .easeInOut(duration: 0.8), value: isAnimating)
                 .accessibilityLabel(thinkingLabel)
                 .accessibilityHint(thinkingHint)
             
@@ -551,8 +590,12 @@ struct ContentView: View {
                         )
                     )
                     .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
+                    )
                     .scaleEffect(isAnimating ? 0.95 : 1.0)
-                    .shadow(radius: 8)
+                    .shadow(radius: isHighContrast ? 0 : 8)
             }
             .disabled(isAnimating)
             .opacity(isAnimating ? 0.5 : 1.0)
@@ -560,7 +603,7 @@ struct ContentView: View {
             .accessibilityHint(decideA11yHint)
         }
     }
-    
+
     private func customChoiceView() -> some View {
         let addDisabled = customChoices.count >= 6
         let addButtonTextColor: Color = systemColorScheme == .dark ? .white : .black
@@ -678,8 +721,12 @@ struct ContentView: View {
                         )
                     )
                     .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
+                    )
                     .scaleEffect(isAnimating ? 0.95 : 1.0)
-                    .shadow(radius: 8)
+                    .shadow(radius: isHighContrast ? 0 : 8)
             }
             .disabled(isAnimating)
             .opacity(isAnimating ? 0.5 : 1.0)
@@ -687,7 +734,7 @@ struct ContentView: View {
             .accessibilityHint(pickA11yHint)
         }
     }
-    
+
     private func rpsView() -> some View {
         let thinkingLabel = isAnimating ? "Choosing rock, paper, or scissors" : "Hand emojis, ready to play"
         let thinkingHint = isAnimating ? "Wait while a choice is being made" : "Tap the button below to see what the opponent chose"
@@ -696,18 +743,18 @@ struct ContentView: View {
             HStack(spacing: 20) {
                 Text("🪨")
                     .font(.system(size: 48))
-                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.2 : 1.0)
                     .opacity(isAnimating ? 0.5 : 1.0)
                 Text("📄")
                     .font(.system(size: 48))
-                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.2 : 1.0)
                     .opacity(isAnimating ? 0.5 : 1.0)
                 Text("✂️")
                     .font(.system(size: 48))
-                    .scaleEffect(isAnimating ? 1.2 : 1.0)
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.2 : 1.0)
                     .opacity(isAnimating ? 0.5 : 1.0)
             }
-            .animation(.easeInOut(duration: 0.4).repeatForever(autoreverses: true), value: isAnimating)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.4).repeatForever(autoreverses: true), value: isAnimating)
             .accessibilityLabel(thinkingLabel)
             .accessibilityHint(thinkingHint)
 
@@ -759,8 +806,12 @@ struct ContentView: View {
                         )
                     )
                     .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
+                    )
                     .scaleEffect(isAnimating ? 0.95 : 1.0)
-                    .shadow(radius: 8)
+                    .shadow(radius: isHighContrast ? 0 : 8)
             }
             .disabled(isAnimating)
             .opacity(isAnimating ? 0.5 : 1.0)
@@ -815,9 +866,12 @@ struct ContentView: View {
             } else {
                 playSound("crown")
             }
+
+            // Announce result for VoiceOver users
+            announceForVoiceOver("Coin landed on \(coinResult.lowercased())")
         }
     }
-    
+
     private func generateYesNo() {
         isAnimating = true
         showResult = false
@@ -833,9 +887,13 @@ struct ContentView: View {
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
             playSound("success")
+
+            // Announce result for VoiceOver users
+            let answer = result == "YES!" ? "yes" : "no"
+            announceForVoiceOver("The answer is \(answer)")
         }
     }
-    
+
     private func chooseCustom() {
         let validChoices = customChoices.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
         
@@ -862,6 +920,9 @@ struct ContentView: View {
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
             playSound("success")
+
+            // Announce result for VoiceOver users
+            announceForVoiceOver("The winner is \(result)")
         }
     }
 
@@ -894,6 +955,9 @@ struct ContentView: View {
             default:
                 playSound("success")
             }
+
+            // Announce result for VoiceOver users
+            announceForVoiceOver("Opponent chose \(rpsResult)")
         }
     }
 
@@ -973,6 +1037,8 @@ struct CreditsView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Eagle Sound by Torma, from Pixabay")
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Cinematic Whoosh")
@@ -985,6 +1051,8 @@ struct CreditsView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Cinematic Whoosh, Descent Whoosh Long, from Pixabay")
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Thud Sound")
@@ -997,6 +1065,8 @@ struct CreditsView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Thud Sound for Rock Paper Scissors Rock, from Pixabay")
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Steel Blade Slice")
@@ -1009,6 +1079,8 @@ struct CreditsView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Steel Blade Slice for Rock Paper Scissors Scissors, from Pixabay")
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Crumpling Paper")
@@ -1021,6 +1093,28 @@ struct CreditsView: View {
                             .foregroundColor(.secondary)
                     }
                     .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Crumpling Paper for Rock Paper Scissors Paper, from Pixabay")
+                }
+
+                Section(header: Text("Accessibility")) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("This app supports:")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+
+                        VStack(alignment: .leading, spacing: 6) {
+                            Label("VoiceOver with detailed labels", systemImage: "speaker.wave.3")
+                            Label("Reduce Motion support", systemImage: "figure.walk")
+                            Label("High Contrast mode", systemImage: "circle.lefthalf.filled")
+                            Label("Dynamic Type", systemImage: "textformat.size")
+                            Label("Haptic feedback", systemImage: "hand.tap")
+                        }
+                        .font(.subheadline)
+                    }
+                    .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Accessibility features: VoiceOver with detailed labels, Reduce Motion support, High Contrast mode, Dynamic Type, and Haptic feedback")
                 }
 
                 AboutSectionView(currentAppName: "Yes? No? Go!")
@@ -1032,6 +1126,8 @@ struct CreditsView: View {
                     Button("Done") {
                         dismiss()
                     }
+                    .accessibilityLabel("Close credits")
+                    .accessibilityHint("Dismiss the credits screen")
                 }
             }
         }
