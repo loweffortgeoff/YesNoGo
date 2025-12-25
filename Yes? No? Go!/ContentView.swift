@@ -77,6 +77,9 @@ struct ContentView: View {
     @State private var selectedIndex: Int = 0
     @State private var shimmerOffset: CGFloat = -200
     @State private var showCredits = false
+    @State private var swirlRotation: Double = 0
+    @State private var swirlScale: CGFloat = 1.0
+    @State private var showSwirl: Bool = false
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -605,134 +608,212 @@ struct ContentView: View {
     }
 
     private func customChoiceView() -> some View {
-        let addDisabled = customChoices.count >= 6
-        let addButtonTextColor: Color = systemColorScheme == .dark ? .white : .black
-        let addButtonBG: Color = systemColorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.06)
+        VStack(spacing: 20) {
+            customChoiceHeader()
+            customChoiceInputFields()
+            customChoiceAddButton()
+            customChoiceAnimationArea()
+            customChoicePickButton()
+        }
+    }
+
+    @ViewBuilder
+    private func customChoiceHeader() -> some View {
+        Text("Enter Your Options")
+            .font(.title2)
+            .fontWeight(.bold)
+            .foregroundColor(primaryTextColor)
+    }
+
+    @ViewBuilder
+    private func customChoiceInputFields() -> some View {
         let textFieldBG: Color = systemColorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.06)
         let textFieldStroke: Color = systemColorScheme == .dark ? Color.white.opacity(0.25) : Color.black.opacity(0.15)
-        let primaryFG = primaryTextColor
-        
-        return VStack(spacing: 20) {
-            Text("Enter Your Options")
-                .font(.title2)
-                .fontWeight(.bold)
-                .foregroundColor(primaryFG)
-            
-            VStack(spacing: 12) {
-                ForEach(customChoices.indices, id: \.self) { index in
-                    HStack {
-                        TextField("Option \(index + 1)...", text: $customChoices[index])
-                            .padding(12)
-                            .background(textFieldBG)
-                            .foregroundColor(primaryFG)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(textFieldStroke, lineWidth: 1)
-                            )
-                            .accessibilityLabel("Option \(index + 1)")
-                            .accessibilityHint("Enter a choice for random selection")
-                        
-                        if customChoices.count > 2 {
-                            Button(action: {
-                                triggerImpactFeedback()
-                                playSound("error")
-                                removeChoice(at: index)
-                            }) {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.red.opacity(0.8))
-                                    .padding(12)
-                                    .background(Color.red.opacity(0.2))
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                            }
-                            .accessibilityLabel("Remove option \(index + 1)")
-                            .accessibilityHint("Remove this option from the list")
+
+        VStack(spacing: 12) {
+            ForEach(customChoices.indices, id: \.self) { index in
+                HStack {
+                    TextField("Option \(index + 1)...", text: $customChoices[index])
+                        .padding(12)
+                        .background(textFieldBG)
+                        .foregroundColor(primaryTextColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(textFieldStroke, lineWidth: 1)
+                        )
+                        .accessibilityLabel("Option \(index + 1)")
+                        .accessibilityHint("Enter a choice for random selection")
+
+                    if customChoices.count > 2 {
+                        Button(action: {
+                            triggerImpactFeedback()
+                            playSound("error")
+                            removeChoice(at: index)
+                        }) {
+                            Image(systemName: "xmark")
+                                .foregroundColor(.red.opacity(0.8))
+                                .padding(12)
+                                .background(Color.red.opacity(0.2))
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
+                        .accessibilityLabel("Remove option \(index + 1)")
+                        .accessibilityHint("Remove this option from the list")
                     }
                 }
             }
-            
-            Button(action: {
-                triggerSelectionFeedback()
-                playSound("select")
-                addChoice()
-            }) {
-                HStack {
-                    Image(systemName: "plus")
-                    Text("Add Option")
-                }
-                .foregroundColor(addButtonTextColor)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(addButtonBG)
-                .clipShape(Capsule())
-            }
-            .disabled(addDisabled)
-            .opacity(addDisabled ? 0.5 : 1.0)
-            .accessibilityLabel("Add option")
-            .accessibilityHint(addDisabled ? "Maximum of 6 options reached" : "Add another option to choose from")
-            
-            if showResult {
-                let winner = result
-                
-                VStack {
-                    Text("The winner is...")
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundColor(primaryFG)
-                    
-                    Text(result)
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.yellow)
-                        .padding(16)
-                        .background(Color.primary.opacity(0.1))
-                        .clipShape(RoundedRectangle(cornerRadius: 16))
-                    
-                    Text("🎉")
-                        .font(.largeTitle)
-                }
-                .transition(.scale.combined(with: .opacity))
-                .animation(.bouncy(duration: 0.6), value: showResult)
-                .accessibilityLabel("Selection result: \(winner)")
-                .accessibilityHint("The randomly chosen option from your custom choices is \(winner)")
-            }
-            
-            let pickButtonLabel = isAnimating ? "Choosing..." : "Pick for Me!"
-            let pickA11yLabel = isAnimating ? "Making selection" : "Pick random option"
-            let pickA11yHint = isAnimating ? "Please wait while a random choice is being selected" : "Tap to randomly select one of your custom options"
-            
-            Button(action: {
-                triggerImpactFeedback()
-                playSound("shuffle")
-                chooseCustom()
-            }) {
-                Text(pickButtonLabel)
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 32)
-                    .padding(.vertical, 16)
-                    .background(
-                        LinearGradient(
-                            colors: currentGradientColors,
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
-                    )
-                    .clipShape(Capsule())
-                    .overlay(
-                        Capsule()
-                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
-                    )
-                    .scaleEffect(isAnimating ? 0.95 : 1.0)
-                    .shadow(radius: isHighContrast ? 0 : 8)
-            }
-            .disabled(isAnimating)
-            .opacity(isAnimating ? 0.5 : 1.0)
-            .accessibilityLabel(pickA11yLabel)
-            .accessibilityHint(pickA11yHint)
         }
+    }
+
+    @ViewBuilder
+    private func customChoiceAddButton() -> some View {
+        let addDisabled = customChoices.count >= 6
+        let addButtonTextColor: Color = systemColorScheme == .dark ? .white : .black
+        let addButtonBG: Color = systemColorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.06)
+
+        Button(action: {
+            triggerSelectionFeedback()
+            playSound("select")
+            addChoice()
+        }) {
+            HStack {
+                Image(systemName: "plus")
+                Text("Add Option")
+            }
+            .foregroundColor(addButtonTextColor)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(addButtonBG)
+            .clipShape(Capsule())
+        }
+        .disabled(addDisabled || isAnimating)
+        .opacity(addDisabled || isAnimating ? 0.5 : 1.0)
+        .accessibilityLabel("Add option")
+        .accessibilityHint(addDisabled ? "Maximum of 6 options reached" : "Add another option to choose from")
+    }
+
+    @ViewBuilder
+    private func customChoiceAnimationArea() -> some View {
+        if showSwirl || showResult {
+            ZStack {
+                swirlAnimation()
+                reducedMotionIndicator()
+                winnerDisplay()
+            }
+            .frame(height: 200)
+        }
+    }
+
+    @ViewBuilder
+    private func swirlAnimation() -> some View {
+        let validChoices = customChoices.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        let fillColor: Color = currentGradientColors.first?.opacity(0.3) ?? Color.green.opacity(0.3)
+        let strokeColor: Color = currentGradientColors.first?.opacity(0.6) ?? Color.green.opacity(0.6)
+
+        if showSwirl && !reduceMotion {
+            ForEach(validChoices.indices, id: \.self) { index in
+                let choiceCount = Double(validChoices.count)
+                let angle = (Double(index) / choiceCount) * 360.0 + swirlRotation
+                let radius: CGFloat = 80 * swirlScale
+                let xOffset = cos(angle * .pi / 180) * radius
+                let yOffset = sin(angle * .pi / 180) * radius
+                let itemOpacity: Double = swirlScale > 0.3 ? 1.0 : 0.0
+
+                Text(validChoices[index])
+                    .font(.headline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(primaryTextColor)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(fillColor)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(strokeColor, lineWidth: 1)
+                    )
+                    .offset(x: xOffset, y: yOffset)
+                    .opacity(itemOpacity)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func reducedMotionIndicator() -> some View {
+        if showSwirl && reduceMotion {
+            Text("Choosing...")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(primaryTextColor)
+                .opacity(0.7)
+        }
+    }
+
+    @ViewBuilder
+    private func winnerDisplay() -> some View {
+        if showResult {
+            VStack {
+                Text("The winner is...")
+                    .font(.title3)
+                    .fontWeight(.bold)
+                    .foregroundColor(primaryTextColor)
+
+                Text(result)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.yellow)
+                    .padding(16)
+                    .background(Color.primary.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                Text("🎉")
+                    .font(.largeTitle)
+            }
+            .transition(.scale.combined(with: .opacity))
+            .accessibilityLabel("Selection result: \(result)")
+            .accessibilityHint("The randomly chosen option from your custom choices is \(result)")
+        }
+    }
+
+    @ViewBuilder
+    private func customChoicePickButton() -> some View {
+        let pickButtonLabel = isAnimating ? "Choosing..." : "Pick for Me!"
+        let pickA11yLabel = isAnimating ? "Making selection" : "Pick random option"
+        let pickA11yHint = isAnimating ? "Please wait while a random choice is being selected" : "Tap to randomly select one of your custom options"
+        let buttonBorderColor: Color = isHighContrast ? highContrastBorderColor : Color.clear
+        let shadowRadius: CGFloat = isHighContrast ? 0 : 8
+
+        Button(action: {
+            triggerImpactFeedback()
+            playSound("shuffle")
+            chooseCustom()
+        }) {
+            Text(pickButtonLabel)
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.horizontal, 32)
+                .padding(.vertical, 16)
+                .background(
+                    LinearGradient(
+                        colors: currentGradientColors,
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .clipShape(Capsule())
+                .overlay(
+                    Capsule()
+                        .stroke(buttonBorderColor, lineWidth: 2)
+                )
+                .scaleEffect(isAnimating ? 0.95 : 1.0)
+                .shadow(radius: shadowRadius)
+        }
+        .disabled(isAnimating)
+        .opacity(isAnimating ? 0.5 : 1.0)
+        .accessibilityLabel(pickA11yLabel)
+        .accessibilityHint(pickA11yHint)
     }
 
     private func rpsView() -> some View {
@@ -896,27 +977,57 @@ struct ContentView: View {
 
     private func chooseCustom() {
         let validChoices = customChoices.filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-        
+
         if validChoices.count < 2 {
             triggerNotificationFeedback(.error)
             playSound("error")
             showAlert = true
             return
         }
-        
+
         isAnimating = true
         showResult = false
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+
+        // Start the swirl animation
+        swirlRotation = 0
+        swirlScale = 1.0
+        withAnimation(.easeIn(duration: 0.3)) {
+            showSwirl = true
+        }
+
+        // Animate the swirl - fast spinning that slows down
+        if !reduceMotion {
+            // Phase 1: Fast spin (0-1.5s)
+            withAnimation(.linear(duration: 1.5)) {
+                swirlRotation = 1080 // 3 full rotations
+            }
+
+            // Phase 2: Slow down and spiral inward (1.5-2.5s)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                withAnimation(.easeOut(duration: 1.0)) {
+                    swirlRotation = 1440 // 1 more rotation, slower
+                    swirlScale = 0.0 // Spiral inward
+                }
+            }
+        }
+
+        // Show the result after animation completes
+        let animationDuration = reduceMotion ? 1.0 : 2.5
+        DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
             if let randomChoice = validChoices.randomElement() {
                 result = randomChoice
             }
             isAnimating = false
-            
+            showSwirl = false
+
+            // Reset swirl state for next time
+            swirlRotation = 0
+            swirlScale = 1.0
+
             withAnimation(.bouncy(duration: 0.6)) {
                 showResult = true
             }
-            
+
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
             playSound("success")
@@ -964,8 +1075,11 @@ struct ContentView: View {
     private func resetResult() {
         withAnimation(.easeOut(duration: 0.3)) {
             showResult = false
+            showSwirl = false
         }
         result = ""
+        swirlRotation = 0
+        swirlScale = 1.0
     }
     
     private func playSound(_ soundName: String) {
