@@ -89,9 +89,9 @@ struct ContentView: View {
         colorSchemeContrast == .increased
     }
 
-    private let modes = ["coin", "yesno", "custom", "rps"]
-    private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS"]
-    private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle", "hand.raised"]
+    private let modes = ["coin", "yesno", "custom", "rps", "orb"]
+    private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS", "Orb"]
+    private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle", "hand.raised", "sparkles"]
     
     // Haptic feedback generators (iOS only)
     #if canImport(UIKit)
@@ -122,6 +122,10 @@ struct ContentView: View {
             return systemColorScheme == .dark ?
                 [.purple, .pink, .orange] :
                 [.purple, .indigo, .pink]
+        case "orb":
+            return systemColorScheme == .dark ?
+                [.indigo, .purple, .blue] :
+                [.purple, .blue, .indigo]
         default:
             return systemColorScheme == .dark ?
                 [.purple, .pink, .red] :
@@ -397,8 +401,10 @@ struct ContentView: View {
                             yesNoView()
                         } else if activeMode == "custom" {
                             customChoiceView()
-                        } else {
+                        } else if activeMode == "rps" {
                             rpsView()
+                        } else {
+                            orbView()
                         }
                     }
                     .padding(32)
@@ -1069,6 +1075,191 @@ struct ContentView: View {
 
             // Announce result for VoiceOver users
             announceForVoiceOver("Opponent chose \(rpsResult)")
+        }
+    }
+
+    // MARK: - Orb Responses
+    private let orbResponses: [String] = [
+        // Positive
+        "It is certain",
+        "Without a doubt",
+        "Yes, definitely",
+        "You may rely on it",
+        "As I see it, yes",
+        "Most likely",
+        "Outlook good",
+        "Signs point to yes",
+        "Yes",
+        "It is decidedly so",
+        // Neutral
+        "Ask again later",
+        "Better not tell you now",
+        "Cannot predict now",
+        "Concentrate and ask again",
+        "Reply hazy, try again",
+        // Negative
+        "Don't count on it",
+        "My reply is no",
+        "My sources say no",
+        "Outlook not so good",
+        "Very doubtful"
+    ]
+
+    private func orbView() -> some View {
+        let orbLabel = isAnimating ? "The orb is contemplating" : "Crystal orb, ready to reveal your fate"
+        let orbHint = isAnimating ? "Wait while the orb reveals its wisdom" : "Tap the button below to ask the orb"
+
+        return VStack(spacing: 30) {
+            ZStack {
+                // Outer glow
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [
+                                .purple.opacity(0.6),
+                                .blue.opacity(0.3),
+                                .clear
+                            ],
+                            center: .center,
+                            startRadius: 50,
+                            endRadius: 100
+                        )
+                    )
+                    .frame(width: 180, height: 180)
+                    .blur(radius: 20)
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.2 : 1.0)
+                    .opacity(isAnimating ? 0.8 : 0.5)
+
+                // Crystal ball
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [
+                                .white.opacity(0.3),
+                                .purple.opacity(0.5),
+                                .indigo.opacity(0.8),
+                                .blue.opacity(0.9)
+                            ],
+                            center: .topLeading,
+                            startRadius: 10,
+                            endRadius: 80
+                        )
+                    )
+                    .frame(width: 128, height: 128)
+                    .overlay(
+                        Circle()
+                            .stroke(
+                                LinearGradient(
+                                    colors: [.white.opacity(0.6), .purple.opacity(0.3)],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                ),
+                                lineWidth: 3
+                            )
+                    )
+                    .shadow(color: .purple.opacity(0.5), radius: isAnimating ? 20 : 10)
+                    .scaleEffect(isAnimating && !reduceMotion ? 1.1 : 1.0)
+
+                // Inner sparkle/shine
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [.white.opacity(0.8), .clear],
+                            center: .topLeading,
+                            startRadius: 0,
+                            endRadius: 30
+                        )
+                    )
+                    .frame(width: 40, height: 40)
+                    .offset(x: -25, y: -25)
+
+                // Crystal ball emoji overlay
+                Text("🔮")
+                    .font(.system(size: 64))
+                    .opacity(isAnimating ? 0.7 : 1.0)
+            }
+            .animation(reduceMotion ? .none : .easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: isAnimating)
+            .accessibilityLabel(orbLabel)
+            .accessibilityHint(orbHint)
+
+            Text("Ask your question...")
+                .font(.title3)
+                .foregroundColor(secondaryTextColor)
+                .opacity(showResult ? 0 : 1)
+
+            if showResult {
+                VStack(spacing: 12) {
+                    Text("The orb speaks:")
+                        .font(.subheadline)
+                        .foregroundColor(secondaryTextColor)
+
+                    Text(result)
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(primaryTextColor)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal)
+                }
+                .transition(.scale.combined(with: .opacity))
+                .animation(.bouncy(duration: 0.6), value: showResult)
+                .accessibilityLabel("The orb says: \(result)")
+            }
+
+            let askButtonLabel = isAnimating ? "Consulting..." : "Ask the Orb"
+            let askA11yLabel = isAnimating ? "Consulting the orb" : "Ask the orb"
+            let askA11yHint = isAnimating ? "Please wait while the orb reveals its wisdom" : "Tap to ask the orb for guidance"
+
+            Button(action: {
+                triggerImpactFeedback()
+                playSound("decision")
+                askOrb()
+            }) {
+                Text(askButtonLabel)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                    .background(
+                        LinearGradient(
+                            colors: currentGradientColors,
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
+                    )
+                    .scaleEffect(isAnimating ? 0.95 : 1.0)
+                    .shadow(radius: isHighContrast ? 0 : 8)
+            }
+            .disabled(isAnimating)
+            .opacity(isAnimating ? 0.5 : 1.0)
+            .accessibilityLabel(askA11yLabel)
+            .accessibilityHint(askA11yHint)
+        }
+    }
+
+    private func askOrb() {
+        isAnimating = true
+        showResult = false
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            result = orbResponses.randomElement() ?? "The orb is silent"
+            isAnimating = false
+
+            withAnimation(.bouncy(duration: 0.6)) {
+                showResult = true
+            }
+
+            // Success haptic feedback and sound when result is shown
+            triggerNotificationFeedback(.success)
+            playSound("success")
+
+            // Announce result for VoiceOver users
+            announceForVoiceOver("The orb says: \(result)")
         }
     }
 

@@ -69,15 +69,12 @@ struct TipJarView: View {
 
     private var headerSection: some View {
         VStack(spacing: 16) {
-            Image(systemName: "heart.fill")
-                .font(.system(size: 50))
-                .foregroundStyle(
-                    LinearGradient(
-                        colors: [.pink, .red],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    )
-                )
+            Image("yesnogo")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 18))
+                .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
 
             Text("Support Yes? No? Go!")
                 .font(.title2)
