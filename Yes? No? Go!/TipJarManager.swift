@@ -17,6 +17,7 @@ final class TipJarManager {
     static let smallTipID = "com.loweffortapps.yesnogo.tip.small"
     static let mediumTipID = "com.loweffortapps.yesnogo.tip.medium"
     static let largeTipID = "com.loweffortapps.yesnogo.tip.large"
+    static let heroTipID = "com.loweffortapps.yesnogo.tip.hero"
 
     private(set) var products: [Product] = []
     private(set) var purchaseState: PurchaseState = .idle
@@ -48,7 +49,8 @@ final class TipJarManager {
             let productIDs = [
                 Self.smallTipID,
                 Self.mediumTipID,
-                Self.largeTipID
+                Self.largeTipID,
+                Self.heroTipID
             ]
 
             let storeProducts = try await Product.products(for: productIDs)
@@ -161,6 +163,7 @@ final class TipJarManager {
     var smallTip: Product? { product(for: Self.smallTipID) }
     var mediumTip: Product? { product(for: Self.mediumTipID) }
     var largeTip: Product? { product(for: Self.largeTipID) }
+    var heroTip: Product? { product(for: Self.heroTipID) }
 
     func resetState() {
         if case .failed = purchaseState {

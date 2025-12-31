@@ -158,6 +158,8 @@ struct TipButton: View {
             return "🍕"
         case TipJarManager.largeTipID:
             return "🎉"
+        case TipJarManager.heroTipID:
+            return "🦸"
         default:
             return "💝"
         }
@@ -171,6 +173,8 @@ struct TipButton: View {
             return "Medium Tip"
         case TipJarManager.largeTipID:
             return "Large Tip"
+        case TipJarManager.heroTipID:
+            return "Hero Tip"
         default:
             return product.displayName
         }
@@ -184,6 +188,8 @@ struct TipButton: View {
             return "Buy me lunch"
         case TipJarManager.largeTipID:
             return "You're amazing!"
+        case TipJarManager.heroTipID:
+            return "You're a superhero!"
         default:
             return ""
         }
