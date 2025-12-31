@@ -973,7 +973,13 @@ struct ContentView: View {
             
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
-            playSound("success")
+
+            // Play different sounds based on result
+            if result == "YES!" {
+                playSound("yesChord")
+            } else {
+                playSound("noTrombone")
+            }
 
             // Announce result for VoiceOver users
             let answer = result == "YES!" ? "yes" : "no"
@@ -1286,13 +1292,23 @@ struct ContentView: View {
             AudioServicesPlaySystemSound(1519) // Gentle selection sound
         case "success":
             AudioServicesPlaySystemSound(1025) // PhotoShutter - success sound
+        case "yesChord":
+            if let url = Bundle.main.url(forResource: "c-chord-83638", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
+        case "noTrombone":
+            if let url = Bundle.main.url(forResource: "wah-wah-sad-trombone-6347", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
         case "eagle":
             if let url = Bundle.main.url(forResource: "eagle-sound-by-torma-368637", withExtension: "mp3") {
                 audioPlayer = try? AVAudioPlayer(contentsOf: url)
                 audioPlayer?.play()
             }
         case "crown":
-            if let url = Bundle.main.url(forResource: "descent-whoosh-long-cinematic-sound-effect-405921", withExtension: "mp3") {
+            if let url = Bundle.main.url(forResource: "success-fanfare-trumpets-6185", withExtension: "mp3") {
                 audioPlayer = try? AVAudioPlayer(contentsOf: url)
                 audioPlayer?.play()
             }
@@ -1372,9 +1388,9 @@ struct CreditsView: View {
                     .accessibilityLabel("Eagle Sound by Torma, from Pixabay")
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Cinematic Whoosh")
+                        Text("Success Fanfare Trumpets")
                             .font(.headline)
-                        Text("Descent Whoosh Long")
+                        Text("by freesound_community")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                         Text("From Pixabay")
@@ -1383,7 +1399,35 @@ struct CreditsView: View {
                     }
                     .padding(.vertical, 4)
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Cinematic Whoosh, Descent Whoosh Long, from Pixabay")
+                    .accessibilityLabel("Success Fanfare Trumpets by freesound_community, from Pixabay")
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("C Chord")
+                            .font(.headline)
+                        Text("by freesound_community")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("C Chord by freesound_community, from Pixabay")
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Wah Wah Sad Trombone")
+                            .font(.headline)
+                        Text("by freesound_community")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Wah Wah Sad Trombone by freesound_community, from Pixabay")
 
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Thud Sound")
