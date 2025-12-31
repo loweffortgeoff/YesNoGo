@@ -1256,7 +1256,7 @@ struct ContentView: View {
 
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
-            playSound("success")
+            playSound("mystical")
 
             // Announce result for VoiceOver users
             announceForVoiceOver("The orb says: \(result)")
@@ -1311,6 +1311,12 @@ struct ContentView: View {
         case "paper":
             // Paper sound - crumpling paper
             if let url = Bundle.main.url(forResource: "crumping-paper-109585", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
+        case "mystical":
+            // Orb sound - mystical chime
+            if let url = Bundle.main.url(forResource: "mystical-355968", withExtension: "mp3") {
                 audioPlayer = try? AVAudioPlayer(contentsOf: url)
                 audioPlayer?.play()
             }
@@ -1420,6 +1426,20 @@ struct CreditsView: View {
                     .padding(.vertical, 4)
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel("Crumpling Paper for Rock Paper Scissors Paper, from Pixabay")
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Mystical Chime")
+                            .font(.headline)
+                        Text("by Koi Roylers")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                        Text("From Pixabay")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(.vertical, 4)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Mystical Chime by Koi Roylers, from Pixabay")
                 }
 
                 Section(header: Text("Accessibility")) {
