@@ -18,15 +18,16 @@ struct LowEffortApp: Identifiable {
 enum LowEffortApps {
     static let loudSky = LowEffortApp(name: "Loud Sky", iconName: "boomskydark", appStoreID: "6755754767")
     static let elapseD = LowEffortApp(name: "Elapse(D)", iconName: "TimeFlux", appStoreID: "6755078545")
-    static let routinee = LowEffortApp(name: "Routine(e)", iconName: "routineedark", appStoreID: "6755685503")
-    static let yesNoGo = LowEffortApp(name: "Yes? No? Go!", iconName: "YesNoGo", appStoreID: "6754826659")
-    static let muzzletoff = LowEffortApp(name: "Muzzletoff", iconName: "tailmatedark", appStoreID: "6754781167")
+    static let routinee = LowEffortApp(name: "Routine(e)", iconName: "routineedarknew", appStoreID: "6755685503")
+    static let yesNoGo = LowEffortApp(name: "Yes? No? Go!", iconName: "yesnogo", appStoreID: "6754826659")
+    static let muzzletoff = LowEffortApp(name: "Muzzletoff", iconName: "muzzletoff", appStoreID: "6754781167")
     static let aisleWise = LowEffortApp(name: "AisleWise", iconName: "aislewisedark", appStoreID: "6755057084")
-    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskeddark", appStoreID: "6755186421")
-    static let trackked = LowEffortApp(name: "Track(ked)", iconName: "trackked3", appStoreID: "6756798126")
+    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskedlight", appStoreID: "6755186421")
+    static let trackked = LowEffortApp(name: "Trackked", iconName: "trackked3", appStoreID: "6756798126")
+    static let wottleBosh = LowEffortApp(name: "Wottle Bosh", iconName: "wottleboshlight", appStoreID: "6754604346")
 
     static let all: [LowEffortApp] = [
-        loudSky, elapseD, routinee, yesNoGo, muzzletoff, aisleWise, tasked, trackked
+        loudSky, elapseD, routinee, yesNoGo, muzzletoff, aisleWise, tasked, trackked, wottleBosh
     ]
 }
 

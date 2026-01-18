@@ -287,14 +287,14 @@ struct ContentView: View {
                             .multilineTextAlignment(.center)
                             .accessibilityAddTraits(.isHeader)
 
-                        Text("Let chance decide your next move!")
+                        Text("When you can't decide, let fate provide!")
                             .foregroundColor(secondaryTextColor)
                             .multilineTextAlignment(.center)
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.top, 60)
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Yes? No? Go! Let chance decide your next move!")
+                    .accessibilityLabel("Yes? No? Go! When you can't decide, let fate provide!")
                     
                     // Glass chip selector with swipe functionality
                     VStack(spacing: 0) {
@@ -414,7 +414,7 @@ struct ContentView: View {
                         return cardShadow
                     }(), radius: 20, x: 0, y: 10)
                     
-                    Text("Perfect for lunch decisions, weekend plans, and settling friendly debates! 🎲")
+                    Text("Perfect for lunch decisions, weekend plans, and settling friendly debates!")
                         .foregroundColor(secondaryTextColor)
                         .font(.caption)
                         .multilineTextAlignment(.center)
@@ -481,14 +481,14 @@ struct ContentView: View {
                     )
             }
             .rotation3DEffect(
-                .degrees(isAnimating && !reduceMotion ? 1440 : 0), // 4 full rotations
+                .degrees(isAnimating && !reduceMotion ? 1080 : 0), // 3 full rotations
                 axis: (x: 1, y: 0, z: 0) // Flip around X-axis for realistic coin flip
             )
             .offset(y: isAnimating && !reduceMotion ? -50 : 0) // Coin goes up then comes down
             .opacity(isAnimating && reduceMotion ? 0.5 : 1.0) // Fade instead of animate when reduce motion is on
             .animation(
                 isAnimating && !reduceMotion ?
-                    .easeInOut(duration: 1.8)
+                    .easeInOut(duration: 1.6)
                     .repeatCount(1, autoreverses: false) :
                         .none,
                 value: isAnimating
@@ -935,7 +935,7 @@ struct ContentView: View {
         // Generate result immediately but don't show it until animation completes
         let coinResult = Bool.random() ? "HEADS" : "TAILS"
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.8) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
             result = coinResult
             coinRotation = coinResult == "HEADS" ? 0 : 180
             isAnimating = false
@@ -1097,12 +1097,14 @@ struct ContentView: View {
         "Signs point to yes",
         "Yes",
         "It is decidedly so",
+        "The stars align in your favor",
         // Neutral
         "Ask again later",
         "Better not tell you now",
         "Cannot predict now",
         "Concentrate and ask again",
         "Reply hazy, try again",
+        "Fate whispers... maybe",
         // Negative
         "Don't count on it",
         "My reply is no",
