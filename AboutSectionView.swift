@@ -7,27 +7,33 @@ struct LowEffortApp: Identifiable {
     let name: String
     let iconName: String
     let appStoreID: String
+    let slug: String?
+
+    init(name: String, iconName: String, appStoreID: String, slug: String? = nil) {
+        self.name = name
+        self.iconName = iconName
+        self.appStoreID = appStoreID
+        self.slug = slug
+    }
 
     var appStoreURL: URL? {
-        URL(string: "https://apps.apple.com/us/app/\(name.lowercased().replacingOccurrences(of: " ", with: "-"))/id\(appStoreID)")
+        let urlSlug = slug ?? name.lowercased().replacingOccurrences(of: " ", with: "-")
+        return URL(string: "https://apps.apple.com/us/app/\(urlSlug)/id\(appStoreID)")
     }
 }
 
 // MARK: - App Catalog
 
 enum LowEffortApps {
-    static let loudSky = LowEffortApp(name: "Loud Sky", iconName: "boomskydark", appStoreID: "6755754767")
-    static let elapseD = LowEffortApp(name: "Elapse(D)", iconName: "TimeFlux", appStoreID: "6755078545")
-    static let routinee = LowEffortApp(name: "Routine(e)", iconName: "routineedarknew", appStoreID: "6755685503")
-    static let yesNoGo = LowEffortApp(name: "Yes? No? Go!", iconName: "yesnogo", appStoreID: "6754826659")
-    static let muzzletoff = LowEffortApp(name: "Muzzletoff", iconName: "muzzletoff", appStoreID: "6754781167")
-    static let aisleWise = LowEffortApp(name: "AisleWise", iconName: "aislewisedark", appStoreID: "6755057084")
-    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskedlight", appStoreID: "6755186421")
-    static let trackked = LowEffortApp(name: "Trackked", iconName: "trackked3", appStoreID: "6756798126")
-    static let wottleBosh = LowEffortApp(name: "Wottle Bosh", iconName: "wottleboshlight", appStoreID: "6754604346")
+    static let elapseD = LowEffortApp(name: "Elapse(D)", iconName: "elapseddark", appStoreID: "6755078545")
+    static let routinee = LowEffortApp(name: "Routine(e)", iconName: "routineedark", appStoreID: "6755685503")
+    static let yesNoGo = LowEffortApp(name: "Yes? No? Go!", iconName: "yesnogoglass", appStoreID: "6754826659", slug: "yes-no-go")
+    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskeddark2", appStoreID: "6755186421")
+    static let trackked = LowEffortApp(name: "Trackked", iconName: "trackkeddark", appStoreID: "6756798126")
+    static let aislewise = LowEffortApp(name: "AisleWise", iconName: "aislewisenewdark", appStoreID: "6755057084")
 
     static let all: [LowEffortApp] = [
-        loudSky, elapseD, routinee, yesNoGo, muzzletoff, aisleWise, tasked, trackked, wottleBosh
+        elapseD, routinee, yesNoGo, tasked, trackked, aislewise
     ]
 }
 

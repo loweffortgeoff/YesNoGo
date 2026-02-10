@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3A24D88D2F04F7940098F2CE /* mystical-355968.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3A24D88C2F04F7940098F2CE /* mystical-355968.mp3 */; };
+		3A7B0EC02F264CBA00AD7242 /* AboutSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A7B0EBF2F264CBA00AD7242 /* AboutSectionView.swift */; };
 		3ACB9DC02EF665C4001488F6 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A18550F2EB7F5E400A711F2 /* WidgetKit.framework */; };
 		3ACB9DC12EF665C4001488F6 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3A1855112EB7F5E400A711F2 /* SwiftUI.framework */; };
 		3ACB9DD22EF665C4001488F6 /* YesNoGoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -55,6 +56,7 @@
 		3A1855112EB7F5E400A711F2 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3A24D88C2F04F7940098F2CE /* mystical-355968.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "mystical-355968.mp3"; sourceTree = "<group>"; };
 		3A5038872EB6C3A400D411FF /* Yes? No? Go!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Yes? No? Go!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3A7B0EBF2F264CBA00AD7242 /* AboutSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutSectionView.swift; sourceTree = "<group>"; };
 		3ACB9DBF2EF665C4001488F6 /* YesNoGoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = YesNoGoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ADE27A12EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "steel-blade-slice-4-188216.mp3"; sourceTree = "<group>"; };
 		3ADE27A22EF9EE7900F7F8B7 /* thud-82914.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "thud-82914.mp3"; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 		3A50387E2EB6C3A400D411FF = {
 			isa = PBXGroup;
 			children = (
+				3A7B0EBF2F264CBA00AD7242 /* AboutSectionView.swift */,
 				3AF002AD2F05B62D00035CDD /* wah-wah-sad-trombone-6347.mp3 */,
 				3AF002AB2F05B56200035CDD /* c-chord-83638.mp3 */,
 				3AF002A92F05B32C00035CDD /* success-fanfare-trumpets-6185.mp3 */,
@@ -269,6 +272,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A7B0EC02F264CBA00AD7242 /* AboutSectionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,11 +443,11 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 1.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -456,7 +460,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.0;
+				XROS_DEPLOYMENT_TARGET = 2.6;
 			};
 			name = Debug;
 		};
@@ -485,11 +489,11 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 1.6;
+				MACOSX_DEPLOYMENT_TARGET = 15.6;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -502,7 +506,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.0;
+				XROS_DEPLOYMENT_TARGET = 2.6;
 			};
 			name = Release;
 		};
@@ -525,7 +529,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -559,7 +563,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.geoffrey.silva.Yes--No--Go-.YesNoGoWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

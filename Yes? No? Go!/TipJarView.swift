@@ -69,7 +69,7 @@ struct TipJarView: View {
 
     private var headerSection: some View {
         VStack(spacing: 16) {
-            Image("yesnogo")
+            Image("yesnogoclear")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 80, height: 80)

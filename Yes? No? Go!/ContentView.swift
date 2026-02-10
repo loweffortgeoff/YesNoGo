@@ -73,13 +73,17 @@ struct ContentView: View {
     @State private var showResult = false
     @State private var coinRotation = 0.0
     @State private var showAlert = false
-    @State private var dragOffset: CGSize = .zero
     @State private var selectedIndex: Int = 0
     @State private var shimmerOffset: CGFloat = -200
     @State private var showCredits = false
     @State private var swirlRotation: Double = 0
     @State private var swirlScale: CGFloat = 1.0
     @State private var showSwirl: Bool = false
+    @State private var rngMinText = "1"
+    @State private var rngMaxText = "100"
+    @State private var rngNoImmediateRepeat = false
+    @State private var rngErrorMessage: String?
+    @State private var lastGeneratedRandomNumber: Int?
     @Environment(\.colorScheme) private var systemColorScheme
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -89,9 +93,9 @@ struct ContentView: View {
         colorSchemeContrast == .increased
     }
 
-    private let modes = ["coin", "yesno", "custom", "rps", "orb"]
-    private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS", "Orb"]
-    private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle", "hand.raised", "sparkles"]
+    private let modes = ["coin", "yesno", "custom", "rps", "orb", "rng"]
+    private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS", "Orb", "RNG"]
+    private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle", "hand.raised", "bubbles.and.sparkles.fill", "number.circle"]
     
     // Haptic feedback generators (iOS only)
     #if canImport(UIKit)
@@ -126,6 +130,10 @@ struct ContentView: View {
             return systemColorScheme == .dark ?
                 [.indigo, .purple, .blue] :
                 [.purple, .blue, .indigo]
+        case "rng":
+            return systemColorScheme == .dark ?
+                [.teal, .cyan, .blue] :
+                [.teal, .mint, .cyan]
         default:
             return systemColorScheme == .dark ?
                 [.purple, .pink, .red] :
@@ -279,120 +287,77 @@ struct ContentView: View {
             
             ScrollView {
                 VStack(spacing: 20) {
-                    VStack(alignment: .center) {
-                        Text("Yes? No? Go!")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(primaryTextColor)
-                            .multilineTextAlignment(.center)
-                            .accessibilityAddTraits(.isHeader)
-
-                        Text("When you can't decide, let fate provide!")
-                            .foregroundColor(secondaryTextColor)
-                            .multilineTextAlignment(.center)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 60)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Yes? No? Go! When you can't decide, let fate provide!")
-                    
                     // Glass chip selector with swipe functionality
                     VStack(spacing: 0) {
-                        HStack(spacing: 6) {
-                            ForEach(modes.indices, id: \.self) { index in
-                                Button(action: {
-                                    triggerSelectionFeedback()
-                                    playSound("select")
-                                    withAnimation(.bouncy(duration: 0.4)) {
-                                        selectedIndex = index
-                                        activeMode = modes[index]
-                                        resetResult()
-                                    }
-                                }) {
-                                    VStack(spacing: 4) {
-                                        Image(systemName: modeIcons[index])
-                                            .font(.system(size: 18))
-                                        Text(modeLabels[index])
-                                            .fontWeight(.semibold)
-                                            .font(.system(size: 10))
-                                            .lineLimit(1)
-                                            .minimumScaleFactor(0.8)
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.horizontal, 8)
-                                    .padding(.vertical, 10)
-                                    .background(
-                                        // Glass effect background with dynamic theming
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .fill(cardMaterial)
-                                            .overlay(
-                                                ZStack {
-                                                    // Selected state gets mode color accent
-                                                    if selectedIndex == index {
-                                                        RoundedRectangle(cornerRadius: 20)
-                                                            .fill(isHighContrast ? Color.clear : (currentGradientColors.first?.opacity(0.15) ?? Color.clear))
-                                                    }
-
-                                                    RoundedRectangle(cornerRadius: 20)
-                                                        .stroke(
-                                                            isHighContrast ?
-                                                                highContrastBorderColor :
-                                                                (selectedIndex == index ?
-                                                                    (currentGradientColors.first?.opacity(0.8) ?? Color.primary.opacity(0.6)) :
-                                                                    Color.primary.opacity(0.2)),
-                                                            lineWidth: isHighContrast ? 2 : (selectedIndex == index ? 2 : 1)
-                                                        )
-                                                }
-                                            )
-                                    )
-                                    .foregroundColor(
-                                        isHighContrast ?
-                                            (systemColorScheme == .dark ? .white : .black) :
-                                            (systemColorScheme == .dark ?
-                                                (selectedIndex == index ? .white : .white.opacity(0.85)) :
-                                                (selectedIndex == index ? .black : .black.opacity(0.85)))
-                                    )
-                                    .scaleEffect(selectedIndex == index ? 1.05 : 1.0)
-                                }
-                                .accessibilityLabel(modeLabels[index])
-                                .accessibilityHint("Switch to \(modeLabels[index]) mode")
-                                .accessibilityAddTraits(selectedIndex == index ? .isSelected : [])
-                            }
-                        }
-                        .offset(x: dragOffset.width)
-                        .gesture(
-                            DragGesture()
-                                .onChanged { value in
-                                    dragOffset = value.translation
-                                }
-                                .onEnded { value in
-                                    let threshold: CGFloat = 50
-                                    let dragDirection = value.translation.width
-                                    
-                                    withAnimation(.bouncy(duration: 0.4)) {
-                                        if dragDirection > threshold && selectedIndex > 0 {
-                                            // Swipe right - go to previous
-                                            triggerSelectionFeedback()
-                                            playSound("select")
-                                            selectedIndex -= 1
-                                        } else if dragDirection < -threshold && selectedIndex < modes.count - 1 {
-                                            // Swipe left - go to next
-                                            triggerSelectionFeedback()
-                                            playSound("select")
-                                            selectedIndex += 1
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 8) {
+                                ForEach(modes.indices, id: \.self) { index in
+                                    Button(action: {
+                                        triggerSelectionFeedback()
+                                        playSound("select")
+                                        withAnimation(.bouncy(duration: 0.4)) {
+                                            selectedIndex = index
+                                            activeMode = modes[index]
+                                            resetResult()
                                         }
-                                        
-                                        activeMode = modes[selectedIndex]
-                                        resetResult()
-                                        dragOffset = .zero
+                                    }) {
+                                        VStack(spacing: 6) {
+                                            Image(systemName: modeIcons[index])
+                                                .font(.system(size: 22))
+                                            Text(modeLabels[index])
+                                                .fontWeight(.semibold)
+                                                .font(.system(size: 12))
+                                                .lineLimit(1)
+                                                .minimumScaleFactor(0.8)
+                                        }
+                                        .frame(width: 94)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 14)
+                                        .background(
+                                            // Glass effect background with dynamic theming
+                                            RoundedRectangle(cornerRadius: 22)
+                                                .fill(cardMaterial)
+                                                .overlay(
+                                                    ZStack {
+                                                        // Selected state gets mode color accent
+                                                        if selectedIndex == index {
+                                                            RoundedRectangle(cornerRadius: 22)
+                                                                .fill(isHighContrast ? Color.clear : (currentGradientColors.first?.opacity(0.15) ?? Color.clear))
+                                                        }
+
+                                                        RoundedRectangle(cornerRadius: 22)
+                                                            .stroke(
+                                                                isHighContrast ?
+                                                                    highContrastBorderColor :
+                                                                    (selectedIndex == index ?
+                                                                        (currentGradientColors.first?.opacity(0.8) ?? Color.primary.opacity(0.6)) :
+                                                                        Color.primary.opacity(0.2)),
+                                                                lineWidth: isHighContrast ? 2 : (selectedIndex == index ? 2 : 1)
+                                                            )
+                                                    }
+                                                )
+                                        )
+                                        .foregroundColor(
+                                            isHighContrast ?
+                                                (systemColorScheme == .dark ? .white : .black) :
+                                                (systemColorScheme == .dark ?
+                                                    (selectedIndex == index ? .white : .white.opacity(0.85)) :
+                                                    (selectedIndex == index ? .black : .black.opacity(0.85)))
+                                        )
+                                        .scaleEffect(selectedIndex == index ? 1.05 : 1.0)
                                     }
+                                    .accessibilityLabel(modeLabels[index])
+                                    .accessibilityHint("Switch to \(modeLabels[index]) mode")
+                                    .accessibilityAddTraits(selectedIndex == index ? .isSelected : [])
                                 }
-                        )
-                        .animation(.bouncy(duration: 0.4), value: selectedIndex)
+                            }
+                            .padding(.horizontal, 2)
+                        }
                     }
-                    .padding(16)
+                    .padding(20)
                     .background(SelectorBackground(material: selectorMaterial, accent: currentGradientColors.first))
                     .clipShape(RoundedRectangle(cornerRadius: 25))
+                    .padding(.top, 56)
                     
                     VStack {
                         if activeMode == "coin" {
@@ -403,22 +368,20 @@ struct ContentView: View {
                             customChoiceView()
                         } else if activeMode == "rps" {
                             rpsView()
-                        } else {
+                        } else if activeMode == "orb" {
                             orbView()
+                        } else {
+                            randomNumberGeneratorView()
                         }
                     }
+                    .frame(maxWidth: .infinity, minHeight: 470, alignment: .center)
+                    .padding(.top, 14)
                     .padding(32)
                     .background(MainCardBackground(colors: currentGradientColors, material: cardMaterial))
                     .shadow(color: {
                         let cardShadow = (currentGradientColors.first ?? .clear).opacity(0.3)
                         return cardShadow
                     }(), radius: 20, x: 0, y: 10)
-                    
-                    Text("Perfect for lunch decisions, weekend plans, and settling friendly debates!")
-                        .foregroundColor(secondaryTextColor)
-                        .font(.caption)
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 20)
                 }
                 .padding(.horizontal, 16)
             }
@@ -916,6 +879,155 @@ struct ContentView: View {
         }
     }
 
+    private func randomNumberGeneratorView() -> some View {
+        let textFieldBG: Color = systemColorScheme == .dark ? Color.white.opacity(0.08) : Color.black.opacity(0.06)
+        let textFieldStroke: Color = systemColorScheme == .dark ? Color.white.opacity(0.25) : Color.black.opacity(0.15)
+        let generateButtonLabel = isAnimating ? "Generating..." : "Generate Number"
+        let generateA11yHint = isAnimating ? "Please wait while a number is generated" : "Tap to generate a random number in your selected range"
+
+        return VStack(spacing: 18) {
+            Text("Random Number Generator")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(primaryTextColor)
+
+            Text("Generate a random whole number within a selected range.")
+                .font(.subheadline)
+                .foregroundColor(secondaryTextColor)
+                .multilineTextAlignment(.center)
+
+            VStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Minimum Number")
+                        .font(.headline)
+                        .foregroundColor(primaryTextColor)
+
+                    TextField("1", text: $rngMinText)
+                        .padding(12)
+                        .background(textFieldBG)
+                        .foregroundColor(primaryTextColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(textFieldStroke, lineWidth: 1)
+                        )
+                        .keyboardType(.numbersAndPunctuation)
+                        .onChange(of: rngMinText) { _, _ in
+                            rngErrorMessage = nil
+                        }
+                }
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Maximum Number")
+                        .font(.headline)
+                        .foregroundColor(primaryTextColor)
+
+                    TextField("100", text: $rngMaxText)
+                        .padding(12)
+                        .background(textFieldBG)
+                        .foregroundColor(primaryTextColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(textFieldStroke, lineWidth: 1)
+                        )
+                        .keyboardType(.numbersAndPunctuation)
+                        .onChange(of: rngMaxText) { _, _ in
+                            rngErrorMessage = nil
+                        }
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Whole numbers only.")
+                Text("Range is inclusive.")
+            }
+            .font(.caption)
+            .foregroundColor(secondaryTextColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            Toggle(isOn: $rngNoImmediateRepeat) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("No Immediate Repeat")
+                        .font(.headline)
+                        .foregroundColor(primaryTextColor)
+                    Text("Prevents the next generated number from matching the previous one.")
+                        .font(.caption)
+                        .foregroundColor(secondaryTextColor)
+                }
+            }
+            .tint(currentGradientColors.first ?? .blue)
+            .onChange(of: rngNoImmediateRepeat) { _, _ in
+                rngErrorMessage = nil
+            }
+
+            if let rngErrorMessage {
+                Text(rngErrorMessage)
+                    .font(.footnote)
+                    .foregroundColor(.red)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .transition(.opacity)
+            }
+
+            VStack(spacing: 8) {
+                Text("Generated Number")
+                    .font(.headline)
+                    .foregroundColor(primaryTextColor)
+
+                if showResult {
+                    Text(result)
+                        .font(.system(size: 56, weight: .bold, design: .rounded))
+                        .foregroundColor(primaryTextColor)
+                        .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                        .accessibilityLabel("Generated number: \(result)")
+                } else {
+                    Text("Your generated number will appear here.")
+                        .font(.subheadline)
+                        .foregroundColor(secondaryTextColor)
+                        .multilineTextAlignment(.center)
+                        .accessibilityLabel("Your generated number will appear here")
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .padding(.horizontal, 12)
+            .background(Color.primary.opacity(systemColorScheme == .dark ? 0.08 : 0.06))
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .animation(.easeOut(duration: 0.15), value: showResult)
+            .animation(.easeOut(duration: 0.15), value: result)
+
+            Button(action: {
+                triggerImpactFeedback()
+                generateRandomNumber()
+            }) {
+                Text(generateButtonLabel)
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 32)
+                    .padding(.vertical, 16)
+                    .background(
+                        LinearGradient(
+                            colors: currentGradientColors,
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(isHighContrast ? highContrastBorderColor : Color.clear, lineWidth: 2)
+                    )
+                    .scaleEffect(isAnimating ? 0.98 : 1.0)
+                    .shadow(radius: isHighContrast ? 0 : 8)
+            }
+            .disabled(isAnimating)
+            .opacity(isAnimating ? 0.5 : 1.0)
+            .accessibilityLabel(generateButtonLabel)
+            .accessibilityHint(generateA11yHint)
+        }
+    }
+
     private func addChoice() {
         if customChoices.count < 6 {
             customChoices.append("")
@@ -1271,12 +1383,82 @@ struct ContentView: View {
         }
     }
 
+    private func generateRandomNumber() {
+        let trimmedMin = rngMinText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedMax = rngMaxText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedMin.isEmpty else {
+            rngErrorMessage = "Enter a minimum number."
+            triggerNotificationFeedback(.error)
+            playSound("error")
+            return
+        }
+
+        guard !trimmedMax.isEmpty else {
+            rngErrorMessage = "Enter a maximum number."
+            triggerNotificationFeedback(.error)
+            playSound("error")
+            return
+        }
+
+        guard let minValue = Int(trimmedMin), let maxValue = Int(trimmedMax) else {
+            rngErrorMessage = "Use whole numbers only (no decimals)."
+            triggerNotificationFeedback(.error)
+            playSound("error")
+            return
+        }
+
+        guard minValue <= maxValue else {
+            rngErrorMessage = "Minimum must be less than or equal to maximum."
+            triggerNotificationFeedback(.error)
+            playSound("error")
+            return
+        }
+
+        let valueCount = maxValue - minValue + 1
+        if rngNoImmediateRepeat && valueCount < 2 {
+            rngErrorMessage = "No Immediate Repeat requires a range with at least two possible values."
+            triggerNotificationFeedback(.error)
+            playSound("error")
+            return
+        }
+
+        rngErrorMessage = nil
+        isAnimating = true
+
+        withAnimation(.easeOut(duration: 0.1)) {
+            showResult = false
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            var generated = Int.random(in: minValue...maxValue)
+            if rngNoImmediateRepeat, let previous = lastGeneratedRandomNumber, valueCount > 1 {
+                while generated == previous {
+                    generated = Int.random(in: minValue...maxValue)
+                }
+            }
+
+            result = String(generated)
+            lastGeneratedRandomNumber = generated
+            isAnimating = false
+
+            withAnimation(.easeOut(duration: 0.15)) {
+                showResult = true
+            }
+
+            triggerNotificationFeedback(.success)
+            playSound("select")
+            announceForVoiceOver("Generated number: \(generated)")
+        }
+    }
+
     private func resetResult() {
         withAnimation(.easeOut(duration: 0.3)) {
             showResult = false
             showSwirl = false
         }
         result = ""
+        rngErrorMessage = nil
         swirlRotation = 0
         swirlScale = 1.0
     }
