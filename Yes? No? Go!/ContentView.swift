@@ -88,6 +88,7 @@ struct ContentView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private var isHighContrast: Bool {
         colorSchemeContrast == .increased
@@ -289,62 +290,22 @@ struct ContentView: View {
                 VStack(spacing: 20) {
                     // Glass chip selector with swipe functionality
                     VStack(spacing: 0) {
-                        ScrollView(.horizontal, showsIndicators: false) {
+                        if horizontalSizeClass == .regular {
                             HStack(spacing: 8) {
                                 ForEach(modes.indices, id: \.self) { index in
-                                    Button(action: {
-                                        triggerSelectionFeedback()
-                                        playSound("select")
-                                        withAnimation(.bouncy(duration: 0.4)) {
-                                            selectedIndex = index
-                                            activeMode = modes[index]
-                                            resetResult()
-                                        }
-                                    }) {
-                                        VStack(spacing: 0) {
-                                            Image(systemName: modeIcons[index])
-                                                .font(.system(size: 24, weight: .semibold))
-                                        }
-                                        .frame(width: 68, height: 68)
-                                        .background(
-                                            // Glass effect background with dynamic theming
-                                            RoundedRectangle(cornerRadius: 22)
-                                                .fill(cardMaterial)
-                                                .overlay(
-                                                    ZStack {
-                                                        // Selected state gets mode color accent
-                                                        if selectedIndex == index {
-                                                            RoundedRectangle(cornerRadius: 22)
-                                                                .fill(isHighContrast ? Color.clear : (currentGradientColors.first?.opacity(0.15) ?? Color.clear))
-                                                        }
-
-                                                        RoundedRectangle(cornerRadius: 22)
-                                                            .stroke(
-                                                                isHighContrast ?
-                                                                    highContrastBorderColor :
-                                                                    (selectedIndex == index ?
-                                                                        (currentGradientColors.first?.opacity(0.8) ?? Color.primary.opacity(0.6)) :
-                                                                        Color.primary.opacity(0.2)),
-                                                                lineWidth: isHighContrast ? 2 : (selectedIndex == index ? 2 : 1)
-                                                            )
-                                                    }
-                                                )
-                                        )
-                                        .foregroundColor(
-                                            isHighContrast ?
-                                                (systemColorScheme == .dark ? .white : .black) :
-                                                (systemColorScheme == .dark ?
-                                                    (selectedIndex == index ? .white : .white.opacity(0.85)) :
-                                                    (selectedIndex == index ? .black : .black.opacity(0.85)))
-                                        )
-                                        .scaleEffect(selectedIndex == index ? 1.04 : 1.0)
-                                    }
-                                    .accessibilityLabel(modeLabels[index])
-                                    .accessibilityHint("Switch to \(modeLabels[index]) mode")
-                                    .accessibilityAddTraits(selectedIndex == index ? .isSelected : [])
+                                    modeChip(index: index)
                                 }
                             }
-                            .padding(.horizontal, 4)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                        } else {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 8) {
+                                    ForEach(modes.indices, id: \.self) { index in
+                                        modeChip(index: index)
+                                    }
+                                }
+                                .padding(.horizontal, 4)
+                            }
                         }
                     }
                     .padding(14)
@@ -406,6 +367,60 @@ struct ContentView: View {
         .sheet(isPresented: $showCredits) {
             CreditsView()
         }
+    }
+
+    @ViewBuilder
+    private func modeChip(index: Int) -> some View {
+        Button(action: {
+            triggerSelectionFeedback()
+            playSound("select")
+            withAnimation(.bouncy(duration: 0.4)) {
+                selectedIndex = index
+                activeMode = modes[index]
+                resetResult()
+            }
+        }) {
+            VStack(spacing: 0) {
+                Image(systemName: modeIcons[index])
+                    .font(.system(size: 24, weight: .semibold))
+            }
+            .frame(width: 68, height: 68)
+            .background(
+                // Glass effect background with dynamic theming
+                RoundedRectangle(cornerRadius: 22)
+                    .fill(cardMaterial)
+                    .overlay(
+                        ZStack {
+                            // Selected state gets mode color accent
+                            if selectedIndex == index {
+                                RoundedRectangle(cornerRadius: 22)
+                                    .fill(isHighContrast ? Color.clear : (currentGradientColors.first?.opacity(0.15) ?? Color.clear))
+                            }
+
+                            RoundedRectangle(cornerRadius: 22)
+                                .stroke(
+                                    isHighContrast ?
+                                        highContrastBorderColor :
+                                        (selectedIndex == index ?
+                                            (currentGradientColors.first?.opacity(0.8) ?? Color.primary.opacity(0.6)) :
+                                            Color.primary.opacity(0.2)),
+                                    lineWidth: isHighContrast ? 2 : (selectedIndex == index ? 2 : 1)
+                                )
+                        }
+                    )
+            )
+            .foregroundColor(
+                isHighContrast ?
+                    (systemColorScheme == .dark ? .white : .black) :
+                    (systemColorScheme == .dark ?
+                        (selectedIndex == index ? .white : .white.opacity(0.85)) :
+                        (selectedIndex == index ? .black : .black.opacity(0.85)))
+            )
+            .scaleEffect(selectedIndex == index ? 1.04 : 1.0)
+        }
+        .accessibilityLabel(modeLabels[index])
+        .accessibilityHint("Switch to \(modeLabels[index]) mode")
+        .accessibilityAddTraits(selectedIndex == index ? .isSelected : [])
     }
     
     private func coinFlipView() -> some View {
