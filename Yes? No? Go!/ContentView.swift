@@ -301,18 +301,11 @@ struct ContentView: View {
                                             resetResult()
                                         }
                                     }) {
-                                        VStack(spacing: 6) {
+                                        VStack(spacing: 0) {
                                             Image(systemName: modeIcons[index])
-                                                .font(.system(size: 22))
-                                            Text(modeLabels[index])
-                                                .fontWeight(.semibold)
-                                                .font(.system(size: 12))
-                                                .lineLimit(1)
-                                                .minimumScaleFactor(0.8)
+                                                .font(.system(size: 24, weight: .semibold))
                                         }
-                                        .frame(width: 94)
-                                        .padding(.horizontal, 10)
-                                        .padding(.vertical, 14)
+                                        .frame(width: 68, height: 68)
                                         .background(
                                             // Glass effect background with dynamic theming
                                             RoundedRectangle(cornerRadius: 22)
@@ -344,17 +337,17 @@ struct ContentView: View {
                                                     (selectedIndex == index ? .white : .white.opacity(0.85)) :
                                                     (selectedIndex == index ? .black : .black.opacity(0.85)))
                                         )
-                                        .scaleEffect(selectedIndex == index ? 1.05 : 1.0)
+                                        .scaleEffect(selectedIndex == index ? 1.04 : 1.0)
                                     }
                                     .accessibilityLabel(modeLabels[index])
                                     .accessibilityHint("Switch to \(modeLabels[index]) mode")
                                     .accessibilityAddTraits(selectedIndex == index ? .isSelected : [])
                                 }
                             }
-                            .padding(.horizontal, 2)
+                            .padding(.horizontal, 4)
                         }
                     }
-                    .padding(20)
+                    .padding(14)
                     .background(SelectorBackground(material: selectorMaterial, accent: currentGradientColors.first))
                     .clipShape(RoundedRectangle(cornerRadius: 25))
                     .padding(.top, 56)
@@ -374,7 +367,7 @@ struct ContentView: View {
                             randomNumberGeneratorView()
                         }
                     }
-                    .frame(maxWidth: .infinity, minHeight: 470, alignment: .center)
+                    .frame(maxWidth: .infinity, minHeight: 430, alignment: .center)
                     .padding(.top, 14)
                     .padding(32)
                     .background(MainCardBackground(colors: currentGradientColors, material: cardMaterial))
@@ -1447,7 +1440,7 @@ struct ContentView: View {
             }
 
             triggerNotificationFeedback(.success)
-            playSound("select")
+            playSound("rngDing")
             announceForVoiceOver("Generated number: \(generated)")
         }
     }
@@ -1474,6 +1467,11 @@ struct ContentView: View {
             AudioServicesPlaySystemSound(1519) // Begin Video Record - shuffling sound
         case "select":
             AudioServicesPlaySystemSound(1519) // Gentle selection sound
+        case "rngDing":
+            if let url = Bundle.main.url(forResource: "rng_ding", withExtension: "mp3") {
+                audioPlayer = try? AVAudioPlayer(contentsOf: url)
+                audioPlayer?.play()
+            }
         case "success":
             AudioServicesPlaySystemSound(1025) // PhotoShutter - success sound
         case "yesChord":
@@ -1557,117 +1555,10 @@ struct CreditsView: View {
                 }
 
                 Section(header: Text("Sound Effects")) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Eagle Sound")
-                            .font(.headline)
-                        Text("by Torma")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Eagle Sound by Torma, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Success Fanfare Trumpets")
-                            .font(.headline)
-                        Text("by freesound_community")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Success Fanfare Trumpets by freesound_community, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("C Chord")
-                            .font(.headline)
-                        Text("by freesound_community")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("C Chord by freesound_community, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Wah Wah Sad Trombone")
-                            .font(.headline)
-                        Text("by freesound_community")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Wah Wah Sad Trombone by freesound_community, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Thud Sound")
-                            .font(.headline)
-                        Text("Rock Paper Scissors - Rock")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Thud Sound for Rock Paper Scissors Rock, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Steel Blade Slice")
-                            .font(.headline)
-                        Text("Rock Paper Scissors - Scissors")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Steel Blade Slice for Rock Paper Scissors Scissors, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Crumpling Paper")
-                            .font(.headline)
-                        Text("Rock Paper Scissors - Paper")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Crumpling Paper for Rock Paper Scissors Paper, from Pixabay")
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Mystical Chime")
-                            .font(.headline)
-                        Text("by Koi Roylers")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        Text("From Pixabay")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.vertical, 4)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Mystical Chime by Koi Roylers, from Pixabay")
+                    Text("All sound effects in this app were sourced from creators on Pixabay.")
+                        .foregroundColor(.secondary)
+                        .padding(.vertical, 4)
+                        .accessibilityLabel("All sound effects in this app were sourced from creators on Pixabay.")
                 }
 
                 Section(header: Text("Accessibility")) {

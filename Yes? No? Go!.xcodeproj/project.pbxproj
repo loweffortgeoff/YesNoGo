@@ -15,6 +15,7 @@
 		3ADE27A32EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3ADE27A12EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 */; };
 		3ADE27A42EF9EE7900F7F8B7 /* thud-82914.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3ADE27A22EF9EE7900F7F8B7 /* thud-82914.mp3 */; };
 		3ADE27A62EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3ADE27A52EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 */; };
+		3AE678242F3CB46700DF8163 /* rng_ding.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3AE678232F3CB46700DF8163 /* rng_ding.mp3 */; };
 		3AF002AA2F05B32C00035CDD /* success-fanfare-trumpets-6185.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3AF002A92F05B32C00035CDD /* success-fanfare-trumpets-6185.mp3 */; };
 		3AF002AC2F05B56200035CDD /* c-chord-83638.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3AF002AB2F05B56200035CDD /* c-chord-83638.mp3 */; };
 		3AF002AE2F05B62D00035CDD /* wah-wah-sad-trombone-6347.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 3AF002AD2F05B62D00035CDD /* wah-wah-sad-trombone-6347.mp3 */; };
@@ -61,6 +62,7 @@
 		3ADE27A12EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "steel-blade-slice-4-188216.mp3"; sourceTree = "<group>"; };
 		3ADE27A22EF9EE7900F7F8B7 /* thud-82914.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "thud-82914.mp3"; sourceTree = "<group>"; };
 		3ADE27A52EF9EF0B00F7F8B7 /* crumping-paper-109585.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "crumping-paper-109585.mp3"; sourceTree = "<group>"; };
+		3AE678232F3CB46700DF8163 /* rng_ding.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = rng_ding.mp3; sourceTree = "<group>"; };
 		3AF002A92F05B32C00035CDD /* success-fanfare-trumpets-6185.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "success-fanfare-trumpets-6185.mp3"; sourceTree = "<group>"; };
 		3AF002AB2F05B56200035CDD /* c-chord-83638.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "c-chord-83638.mp3"; sourceTree = "<group>"; };
 		3AF002AD2F05B62D00035CDD /* wah-wah-sad-trombone-6347.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "wah-wah-sad-trombone-6347.mp3"; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				3A7B0EBF2F264CBA00AD7242 /* AboutSectionView.swift */,
+				3AE678232F3CB46700DF8163 /* rng_ding.mp3 */,
 				3AF002AD2F05B62D00035CDD /* wah-wah-sad-trombone-6347.mp3 */,
 				3AF002AB2F05B56200035CDD /* c-chord-83638.mp3 */,
 				3AF002A92F05B32C00035CDD /* success-fanfare-trumpets-6185.mp3 */,
@@ -248,6 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3AE678242F3CB46700DF8163 /* rng_ding.mp3 in Resources */,
 				3A24D88D2F04F7940098F2CE /* mystical-355968.mp3 in Resources */,
 				3ADE27A32EF9EE7900F7F8B7 /* steel-blade-slice-4-188216.mp3 in Resources */,
 				3AF002AA2F05B32C00035CDD /* success-fanfare-trumpets-6185.mp3 in Resources */,

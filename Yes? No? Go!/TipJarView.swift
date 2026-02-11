@@ -7,6 +7,9 @@
 
 import SwiftUI
 import StoreKit
+#if canImport(UIKit)
+import UIKit
+#endif
 
 struct TipJarView: View {
     @State private var tipJarManager = TipJarManager.shared
@@ -32,6 +35,9 @@ struct TipJarView: View {
                     } else {
                         tipOptionsSection
                     }
+
+                    // Rate/review CTA
+                    rateAndReviewSection
 
                     // Footer message
                     footerSection
@@ -123,6 +129,35 @@ struct TipJarView: View {
 
     // MARK: - Footer
 
+    private var rateAndReviewSection: some View {
+        Button(action: requestAppReview) {
+            HStack(spacing: 12) {
+                Image(systemName: "star.bubble.fill")
+                    .font(.title3)
+                    .foregroundStyle(.yellow)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Rate & Review")
+                        .font(.headline)
+                        .foregroundStyle(.primary)
+                    Text("Enjoying the app? A quick App Store rating helps a lot.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+            }
+            .padding()
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color(uiColor: .secondarySystemBackground))
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Rate and review the app")
+        .accessibilityHint("Opens Apple's in-app App Store review prompt")
+    }
+
     private var footerSection: some View {
         VStack(spacing: 8) {
             Text("Tips are one-time purchases and do not unlock any features.")
@@ -138,6 +173,20 @@ struct TipJarView: View {
             }
         }
         .padding(.top, 16)
+    }
+
+    private func requestAppReview() {
+        #if canImport(UIKit)
+        let activeScene = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first(where: { $0.activationState == .foregroundActive })
+
+        if let activeScene {
+            AppStore.requestReview(in: activeScene)
+        } else if let anyScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            AppStore.requestReview(in: anyScene)
+        }
+        #endif
     }
 }
 
