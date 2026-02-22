@@ -22,7 +22,7 @@ struct YesNoGoWidgetControl: ControlWidget {
                 isOn: value.isRunning,
                 action: StartTimerIntent(value.name)
             ) { isRunning in
-                Label(isRunning ? "On" : "Off", systemImage: "timer")
+                Label(isRunning ? WidgetL10n.string("control.toggle.on", fallback: "On") : WidgetL10n.string("control.toggle.off", fallback: "Off"), systemImage: "timer")
             }
         }
         .displayName("Timer")

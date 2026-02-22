@@ -18,7 +18,7 @@ struct LowEffortApp: Identifiable {
 
     var appStoreURL: URL? {
         let urlSlug = slug ?? name.lowercased().replacingOccurrences(of: " ", with: "-")
-        return URL(string: "https://apps.apple.com/us/app/\(urlSlug)/id\(appStoreID)")
+        return URL(string: "https://apps.apple.com/app/\(urlSlug)/id\(appStoreID)")
     }
 }
 
@@ -78,24 +78,24 @@ struct AboutSectionView: View {
                     OtherAppRow(app: app)
                 }
             } header: {
-                Text("We Also Make")
+                Text(L10n.string("about.section.we_also_make", fallback: "We Also Make"))
             }
 
             // MARK: - About Section
             Section {
                 // Version & Build
                 HStack {
-                    Text("Version")
+                    Text(L10n.string("about.version.label", fallback: "Version"))
                         .foregroundStyle(.primary)
                     Spacer()
-                    Text("\(appVersion) (\(buildNumber))")
+                    Text(L10n.format("about.version.value_format", fallback: "%@ (%@)", appVersion, buildNumber))
                         .foregroundStyle(.secondary)
                 }
 
                 // Company Website
                 Link(destination: URL(string: "https://www.loweffortapps.dev")!) {
                     HStack {
-                        Text("Company Website")
+                        Text(L10n.string("about.link.company_website", fallback: "Company Website"))
                             .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
@@ -107,7 +107,7 @@ struct AboutSectionView: View {
                 // Substack
                 Link(destination: URL(string: "https://loweffortgeoff.substack.com/")!) {
                     HStack {
-                        Text("Read My Substack")
+                        Text(L10n.string("about.link.substack", fallback: "Read My Substack"))
                             .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
@@ -119,7 +119,7 @@ struct AboutSectionView: View {
                 // Privacy Policy
                 Link(destination: URL(string: "https://www.loweffortapps.dev/privacy-policy")!) {
                     HStack {
-                        Text("Privacy Policy")
+                        Text(L10n.string("about.link.privacy", fallback: "Privacy Policy"))
                             .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
@@ -128,7 +128,7 @@ struct AboutSectionView: View {
                     }
                 }
             } header: {
-                Text("About")
+                Text(L10n.string("about.section.about", fallback: "About"))
             }
         }
     }
@@ -180,6 +180,6 @@ struct OtherAppRow: View {
         Form {
             AboutSectionView(currentAppName: "Task(ed)")
         }
-        .navigationTitle("Settings")
+        .navigationTitle(L10n.string("settings.nav.title", fallback: "Settings"))
     }
 }

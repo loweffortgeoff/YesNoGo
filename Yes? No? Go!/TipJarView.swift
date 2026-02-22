@@ -52,21 +52,21 @@ struct TipJarView: View {
                 )
                 .ignoresSafeArea()
             )
-            .navigationTitle("Support Development")
+            .navigationTitle(L10n.string("tipjar.nav.title", fallback: "Support Development"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") {
+                    Button(L10n.string("common.done", fallback: "Done")) {
                         dismiss()
                     }
                 }
             }
-            .alert("Thank You!", isPresented: Bindable(tipJarManager).showThankYou) {
-                Button("You're Welcome!") {
+            .alert(L10n.string("tipjar.alert.thank_you.title", fallback: "Thank You!"), isPresented: Bindable(tipJarManager).showThankYou) {
+                Button(L10n.string("tipjar.alert.thank_you.dismiss", fallback: "You're Welcome!")) {
                     tipJarManager.resetState()
                 }
             } message: {
-                Text("Your support means the world! Thank you for helping keep Yes? No? Go! running.")
+                Text(L10n.string("tipjar.alert.thank_you.message", fallback: "Your support means the world! Thank you for helping keep Yes? No? Go! running."))
             }
         }
     }
@@ -82,12 +82,12 @@ struct TipJarView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 18))
                 .shadow(color: .black.opacity(0.3), radius: 8, x: 0, y: 4)
 
-            Text("Support Yes? No? Go!")
+            Text(L10n.string("tipjar.header.title", fallback: "Support Yes? No? Go!"))
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
 
-            Text("Yes? No? Go! is free with no ads or subscriptions. If you find it useful, consider leaving a tip to support future development.")
+            Text(L10n.string("tipjar.header.subtitle", fallback: "Yes? No? Go! is free with no ads or subscriptions. If you find it useful, consider leaving a tip to support future development."))
                 .font(.subheadline)
                 .foregroundStyle(.white.opacity(0.8))
                 .multilineTextAlignment(.center)
@@ -103,7 +103,7 @@ struct TipJarView: View {
                 .scaleEffect(1.2)
                 .tint(.white)
 
-            Text("Loading tip options...")
+            Text(L10n.string("tipjar.loading", fallback: "Loading tip options..."))
                 .font(.subheadline)
                 .foregroundStyle(.white.opacity(0.8))
         }
@@ -137,10 +137,10 @@ struct TipJarView: View {
                     .foregroundStyle(.yellow)
 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Rate & Review")
+                    Text(L10n.string("tipjar.rate.title", fallback: "Rate & Review"))
                         .font(.headline)
                         .foregroundStyle(.primary)
-                    Text("Enjoying the app? A quick App Store rating helps a lot.")
+                    Text(L10n.string("tipjar.rate.subtitle", fallback: "Enjoying the app? A quick App Store rating helps a lot."))
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
@@ -154,13 +154,13 @@ struct TipJarView: View {
             )
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Rate and review the app")
-        .accessibilityHint("Opens Apple's in-app App Store review prompt")
+        .accessibilityLabel(L10n.string("tipjar.rate.a11y.label", fallback: "Rate and review the app"))
+        .accessibilityHint(L10n.string("tipjar.rate.a11y.hint", fallback: "Opens Apple's in-app App Store review prompt"))
     }
 
     private var footerSection: some View {
         VStack(spacing: 8) {
-            Text("Tips are one-time purchases and do not unlock any features.")
+            Text(L10n.string("tipjar.footer.disclaimer", fallback: "Tips are one-time purchases and do not unlock any features."))
                 .font(.caption)
                 .foregroundStyle(.white.opacity(0.7))
                 .multilineTextAlignment(.center)
@@ -217,13 +217,13 @@ struct TipButton: View {
     private var tipName: String {
         switch product.id {
         case TipJarManager.smallTipID:
-            return "Small Tip"
+            return L10n.string("tipjar.tip.small.name", fallback: "Small Tip")
         case TipJarManager.mediumTipID:
-            return "Medium Tip"
+            return L10n.string("tipjar.tip.medium.name", fallback: "Medium Tip")
         case TipJarManager.largeTipID:
-            return "Large Tip"
+            return L10n.string("tipjar.tip.large.name", fallback: "Large Tip")
         case TipJarManager.heroTipID:
-            return "Hero Tip"
+            return L10n.string("tipjar.tip.hero.name", fallback: "Hero Tip")
         default:
             return product.displayName
         }
@@ -232,13 +232,13 @@ struct TipButton: View {
     private var subtitle: String {
         switch product.id {
         case TipJarManager.smallTipID:
-            return "Buy me a coffee"
+            return L10n.string("tipjar.tip.small.subtitle", fallback: "Buy me a coffee")
         case TipJarManager.mediumTipID:
-            return "Buy me lunch"
+            return L10n.string("tipjar.tip.medium.subtitle", fallback: "Buy me lunch")
         case TipJarManager.largeTipID:
-            return "You're amazing!"
+            return L10n.string("tipjar.tip.large.subtitle", fallback: "You're amazing!")
         case TipJarManager.heroTipID:
-            return "You're a superhero!"
+            return L10n.string("tipjar.tip.hero.subtitle", fallback: "You're a superhero!")
         default:
             return ""
         }

@@ -95,7 +95,16 @@ struct ContentView: View {
     }
 
     private let modes = ["coin", "yesno", "custom", "rps", "orb", "rng"]
-    private let modeLabels = ["Coin Flip", "Yes / No", "Custom", "RPS", "Orb", "RNG"]
+    private var modeLabels: [String] {
+        [
+            L10n.string("mode.coin", fallback: "Coin Flip"),
+            L10n.string("mode.yesno", fallback: "Yes / No"),
+            L10n.string("mode.custom", fallback: "Custom"),
+            L10n.string("mode.rps", fallback: "RPS"),
+            L10n.string("mode.orb", fallback: "Orb"),
+            L10n.string("mode.rng", fallback: "RNG"),
+        ]
+    }
     private let modeIcons = ["centsign.circle", "questionmark.circle", "shuffle", "hand.raised", "bubbles.and.sparkles.fill", "number.circle"]
     
     // Haptic feedback generators (iOS only)
@@ -340,8 +349,8 @@ struct ContentView: View {
                 .padding(.horizontal, 16)
             }
         }
-        .alert("Please enter at least 2 choices!", isPresented: $showAlert) {
-            Button("OK") { }
+        .alert(L10n.string("custom.alert.min_choices", fallback: "Please enter at least 2 choices!"), isPresented: $showAlert) {
+            Button(L10n.string("common.ok", fallback: "OK")) { }
         }
         .onAppear {
             // Handle Quick Actions when app becomes active
@@ -419,7 +428,7 @@ struct ContentView: View {
             .scaleEffect(selectedIndex == index ? 1.04 : 1.0)
         }
         .accessibilityLabel(modeLabels[index])
-        .accessibilityHint("Switch to \(modeLabels[index]) mode")
+        .accessibilityHint(L10n.format("a11y.mode.switch_hint_format", fallback: "Switch to %@ mode", modeLabels[index]))
         .accessibilityAddTraits(selectedIndex == index ? .isSelected : [])
     }
     
@@ -479,7 +488,7 @@ struct ContentView: View {
                 }
                 .transition(.scale.combined(with: .opacity))
                 .animation(.bouncy(duration: 0.6), value: showResult)
-                .accessibilityLabel("Coin flip result: \(result)")
+                .accessibilityLabel(L10n.format("a11y.coin.result_format", fallback: "Coin flip result: %@", result))
                 .accessibilityHint("The coin landed on \(result.lowercased())")
             }
             
@@ -543,7 +552,7 @@ struct ContentView: View {
                 }
                 .transition(.scale.combined(with: .opacity))
                 .animation(.bouncy(duration: 0.6), value: showResult)
-                .accessibilityLabel("Decision result: \(decisionResult)")
+                .accessibilityLabel(L10n.format("a11y.decision.result_format", fallback: "Decision result: %@", decisionResult))
                 .accessibilityHint("The answer to your yes or no question is \(decisionResult)")
             }
             
@@ -610,7 +619,10 @@ struct ContentView: View {
         VStack(spacing: 12) {
             ForEach(customChoices.indices, id: \.self) { index in
                 HStack {
-                    TextField("Option \(index + 1)...", text: $customChoices[index])
+                    TextField(
+                        L10n.format("custom.option.placeholder_format", fallback: "Option %d...", index + 1),
+                        text: $customChoices[index]
+                    )
                         .padding(12)
                         .background(textFieldBG)
                         .foregroundColor(primaryTextColor)
@@ -619,7 +631,7 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(textFieldStroke, lineWidth: 1)
                         )
-                        .accessibilityLabel("Option \(index + 1)")
+                        .accessibilityLabel(L10n.format("custom.option.label_format", fallback: "Option %d", index + 1))
                         .accessibilityHint("Enter a choice for random selection")
 
                     if customChoices.count > 2 {
@@ -634,7 +646,7 @@ struct ContentView: View {
                                 .background(Color.red.opacity(0.2))
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-                        .accessibilityLabel("Remove option \(index + 1)")
+                        .accessibilityLabel(L10n.format("custom.option.remove_label_format", fallback: "Remove option %d", index + 1))
                         .accessibilityHint("Remove this option from the list")
                     }
                 }
@@ -748,7 +760,7 @@ struct ContentView: View {
                     .font(.largeTitle)
             }
             .transition(.scale.combined(with: .opacity))
-            .accessibilityLabel("Selection result: \(result)")
+            .accessibilityLabel(L10n.format("a11y.selection.result_format", fallback: "Selection result: %@", result))
             .accessibilityHint("The randomly chosen option from your custom choices is \(result)")
         }
     }
@@ -987,7 +999,7 @@ struct ContentView: View {
                         .font(.system(size: 56, weight: .bold, design: .rounded))
                         .foregroundColor(primaryTextColor)
                         .transition(.opacity.combined(with: .scale(scale: 0.98)))
-                        .accessibilityLabel("Generated number: \(result)")
+                        .accessibilityLabel(L10n.format("a11y.rng.result_format", fallback: "Generated number: %@", result))
                 } else {
                     Text("Your generated number will appear here.")
                         .font(.subheadline)
@@ -1053,11 +1065,14 @@ struct ContentView: View {
         showResult = false
         
         // Generate result immediately but don't show it until animation completes
-        let coinResult = Bool.random() ? "HEADS" : "TAILS"
+        let isHeads = Bool.random()
+        let coinResult = isHeads
+            ? L10n.string("coin.result.heads", fallback: "HEADS")
+            : L10n.string("coin.result.tails", fallback: "TAILS")
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
             result = coinResult
-            coinRotation = coinResult == "HEADS" ? 0 : 180
+            coinRotation = isHeads ? 0 : 180
             isAnimating = false
             
             withAnimation(.bouncy(duration: 0.6)) {
@@ -1068,14 +1083,17 @@ struct ContentView: View {
             triggerNotificationFeedback(.success)
             
             // Play different sounds based on coin result
-            if coinResult == "TAILS" {
+            if !isHeads {
                 playSound("eagle")
             } else {
                 playSound("crown")
             }
 
             // Announce result for VoiceOver users
-            announceForVoiceOver("Coin landed on \(coinResult.lowercased())")
+            let spokenSide = isHeads
+                ? L10n.string("coin.result.heads.spoken", fallback: "heads")
+                : L10n.string("coin.result.tails.spoken", fallback: "tails")
+            announceForVoiceOver(L10n.format("vo.coin.landed_format", fallback: "Coin landed on %@", spokenSide))
         }
     }
 
@@ -1084,7 +1102,10 @@ struct ContentView: View {
         showResult = false
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            result = Bool.random() ? "YES!" : "NO!"
+            let isYes = Bool.random()
+            result = isYes
+                ? L10n.string("yesno.result.yes", fallback: "YES!")
+                : L10n.string("yesno.result.no", fallback: "NO!")
             isAnimating = false
             
             withAnimation(.bouncy(duration: 0.6)) {
@@ -1095,15 +1116,17 @@ struct ContentView: View {
             triggerNotificationFeedback(.success)
 
             // Play different sounds based on result
-            if result == "YES!" {
+            if isYes {
                 playSound("yesChord")
             } else {
                 playSound("noTrombone")
             }
 
             // Announce result for VoiceOver users
-            let answer = result == "YES!" ? "yes" : "no"
-            announceForVoiceOver("The answer is \(answer)")
+            let answer = isYes
+                ? L10n.string("yesno.answer.yes.spoken", fallback: "yes")
+                : L10n.string("yesno.answer.no.spoken", fallback: "no")
+            announceForVoiceOver(L10n.format("vo.answer.is_format", fallback: "The answer is %@", answer))
         }
     }
 
@@ -1165,7 +1188,7 @@ struct ContentView: View {
             playSound("success")
 
             // Announce result for VoiceOver users
-            announceForVoiceOver("The winner is \(result)")
+            announceForVoiceOver(L10n.format("vo.winner.is_format", fallback: "The winner is %@", result))
         }
     }
 
@@ -1173,7 +1196,11 @@ struct ContentView: View {
         isAnimating = true
         showResult = false
 
-        let choices = ["Rock", "Paper", "Scissors"]
+        let choices = [
+            L10n.string("rps.choice.rock", fallback: "Rock"),
+            L10n.string("rps.choice.paper", fallback: "Paper"),
+            L10n.string("rps.choice.scissors", fallback: "Scissors"),
+        ]
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             let rpsResult = choices.randomElement()!
@@ -1189,53 +1216,59 @@ struct ContentView: View {
 
             // Play different sounds based on RPS result
             switch rpsResult {
-            case "Rock":
+            case L10n.string("rps.choice.rock", fallback: "Rock"):
                 playSound("thud")
-            case "Paper":
+            case L10n.string("rps.choice.paper", fallback: "Paper"):
                 playSound("paper")
-            case "Scissors":
+            case L10n.string("rps.choice.scissors", fallback: "Scissors"):
                 playSound("slick")
             default:
                 playSound("success")
             }
 
             // Announce result for VoiceOver users
-            announceForVoiceOver("Opponent chose \(rpsResult)")
+            announceForVoiceOver(L10n.format("vo.rps.opponent_chose_format", fallback: "Opponent chose %@", rpsResult))
         }
     }
 
     // MARK: - Orb Responses
-    private let orbResponses: [String] = [
-        // Positive
-        "It is certain",
-        "Without a doubt",
-        "Yes, definitely",
-        "You may rely on it",
-        "As I see it, yes",
-        "Most likely",
-        "Outlook good",
-        "Signs point to yes",
-        "Yes",
-        "It is decidedly so",
-        "The stars align in your favor",
-        // Neutral
-        "Ask again later",
-        "Better not tell you now",
-        "Cannot predict now",
-        "Concentrate and ask again",
-        "Reply hazy, try again",
-        "Fate whispers... maybe",
-        // Negative
-        "Don't count on it",
-        "My reply is no",
-        "My sources say no",
-        "Outlook not so good",
-        "Very doubtful"
-    ]
+    private var orbResponses: [String] {
+        [
+            // Positive
+            L10n.string("orb.response.certain", fallback: "It is certain"),
+            L10n.string("orb.response.without_doubt", fallback: "Without a doubt"),
+            L10n.string("orb.response.yes_definitely", fallback: "Yes, definitely"),
+            L10n.string("orb.response.rely_on_it", fallback: "You may rely on it"),
+            L10n.string("orb.response.as_i_see_it_yes", fallback: "As I see it, yes"),
+            L10n.string("orb.response.most_likely", fallback: "Most likely"),
+            L10n.string("orb.response.outlook_good", fallback: "Outlook good"),
+            L10n.string("orb.response.signs_point_yes", fallback: "Signs point to yes"),
+            L10n.string("orb.response.yes", fallback: "Yes"),
+            L10n.string("orb.response.decidedly_so", fallback: "It is decidedly so"),
+            L10n.string("orb.response.stars_align", fallback: "The stars align in your favor"),
+            // Neutral
+            L10n.string("orb.response.ask_again_later", fallback: "Ask again later"),
+            L10n.string("orb.response.better_not_now", fallback: "Better not tell you now"),
+            L10n.string("orb.response.cannot_predict_now", fallback: "Cannot predict now"),
+            L10n.string("orb.response.concentrate_and_ask_again", fallback: "Concentrate and ask again"),
+            L10n.string("orb.response.reply_hazy", fallback: "Reply hazy, try again"),
+            L10n.string("orb.response.fate_whispers_maybe", fallback: "Fate whispers... maybe"),
+            // Negative
+            L10n.string("orb.response.dont_count_on_it", fallback: "Don't count on it"),
+            L10n.string("orb.response.my_reply_is_no", fallback: "My reply is no"),
+            L10n.string("orb.response.my_sources_say_no", fallback: "My sources say no"),
+            L10n.string("orb.response.outlook_not_good", fallback: "Outlook not so good"),
+            L10n.string("orb.response.very_doubtful", fallback: "Very doubtful"),
+        ]
+    }
 
     private func orbView() -> some View {
-        let orbLabel = isAnimating ? "The orb is contemplating" : "Crystal orb, ready to reveal your fate"
-        let orbHint = isAnimating ? "Wait while the orb reveals its wisdom" : "Tap the button below to ask the orb"
+        let orbLabel = isAnimating
+            ? L10n.string("orb.a11y.label.contemplating", fallback: "The orb is contemplating")
+            : L10n.string("orb.a11y.label.ready", fallback: "Crystal orb, ready to reveal your fate")
+        let orbHint = isAnimating
+            ? L10n.string("orb.a11y.hint.wait", fallback: "Wait while the orb reveals its wisdom")
+            : L10n.string("orb.a11y.hint.ask", fallback: "Tap the button below to ask the orb")
 
         return VStack(spacing: 30) {
             ZStack {
@@ -1330,12 +1363,18 @@ struct ContentView: View {
                 }
                 .transition(.scale.combined(with: .opacity))
                 .animation(.bouncy(duration: 0.6), value: showResult)
-                .accessibilityLabel("The orb says: \(result)")
+                .accessibilityLabel(L10n.format("orb.a11y.says_format", fallback: "The orb says: %@", result))
             }
 
-            let askButtonLabel = isAnimating ? "Consulting..." : "Ask the Orb"
-            let askA11yLabel = isAnimating ? "Consulting the orb" : "Ask the orb"
-            let askA11yHint = isAnimating ? "Please wait while the orb reveals its wisdom" : "Tap to ask the orb for guidance"
+            let askButtonLabel = isAnimating
+                ? L10n.string("orb.button.consulting", fallback: "Consulting...")
+                : L10n.string("orb.button.ask", fallback: "Ask the Orb")
+            let askA11yLabel = isAnimating
+                ? L10n.string("orb.button.a11y.label.consulting", fallback: "Consulting the orb")
+                : L10n.string("orb.button.a11y.label.ask", fallback: "Ask the orb")
+            let askA11yHint = isAnimating
+                ? L10n.string("orb.button.a11y.hint.wait", fallback: "Please wait while the orb reveals its wisdom")
+                : L10n.string("orb.button.a11y.hint.ask", fallback: "Tap to ask the orb for guidance")
 
             Button(action: {
                 triggerImpactFeedback()
@@ -1375,7 +1414,7 @@ struct ContentView: View {
         showResult = false
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            result = orbResponses.randomElement() ?? "The orb is silent"
+            result = orbResponses.randomElement() ?? L10n.string("orb.response.silent", fallback: "The orb is silent")
             isAnimating = false
 
             withAnimation(.bouncy(duration: 0.6)) {
@@ -1387,7 +1426,7 @@ struct ContentView: View {
             playSound("mystical")
 
             // Announce result for VoiceOver users
-            announceForVoiceOver("The orb says: \(result)")
+            announceForVoiceOver(L10n.format("orb.a11y.says_format", fallback: "The orb says: %@", result))
         }
     }
 
@@ -1396,28 +1435,28 @@ struct ContentView: View {
         let trimmedMax = rngMaxText.trimmingCharacters(in: .whitespacesAndNewlines)
 
         guard !trimmedMin.isEmpty else {
-            rngErrorMessage = "Enter a minimum number."
+            rngErrorMessage = L10n.string("rng.error.enter_min", fallback: "Enter a minimum number.")
             triggerNotificationFeedback(.error)
             playSound("error")
             return
         }
 
         guard !trimmedMax.isEmpty else {
-            rngErrorMessage = "Enter a maximum number."
+            rngErrorMessage = L10n.string("rng.error.enter_max", fallback: "Enter a maximum number.")
             triggerNotificationFeedback(.error)
             playSound("error")
             return
         }
 
         guard let minValue = Int(trimmedMin), let maxValue = Int(trimmedMax) else {
-            rngErrorMessage = "Use whole numbers only (no decimals)."
+            rngErrorMessage = L10n.string("rng.error.whole_numbers_only", fallback: "Use whole numbers only (no decimals).")
             triggerNotificationFeedback(.error)
             playSound("error")
             return
         }
 
         guard minValue <= maxValue else {
-            rngErrorMessage = "Minimum must be less than or equal to maximum."
+            rngErrorMessage = L10n.string("rng.error.min_le_max", fallback: "Minimum must be less than or equal to maximum.")
             triggerNotificationFeedback(.error)
             playSound("error")
             return
@@ -1425,7 +1464,7 @@ struct ContentView: View {
 
         let valueCount = maxValue - minValue + 1
         if rngNoImmediateRepeat && valueCount < 2 {
-            rngErrorMessage = "No Immediate Repeat requires a range with at least two possible values."
+            rngErrorMessage = L10n.string("rng.error.no_repeat_range", fallback: "No Immediate Repeat requires a range with at least two possible values.")
             triggerNotificationFeedback(.error)
             playSound("error")
             return
@@ -1456,7 +1495,7 @@ struct ContentView: View {
 
             triggerNotificationFeedback(.success)
             playSound("rngDing")
-            announceForVoiceOver("Generated number: \(generated)")
+            announceForVoiceOver(L10n.format("rng.a11y.generated_number_format", fallback: "Generated number: %d", generated))
         }
     }
 

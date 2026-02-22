@@ -24,7 +24,7 @@ struct YesNoGoWidgetLiveActivity: Widget {
         ActivityConfiguration(for: YesNoGoWidgetAttributes.self) { context in
             // Lock screen/banner UI goes here
             VStack {
-                Text("Hello \(context.state.emoji)")
+                Text(WidgetL10n.format("live_activity.hello_format", fallback: "Hello %@", context.state.emoji))
             }
             .activityBackgroundTint(Color.cyan)
             .activitySystemActionForegroundColor(Color.black)
@@ -34,19 +34,19 @@ struct YesNoGoWidgetLiveActivity: Widget {
                 // Expanded UI goes here.  Compose the expanded UI through
                 // various regions, like leading/trailing/center/bottom
                 DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+                    Text(WidgetL10n.string("live_activity.region.leading", fallback: "Leading"))
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
+                    Text(WidgetL10n.string("live_activity.region.trailing", fallback: "Trailing"))
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom \(context.state.emoji)")
+                    Text(WidgetL10n.format("live_activity.region.bottom_format", fallback: "Bottom %@", context.state.emoji))
                     // more content
                 }
             } compactLeading: {
-                Text("L")
+                Text(WidgetL10n.string("live_activity.compact.leading", fallback: "L"))
             } compactTrailing: {
-                Text("T \(context.state.emoji)")
+                Text(WidgetL10n.format("live_activity.compact.trailing_format", fallback: "T %@", context.state.emoji))
             } minimal: {
                 Text(context.state.emoji)
             }
@@ -72,7 +72,7 @@ extension YesNoGoWidgetAttributes.ContentState {
      }
 }
 
-#Preview("Notification", as: .content, using: YesNoGoWidgetAttributes.preview) {
+#Preview(WidgetL10n.string("live_activity.preview.notification", fallback: "Notification"), as: .content, using: YesNoGoWidgetAttributes.preview) {
    YesNoGoWidgetLiveActivity()
 } contentStates: {
     YesNoGoWidgetAttributes.ContentState.smiley
