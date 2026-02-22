@@ -26,14 +26,12 @@ struct LowEffortApp: Identifiable {
 
 enum LowEffortApps {
     static let elapseD = LowEffortApp(name: "Elapse(D)", iconName: "elapseddark", appStoreID: "6755078545")
-    static let routinee = LowEffortApp(name: "Routine(e)", iconName: "routineedark", appStoreID: "6755685503")
     static let yesNoGo = LowEffortApp(name: "Yes? No? Go!", iconName: "yesnogoglass", appStoreID: "6754826659", slug: "yes-no-go")
     static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskeddark2", appStoreID: "6755186421")
-    static let trackked = LowEffortApp(name: "Trackked", iconName: "trackkeddark", appStoreID: "6756798126")
     static let aislewise = LowEffortApp(name: "AisleWise", iconName: "aislewisenewdark", appStoreID: "6755057084")
 
     static let all: [LowEffortApp] = [
-        elapseD, routinee, yesNoGo, tasked, trackked, aislewise
+        elapseD, yesNoGo, tasked, aislewise
     ]
 }
 
@@ -98,6 +96,18 @@ struct AboutSectionView: View {
                 Link(destination: URL(string: "https://www.loweffortapps.dev")!) {
                     HStack {
                         Text("Company Website")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Image(systemName: "arrow.up.right.square")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                // Substack
+                Link(destination: URL(string: "https://loweffortgeoff.substack.com/")!) {
+                    HStack {
+                        Text("Read My Substack")
                             .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
