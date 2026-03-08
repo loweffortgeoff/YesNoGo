@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Release-iphoneos/YesNoGoWidgetExtension.appex/YesNoGoWidgetExtension'
+relocations:     []
+...

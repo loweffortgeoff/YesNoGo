@@ -87,6 +87,10 @@ struct YesNoGoApp: App {
             QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").custom"
         case "rps":
             QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rps"
+        case "orb":
+            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").orb"
+        case "rng":
+            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rng"
         default:
             break
         }

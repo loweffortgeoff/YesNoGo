@@ -1,0 +1,16 @@
+{
+  "source": "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/DerivedSources/GeneratedStringSymbols_InfoPlist.swift",
+  "tables": {
+    "InfoPlist": [
+      {
+        "comment": "",
+        "key": "CFBundleDisplayName",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 27
+        }
+      }
+    ]
+  },
+  "version": 1
+}

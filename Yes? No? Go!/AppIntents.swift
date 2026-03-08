@@ -17,11 +17,11 @@ struct FlipCoinIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let isHeads = Bool.random()
         let result = isHeads
-            ? L10n.string("intent.flip.result.heads", fallback: "HEADS")
-            : L10n.string("intent.flip.result.tails", fallback: "TAILS")
+            ? await L10n.string("intent.flip.result.heads", fallback: "HEADS")
+            : await L10n.string("intent.flip.result.tails", fallback: "TAILS")
         let emoji = isHeads ? "👑" : "🦅"
 
-        return .result(dialog: L10n.format("intent.flip.dialog.format", fallback: "%@ %@!", emoji, result))
+        return .result(dialog: IntentDialog(stringLiteral: await L10n.format("intent.flip.dialog.format", fallback: "%@ %@!", emoji, result)))
     }
 }
 
@@ -34,11 +34,11 @@ struct YesNoDecisionIntent: AppIntent {
     func perform() async throws -> some IntentResult & ProvidesDialog {
         let isYes = Bool.random()
         let result = isYes
-            ? L10n.string("intent.yesno.result.yes", fallback: "YES")
-            : L10n.string("intent.yesno.result.no", fallback: "NO")
+            ? await L10n.string("intent.yesno.result.yes", fallback: "YES")
+            : await L10n.string("intent.yesno.result.no", fallback: "NO")
         let emoji = isYes ? "✅" : "❌"
 
-        return .result(dialog: L10n.format("intent.yesno.dialog.format", fallback: "%@ %@!", emoji, result))
+        return .result(dialog: IntentDialog(stringLiteral: await L10n.format("intent.yesno.dialog.format", fallback: "%@ %@!", emoji, result)))
     }
 }
 
@@ -68,7 +68,7 @@ struct CustomChoiceIntent: AppIntent {
             throw AppIntentError.unableToPickChoice
         }
         
-        return .result(dialog: L10n.format("intent.custom.dialog.winner_format", fallback: "🎉 The winner is: %@", randomChoice))
+        return await .result(dialog: IntentDialog(stringLiteral: L10n.format("intent.custom.dialog.winner_format", fallback: "🎉 The winner is: %@", randomChoice)))
     }
 }
 
@@ -79,7 +79,7 @@ struct RPSIntent: AppIntent {
     static var openAppWhenRun: Bool = false
 
     func perform() async throws -> some IntentResult & ProvidesDialog {
-        let choices = [
+        let choices = await [
             L10n.string("intent.rps.choice.rock", fallback: "Rock"),
             L10n.string("intent.rps.choice.paper", fallback: "Paper"),
             L10n.string("intent.rps.choice.scissors", fallback: "Scissors"),
@@ -87,7 +87,7 @@ struct RPSIntent: AppIntent {
         let emojis = ["🪨", "📄", "✂️"]
         let index = Int.random(in: 0..<3)
 
-        return .result(dialog: L10n.format("intent.rps.dialog.format", fallback: "%@ %@!", emojis[index], choices[index]))
+        return await .result(dialog: IntentDialog(stringLiteral: L10n.format("intent.rps.dialog.format", fallback: "%@ %@!", emojis[index], choices[index])))
     }
 }
 

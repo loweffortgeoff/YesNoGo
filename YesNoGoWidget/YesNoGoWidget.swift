@@ -28,7 +28,62 @@ struct SimpleEntry: TimelineEntry {
     let date: Date
 }
 
-struct YesNoGoWidgetEntryView : View {
+// MARK: - Mode Button Model
+
+struct ModeButton {
+    let icon: String
+    let label: String
+    let deepLink: String
+    let colors: [Color]
+}
+
+private let allModes: [String: ModeButton] = [
+    "flip": ModeButton(icon: "circle.circle", label: "Flip", deepLink: "yesnogo://coin",
+                        colors: [Color(red: 1.0, green: 0.75, blue: 0.0), .orange]),
+    "yesno": ModeButton(icon: "hand.thumbsup.fill", label: "Yes/No", deepLink: "yesnogo://yesno",
+                         colors: [Color(red: 0.2, green: 0.6, blue: 1.0), .cyan]),
+    "custom": ModeButton(icon: "list.bullet", label: "Custom", deepLink: "yesnogo://custom",
+                          colors: [Color(red: 0.15, green: 0.8, blue: 0.55), .mint]),
+    "rps": ModeButton(icon: "hand.raised.fill", label: "RPS", deepLink: "yesnogo://rps",
+                       colors: [Color(red: 0.9, green: 0.2, blue: 0.5), .pink]),
+    "orb": ModeButton(icon: "circle.hexagongrid.fill", label: "Orb", deepLink: "yesnogo://orb",
+                       colors: [.indigo, Color(red: 0.6, green: 0.3, blue: 1.0)]),
+]
+
+// MARK: - Shared Button View
+
+struct WidgetModeButton: View {
+    let mode: ModeButton
+    let iconFont: Font
+    let labelFont: Font
+
+    var body: some View {
+        Link(destination: URL(string: mode.deepLink)!) {
+            VStack(spacing: 3) {
+                Image(systemName: mode.icon)
+                    .font(iconFont)
+                    .fontWeight(.semibold)
+                Text(mode.label)
+                    .font(labelFont)
+                    .fontWeight(.bold)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .foregroundStyle(.white)
+            .background(
+                LinearGradient(
+                    colors: mode.colors,
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        }
+    }
+}
+
+// MARK: - Widget Entry View
+
+struct YesNoGoWidgetEntryView: View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var family
 
@@ -43,146 +98,59 @@ struct YesNoGoWidgetEntryView : View {
         }
     }
 
-    var smallWidget: some View {
-        VStack(spacing: 8) {
-            Text("Yes? No? Go!")
-                .font(.headline)
-                .fontWeight(.bold)
+    // MARK: Small Widget — 2×2 grid of 4 modes
 
-            HStack(spacing: 8) {
-                Link(destination: URL(string: "yesnogo://coin")!) {
-                    VStack(spacing: 4) {
-                        Image(systemName: "circle.circle")
-                            .font(.title2)
-                        Text("Flip")
-                            .font(.caption2)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-                    .background(
-                        LinearGradient(
-                            colors: [.yellow, .orange],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
+    private var smallWidget: some View {
+        let modes = ["flip", "yesno", "orb", "rps"].compactMap { allModes[$0] }
 
-                Link(destination: URL(string: "yesnogo://yesno")!) {
-                    VStack(spacing: 4) {
-                        Image(systemName: "hand.thumbsup")
-                            .font(.title2)
-                        Text("Yes/No")
-                            .font(.caption2)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 8)
-                    .background(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
+        return VStack(spacing: 6) {
+            HStack(spacing: 6) {
+                WidgetModeButton(mode: modes[0], iconFont: .body, labelFont: .system(size: 10))
+                WidgetModeButton(mode: modes[1], iconFont: .body, labelFont: .system(size: 10))
+            }
+            HStack(spacing: 6) {
+                WidgetModeButton(mode: modes[2], iconFont: .body, labelFont: .system(size: 10))
+                WidgetModeButton(mode: modes[3], iconFont: .body, labelFont: .system(size: 10))
             }
         }
-        .padding(12)
+        .padding(10)
     }
 
-    var mediumWidget: some View {
-        VStack(spacing: 10) {
-            Text("Yes? No? Go!")
-                .font(.title2)
-                .fontWeight(.bold)
+    // MARK: Medium Widget — 5 modes in two rows
 
-            HStack(spacing: 12) {
-                Link(destination: URL(string: "yesnogo://coin")!) {
-                    VStack(spacing: 4) {
-                        Image(systemName: "circle.circle")
-                            .font(.title2)
-                        Text("Flip")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(
-                        LinearGradient(
-                            colors: [.yellow, .orange],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+    private var mediumWidget: some View {
+        let topRow = ["flip", "yesno", "custom"].compactMap { allModes[$0] }
+        let bottomRow = ["rps", "orb"].compactMap { allModes[$0] }
+
+        return VStack(spacing: 8) {
+            // Header
+            HStack(spacing: 6) {
+                Image(systemName: "sparkles")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                Text("Quick decisions")
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.secondary)
+                Spacer()
+            }
+
+            // Top row: 3 buttons
+            HStack(spacing: 8) {
+                ForEach(topRow, id: \.label) { mode in
+                    WidgetModeButton(mode: mode, iconFont: .title3, labelFont: .caption2)
                 }
+            }
 
-                Link(destination: URL(string: "yesnogo://yesno")!) {
-                    VStack(spacing: 4) {
-                        Image(systemName: "hand.thumbsup")
-                            .font(.title2)
-                        Text("Yes/No")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(
-                        LinearGradient(
-                            colors: [.blue, .cyan],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-
-                Link(destination: URL(string: "yesnogo://custom")!) {
-                    VStack(spacing: 4) {
-                        Image(systemName: "list.bullet")
-                            .font(.title2)
-                        Text("Custom")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(
-                        LinearGradient(
-                            colors: [.green, .mint],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-                }
-
-                Link(destination: URL(string: "yesnogo://rps")!) {
-                    VStack(spacing: 4) {
-                        Image(systemName: "hand.raised")
-                            .font(.title2)
-                        Text("RPS")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(
-                        LinearGradient(
-                            colors: [.purple, .pink],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            // Bottom row: 2 buttons
+            HStack(spacing: 8) {
+                ForEach(bottomRow, id: \.label) { mode in
+                    WidgetModeButton(mode: mode, iconFont: .title3, labelFont: .caption2)
                 }
             }
         }
-        .padding(16)
+        .padding(14)
     }
 }
 

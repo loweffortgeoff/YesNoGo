@@ -1,0 +1,32 @@
+{
+  "source": "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/WidgetL10n.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Timer Name",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 13
+        }
+      },
+      {
+        "comment": "",
+        "key": "Timer Name",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 13
+        }
+      },
+      {
+        "comment": "",
+        "key": "Timer is running",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 13
+        }
+      }
+    ]
+  },
+  "version": 1
+}

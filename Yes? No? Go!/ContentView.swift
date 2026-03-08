@@ -273,6 +273,25 @@ struct ContentView: View {
                 playRPS()
             }
 
+        case "\(bundleId).orb":
+            // Switch to orb mode and ask immediately
+            withAnimation(.bouncy(duration: 0.4)) {
+                activeMode = "orb"
+                selectedIndex = 4
+                resetResult()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                askOrb()
+            }
+
+        case "\(bundleId).rng":
+            // Switch to RNG mode (needs user input for range)
+            withAnimation(.bouncy(duration: 0.4)) {
+                activeMode = "rng"
+                selectedIndex = 5
+                resetResult()
+            }
+
         default:
             break
         }

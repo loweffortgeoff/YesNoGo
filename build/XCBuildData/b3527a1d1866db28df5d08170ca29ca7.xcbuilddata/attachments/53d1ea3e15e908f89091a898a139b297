@@ -1,0 +1,51 @@
+{
+  "" : {
+    "const-values" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.swiftconstvalues",
+    "dependencies" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.d",
+    "diagnostics" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.dia",
+    "emit-module-dependencies" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary-emit-module.dia",
+    "pch" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.swiftdeps"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/WidgetL10n.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/WidgetL10n.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/WidgetL10n.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/WidgetL10n.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/YesNoGoWidget.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidget.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidget.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidget.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/YesNoGoWidgetBundle.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetBundle.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetBundle.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetBundle.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/YesNoGoWidgetControl.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetControl.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetControl.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetControl.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/YesNoGoWidgetLiveActivity.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetLiveActivity.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetLiveActivity.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetLiveActivity.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedAssetSymbols.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/DerivedSources/GeneratedStringSymbols_InfoPlist.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedStringSymbols_InfoPlist.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedStringSymbols_InfoPlist.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedStringSymbols_InfoPlist.o"
+  },
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/DerivedSources/GeneratedStringSymbols_Localizable.swift" : {
+    "index-unit-output-path" : "/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedStringSymbols_Localizable.o",
+    "llvm-bc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedStringSymbols_Localizable.bc",
+    "object" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/GeneratedStringSymbols_Localizable.o"
+  }
+}

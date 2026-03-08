@@ -1,0 +1,32 @@
+{
+  "source": "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/YesNoGoWidget.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Quick decisions",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 133
+        }
+      },
+      {
+        "comment": "",
+        "key": "Yes? No? Go!",
+        "location": {
+          "startingColumn": 35,
+          "startingLine": 166
+        }
+      },
+      {
+        "comment": "",
+        "key": "Quick access to make decisions",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 167
+        }
+      }
+    ]
+  },
+  "version": 1
+}

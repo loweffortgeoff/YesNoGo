@@ -1,0 +1,12 @@
+{
+  "/Users/geoffreysilva/Documents/GitHub/YesNoGo/YesNoGoWidget/WidgetL10n.swift" : {
+    "abi-baseline-json" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension.abi.json",
+    "const-values" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.swiftconstvalues",
+    "dependencies" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.d",
+    "diagnostics" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-primary.dia",
+    "objc-header" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension-Swift.h",
+    "swiftdoc" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension.swiftdoc",
+    "swiftmodule" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension.swiftmodule",
+    "swiftsourceinfo" : "/Users/geoffreysilva/Documents/GitHub/YesNoGo/build/Yes? No? Go!.build/Release-iphoneos/YesNoGoWidgetExtension.build/Objects-normal/arm64/YesNoGoWidgetExtension.swiftsourceinfo"
+  }
+}

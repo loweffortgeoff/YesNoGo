@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>A an example control that runs a timer.</key>
+	<string>Un control de ejemplo que ejecuta un temporizador.</string>
+	<key>Configuration</key>
+	<string>Configuración</string>
+	<key>Custom</key>
+	<string>Personalizado</string>
+	<key>Favorite Emoji</key>
+	<string>Emoji favorito</string>
+	<key>Flip</key>
+	<string>Lanzar</string>
+	<key>Quick access to make decisions</key>
+	<string>Acceso rápido para tomar decisiones</string>
+	<key>RPS</key>
+	<string>PPT</string>
+	<key>Start Timer</key>
+	<string>Iniciar temporizador</string>
+	<key>Start a timer</key>
+	<string>Iniciar un temporizador</string>
+	<key>This is an example widget.</key>
+	<string>Este es un widget de ejemplo.</string>
+	<key>Timer</key>
+	<string>Temporizador</string>
+	<key>Timer Name</key>
+	<string>Nombre del temporizador</string>
+	<key>Timer Name Configuration</key>
+	<string>Configuración del nombre del temporizador</string>
+	<key>Timer is running</key>
+	<string>El temporizador está en marcha</string>
+	<key>Yes/No</key>
+	<string>Sí/No</string>
+	<key>Yes? No? Go!</key>
+	<string>Yes? No? Go!</string>
+	<key>control.toggle.off</key>
+	<string>Desactivado</string>
+	<key>control.toggle.on</key>
+	<string>Activado</string>
+	<key>live_activity.compact.leading</key>
+	<string>I</string>
+	<key>live_activity.compact.trailing_format</key>
+	<string>D %@</string>
+	<key>live_activity.hello_format</key>
+	<string>Hola %@</string>
+	<key>live_activity.preview.notification</key>
+	<string>Notificación</string>
+	<key>live_activity.region.bottom_format</key>
+	<string>Abajo %@</string>
+	<key>live_activity.region.leading</key>
+	<string>Izquierda</string>
+	<key>live_activity.region.trailing</key>
+	<string>Derecha</string>
+</dict>
+</plist>
