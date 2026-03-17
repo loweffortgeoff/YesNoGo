@@ -1,6 +1,32 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ (%lld×)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$lld×)"
+          }
+        }
+      }
+    },
+    "%@ History" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld (%lld%%)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld (%2$lld%%)"
+          }
+        }
+      }
+    },
     "✂️" : {
 
     },
@@ -29,6 +55,9 @@
 
     },
     "🪨" : {
+
+    },
+    "0" : {
 
     },
     "1" : {
@@ -671,6 +700,12 @@
         }
       }
     },
+    "Average" : {
+
+    },
+    "Cancel" : {
+
+    },
     "Choosing..." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -706,6 +741,15 @@
         }
       }
     },
+    "Clear %@ history" : {
+
+    },
+    "Clear all %@ history?" : {
+
+    },
+    "Clear History" : {
+
+    },
     "Close credits" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -740,6 +784,9 @@
           }
         }
       }
+    },
+    "Close history" : {
+
     },
     "coin.result.heads" : {
       "extractionState" : "manual",
@@ -1698,6 +1745,9 @@
         }
       }
     },
+    "Highest" : {
+
+    },
     "intent.custom.dialog.winner_format" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2153,6 +2203,9 @@
         }
       }
     },
+    "Lowest" : {
+
+    },
     "Maximum Number" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2436,6 +2489,9 @@
         }
       }
     },
+    "Most Picked" : {
+
+    },
     "No Immediate Repeat" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2470,6 +2526,9 @@
           }
         }
       }
+    },
+    "No results yet. Start using %@ to build your history!" : {
+
     },
     "Open the tip jar to support the developer" : {
       "extractionState" : "manual",
@@ -3804,6 +3863,9 @@
         }
       }
     },
+    "Past results" : {
+
+    },
     "Pick a random choice from your custom options" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4233,6 +4295,9 @@
         }
       }
     },
+    "Recent Results" : {
+
+    },
     "Reduce Motion support" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4302,6 +4367,9 @@
           }
         }
       }
+    },
+    "Removes all past results for this mode" : {
+
     },
     "rng.a11y.generated_number_format" : {
       "extractionState" : "manual",
@@ -4723,6 +4791,9 @@
         }
       }
     },
+    "Stats" : {
+
+    },
     "Support Development" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5014,6 +5085,9 @@
           }
         }
       }
+    },
+    "This cannot be undone." : {
+
     },
     "tipjar.alert.thank_you.dismiss" : {
       "extractionState" : "manual",
@@ -5714,6 +5788,15 @@
           }
         }
       }
+    },
+    "Total" : {
+
+    },
+    "Unique Options" : {
+
+    },
+    "View history and stats for the current mode" : {
+
     },
     "View sound credits and app information" : {
       "extractionState" : "manual",

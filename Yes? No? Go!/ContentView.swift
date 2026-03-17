@@ -76,6 +76,7 @@ struct ContentView: View {
     @State private var selectedIndex: Int = 0
     @State private var shimmerOffset: CGFloat = -200
     @State private var showCredits = false
+    @State private var showHistory = false
     @State private var swirlRotation: Double = 0
     @State private var swirlScale: CGFloat = 1.0
     @State private var showSwirl: Bool = false
@@ -380,6 +381,18 @@ struct ContentView: View {
                 handlePendingQuickAction()
             }
         }
+        .overlay(alignment: .topLeading) {
+            Button(action: {
+                showHistory = true
+            }) {
+                Image(systemName: "clock.arrow.circlepath")
+                    .font(.title2)
+                    .foregroundColor(primaryTextColor.opacity(0.7))
+                    .padding(20)
+            }
+            .accessibilityLabel("Past results")
+            .accessibilityHint("View history and stats for the current mode")
+        }
         .overlay(alignment: .topTrailing) {
             Button(action: {
                 showCredits = true
@@ -391,6 +404,13 @@ struct ContentView: View {
             }
             .accessibilityLabel("Credits and information")
             .accessibilityHint("View sound credits and app information")
+        }
+        .sheet(isPresented: $showHistory) {
+            HistoryView(
+                mode: activeMode,
+                modeLabel: modeLabels[modes.firstIndex(of: activeMode) ?? 0],
+                accentColor: currentGradientColors.first ?? .purple
+            )
         }
         .sheet(isPresented: $showCredits) {
             CreditsView()
@@ -1101,6 +1121,8 @@ struct ContentView: View {
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
             
+            HistoryManager.shared.add(mode: "coin", result: coinResult)
+
             // Play different sounds based on coin result
             if !isHeads {
                 playSound("eagle")
@@ -1133,6 +1155,8 @@ struct ContentView: View {
             
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
+
+            HistoryManager.shared.add(mode: "yesno", result: result)
 
             // Play different sounds based on result
             if isYes {
@@ -1202,6 +1226,9 @@ struct ContentView: View {
                 showResult = true
             }
 
+            let choicesDetail = validChoices.joined(separator: ", ")
+            HistoryManager.shared.add(mode: "custom", result: result, detail: "From: \(choicesDetail)")
+
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
             playSound("success")
@@ -1232,6 +1259,8 @@ struct ContentView: View {
 
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
+
+            HistoryManager.shared.add(mode: "rps", result: rpsResult)
 
             // Play different sounds based on RPS result
             switch rpsResult {
@@ -1440,6 +1469,8 @@ struct ContentView: View {
                 showResult = true
             }
 
+            HistoryManager.shared.add(mode: "orb", result: result)
+
             // Success haptic feedback and sound when result is shown
             triggerNotificationFeedback(.success)
             playSound("mystical")
@@ -1511,6 +1542,8 @@ struct ContentView: View {
             withAnimation(.easeOut(duration: 0.15)) {
                 showResult = true
             }
+
+            HistoryManager.shared.add(mode: "rng", result: String(generated), detail: "Range: \(minValue)–\(maxValue)")
 
             triggerNotificationFeedback(.success)
             playSound("rngDing")
