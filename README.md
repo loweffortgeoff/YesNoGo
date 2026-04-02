@@ -8,7 +8,7 @@ A random decision maker for iOS — 6 modes to help you decide anything, instant
 
 ## Overview
 
-Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, ask yes or no, pick from custom options, play rock paper scissors, consult the magic orb, or generate a random number. With widgets, Siri Shortcuts, and haptic feedback.
+Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, ask yes or no, pick from custom options, play rock paper scissors, consult the magic orb, or generate a random number. With widgets, Siri Shortcuts, haptic feedback, and a per-mode results log.
 
 ## Features
 
@@ -20,6 +20,11 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 - **Magic Orb** — Fortune-teller style mystical responses
 - **Random Number** — Generate within a custom range
 
+### Past Results Log
+- Per-mode history with recent results and timestamps
+- Mode-specific statistics (percentages, averages, most-picked)
+- Clear history per mode with confirmation
+
 ### Extras
 - **Quick Actions** — 3D Touch shortcuts for instant access to any mode
 - **Siri Shortcuts** — Voice command support via AppIntents
@@ -27,6 +32,7 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 - **Live Activities** — Dynamic Island experiences
 - **Haptic Feedback** — Impact, selection, and notification haptics
 - **Sound Effects** — Custom audio for different outcomes
+- **Localization** — Multi-language support
 - **Accessibility** — VoiceOver, high contrast, and reduce motion support
 - **Tip Jar** — Optional in-app purchases (4 tiers)
 
@@ -46,15 +52,20 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 
 ```
 Yes? No? Go!/
-├── YesNoGoApp.swift            # App entry point
+├── YesNoGoApp.swift            # App entry point & quick actions
 ├── ContentView.swift           # All modes & UI logic
-├── QuickActionManager.swift    # 3D Touch shortcuts
+├── HistoryManager.swift        # Past results storage & stats
+├── HistoryView.swift           # Per-mode history & statistics UI
+├── AppIntents.swift            # Siri Shortcuts definitions
 ├── TipJarManager.swift         # StoreKit purchases
-├── AboutSectionView.swift      # Cross-app about section
-└── Audio/                      # Sound effect files
+├── TipJarView.swift            # Tip jar UI
+├── L10n.swift                  # Localization helper
+└── AboutSectionView.swift      # Cross-app about section
 
 YesNoGoWidget/
 ├── YesNoGoWidget.swift         # Widget definition
+├── YesNoGoWidgetLiveActivity.swift  # Live Activity definition
+└── ...
 
 YesNoGoWidgetExtension/
 └── Widget extension bundle
