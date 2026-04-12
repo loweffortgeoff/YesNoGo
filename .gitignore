@@ -1,8 +1,3 @@
 DerivedData/
 .DS_Store
-
-# Docs (except README)
-*.md
-!README.md
-*.txt
-*.pdf
+ASC_CHECKLIST.md

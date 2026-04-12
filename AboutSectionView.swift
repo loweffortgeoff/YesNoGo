@@ -1,37 +1,43 @@
 import SwiftUI
+import StoreKit
 
 // MARK: - App Info Model
 
 struct LowEffortApp: Identifiable {
     let id = UUID()
     let name: String
-    let iconName: String
+    let darkIconName: String
+    let lightIconName: String
     let appStoreID: String
     let slug: String?
 
-    init(name: String, iconName: String, appStoreID: String, slug: String? = nil) {
+    init(name: String, darkIconName: String, lightIconName: String? = nil, appStoreID: String, slug: String? = nil) {
         self.name = name
-        self.iconName = iconName
+        self.darkIconName = darkIconName
+        self.lightIconName = lightIconName ?? darkIconName
         self.appStoreID = appStoreID
         self.slug = slug
     }
 
+    func iconName(for colorScheme: ColorScheme) -> String {
+        colorScheme == .dark ? darkIconName : lightIconName
+    }
+
     var appStoreURL: URL? {
         let urlSlug = slug ?? name.lowercased().replacingOccurrences(of: " ", with: "-")
-        return URL(string: "https://apps.apple.com/app/\(urlSlug)/id\(appStoreID)")
+        return URL(string: "https://apps.apple.com/us/app/\(urlSlug)/id\(appStoreID)")
     }
 }
 
 // MARK: - App Catalog
 
 enum LowEffortApps {
-    static let elapseD = LowEffortApp(name: "Elapse(D)", iconName: "elapseddark", appStoreID: "6755078545")
-    static let yesNoGo = LowEffortApp(name: "Yes? No? Go!", iconName: "yesnogoglass", appStoreID: "6754826659", slug: "yes-no-go")
-    static let tasked = LowEffortApp(name: "Task(ed)", iconName: "taskeddark2", appStoreID: "6755186421")
-    static let aislewise = LowEffortApp(name: "AisleWise", iconName: "aislewisenewdark", appStoreID: "6755057084")
-
+    static let tasked = LowEffortApp(name: "Task(ed)", darkIconName: "taskeddark", lightIconName: "taskedlight", appStoreID: "6755186421")
+    static let aislewise = LowEffortApp(name: "AisleWise", darkIconName: "aislewisedark", lightIconName: "aislewiselight", appStoreID: "6755057084")
+    static let muzzletoff = LowEffortApp(name: "Muzzletoff", darkIconName: "muzzletoffdark", lightIconName: "muzzletofflight", appStoreID: "6754781167")
+    static let weatherinwords = LowEffortApp(name: "Weather in Words", darkIconName: "weatherinwordsdark", lightIconName: "weatherinwordslight", appStoreID: "6760272161")
     static let all: [LowEffortApp] = [
-        elapseD, yesNoGo, tasked, aislewise
+       tasked, aislewise, muzzletoff, weatherinwords
     ]
 }
 
@@ -44,6 +50,8 @@ struct AboutSectionView: View {
 
     /// Optional custom list of apps to display. If nil, shows all apps except current.
     let appsToShow: [LowEffortApp]?
+
+    @Environment(\.requestReview) private var requestReview
 
     init(currentAppName: String? = nil, appsToShow: [LowEffortApp]? = nil) {
         self.currentAppName = currentAppName
@@ -78,24 +86,65 @@ struct AboutSectionView: View {
                     OtherAppRow(app: app)
                 }
             } header: {
-                Text(L10n.string("about.section.we_also_make", fallback: "We Also Make"))
+                Text("Our Other Apps")
+            }
+
+            // MARK: - Rate & Review
+            Section {
+                Button {
+                    requestReview()
+                } label: {
+                    HStack {
+                        Image(systemName: "star.fill")
+                            .foregroundStyle(.yellow)
+                        Text("Rate & Review")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                    }
+                }
+            } footer: {
+                Text("Enjoying the app? A review helps others discover it.")
             }
 
             // MARK: - About Section
             Section {
                 // Version & Build
                 HStack {
-                    Text(L10n.string("about.version.label", fallback: "Version"))
+                    Text("Version")
                         .foregroundStyle(.primary)
                     Spacer()
-                    Text(L10n.format("about.version.value_format", fallback: "%@ (%@)", appVersion, buildNumber))
+                    Text("\(appVersion) (\(buildNumber))")
                         .foregroundStyle(.secondary)
                 }
 
                 // Company Website
-                Link(destination: URL(string: "https://www.loweffortapps.dev")!) {
+                Link(destination: URL(string: "https://www.loweffortapps.app")!) {
                     HStack {
-                        Text(L10n.string("about.link.company_website", fallback: "Company Website"))
+                        Text("Company Website")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Image(systemName: "arrow.up.right.square")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                // Privacy Policy
+                Link(destination: URL(string: "https://www.loweffortapps.app/privacy")!) {
+                    HStack {
+                        Text("Privacy Policy")
+                            .foregroundStyle(.primary)
+                        Spacer()
+                        Image(systemName: "arrow.up.right.square")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                // Support
+                Link(destination: URL(string: "https://www.loweffortapps.app/support/")!) {
+                    HStack {
+                        Text("Support")
                             .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
@@ -107,19 +156,7 @@ struct AboutSectionView: View {
                 // Substack
                 Link(destination: URL(string: "https://loweffortgeoff.substack.com/")!) {
                     HStack {
-                        Text(L10n.string("about.link.substack", fallback: "Read My Substack"))
-                            .foregroundStyle(.primary)
-                        Spacer()
-                        Image(systemName: "arrow.up.right.square")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                // Privacy Policy
-                Link(destination: URL(string: "https://www.loweffortapps.dev/privacy-policy")!) {
-                    HStack {
-                        Text(L10n.string("about.link.privacy", fallback: "Privacy Policy"))
+                        Text("Read My Substack")
                             .foregroundStyle(.primary)
                         Spacer()
                         Image(systemName: "arrow.up.right.square")
@@ -128,7 +165,7 @@ struct AboutSectionView: View {
                     }
                 }
             } header: {
-                Text(L10n.string("about.section.about", fallback: "About"))
+                Text("About")
             }
         }
     }
@@ -138,11 +175,12 @@ struct AboutSectionView: View {
 
 struct OtherAppRow: View {
     let app: LowEffortApp
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Button(action: openAppStore) {
             HStack(spacing: 12) {
-                Image(app.iconName)
+                Image(app.iconName(for: colorScheme))
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 32, height: 32)
@@ -180,6 +218,6 @@ struct OtherAppRow: View {
         Form {
             AboutSectionView(currentAppName: "Task(ed)")
         }
-        .navigationTitle(L10n.string("settings.nav.title", fallback: "Settings"))
+        .navigationTitle("Settings")
     }
 }

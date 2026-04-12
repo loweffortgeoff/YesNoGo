@@ -1636,29 +1636,11 @@ struct ContentView: View {
 // MARK: - Credits View
 struct CreditsView: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var showTipJar = false
 
     var body: some View {
         NavigationView {
             List {
-                Section {
-                    Button(action: {
-                        showTipJar = true
-                    }) {
-                        HStack {
-                            Image(systemName: "heart.fill")
-                                .foregroundColor(.pink)
-                            Text("Support Development")
-                                .foregroundColor(.primary)
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.secondary)
-                                .font(.caption)
-                        }
-                    }
-                    .accessibilityLabel("Support Development")
-                    .accessibilityHint("Open the tip jar to support the developer")
-                }
+                TipJarSectionView()
 
                 Section(header: Text("Sound Effects")) {
                     Text("All sound effects in this app were sourced from creators on Pixabay.")
@@ -1699,9 +1681,6 @@ struct CreditsView: View {
                     .accessibilityLabel("Close credits")
                     .accessibilityHint("Dismiss the credits screen")
                 }
-            }
-            .sheet(isPresented: $showTipJar) {
-                TipJarView()
             }
         }
     }

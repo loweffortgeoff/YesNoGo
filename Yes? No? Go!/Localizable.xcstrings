@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ (%2$@)"
+          }
+        }
+      }
+    },
     "%@ (%lld×)" : {
       "localizations" : {
         "en" : {
@@ -240,6 +250,9 @@
           }
         }
       }
+    },
+    "About" : {
+
     },
     "about.link.company_website" : {
       "extractionState" : "manual",
@@ -998,6 +1011,9 @@
         }
       }
     },
+    "Company Website" : {
+
+    },
     "Compare this to your mental choice to see if you won" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1347,6 +1363,9 @@
           }
         }
       }
+    },
+    "Enjoying the app? A review helps others discover it." : {
+
     },
     "Enter a choice for random selection" : {
       "extractionState" : "manual",
@@ -3863,6 +3882,9 @@
         }
       }
     },
+    "Our Other Apps" : {
+
+    },
     "Past results" : {
 
     },
@@ -4011,6 +4033,9 @@
           }
         }
       }
+    },
+    "Privacy Policy" : {
+
     },
     "quick_action.custom.subtitle" : {
       "extractionState" : "manual",
@@ -4294,6 +4319,12 @@
           }
         }
       }
+    },
+    "Rate & Review" : {
+
+    },
+    "Read My Substack" : {
+
     },
     "Recent Results" : {
 
@@ -4792,6 +4823,9 @@
       }
     },
     "Stats" : {
+
+    },
+    "Support" : {
 
     },
     "Support Development" : {
@@ -5793,6 +5827,9 @@
 
     },
     "Unique Options" : {
+
+    },
+    "Version" : {
 
     },
     "View history and stats for the current mode" : {

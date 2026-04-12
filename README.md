@@ -2,7 +2,7 @@
 
 A random decision maker for iOS — 6 modes to help you decide anything, instantly.
 
-![Platform](https://img.shields.io/badge/platform-iOS%2018.6+-blue)
+![Platform](https://img.shields.io/badge/platform-iOS%2018.0+-blue)
 ![Swift](https://img.shields.io/badge/Swift-6-orange)
 ![SwiftUI](https://img.shields.io/badge/UI-SwiftUI-purple)
 
@@ -71,6 +71,10 @@ YesNoGoWidgetExtension/
 └── Widget extension bundle
 ```
 
+## Localization
+
+Supported languages: English, Spanish, French, Italian, Portuguese (Brazil)
+
 ## Privacy
 
 - No analytics or tracking
@@ -79,4 +83,4 @@ YesNoGoWidgetExtension/
 
 ## Developer
 
-Built by [Low Effort Apps](https://www.loweffortapps.dev)
+Built by [Low Effort Apps](https://www.loweffortapps.app)

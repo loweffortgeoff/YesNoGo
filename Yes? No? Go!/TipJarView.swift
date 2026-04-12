@@ -36,9 +36,6 @@ struct TipJarView: View {
                         tipOptionsSection
                     }
 
-                    // Rate/review CTA
-                    rateAndReviewSection
-
                     // Footer message
                     footerSection
                 }
@@ -129,35 +126,6 @@ struct TipJarView: View {
 
     // MARK: - Footer
 
-    private var rateAndReviewSection: some View {
-        Button(action: requestAppReview) {
-            HStack(spacing: 12) {
-                Image(systemName: "star.bubble.fill")
-                    .font(.title3)
-                    .foregroundStyle(.yellow)
-
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(L10n.string("tipjar.rate.title", fallback: "Rate & Review"))
-                        .font(.headline)
-                        .foregroundStyle(.primary)
-                    Text(L10n.string("tipjar.rate.subtitle", fallback: "Enjoying the app? A quick App Store rating helps a lot."))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
-
-                Spacer()
-            }
-            .padding()
-            .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(Color(uiColor: .secondarySystemBackground))
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(L10n.string("tipjar.rate.a11y.label", fallback: "Rate and review the app"))
-        .accessibilityHint(L10n.string("tipjar.rate.a11y.hint", fallback: "Opens Apple's in-app App Store review prompt"))
-    }
-
     private var footerSection: some View {
         VStack(spacing: 8) {
             Text(L10n.string("tipjar.footer.disclaimer", fallback: "Tips are one-time purchases and do not unlock any features."))
@@ -175,19 +143,6 @@ struct TipJarView: View {
         .padding(.top, 16)
     }
 
-    private func requestAppReview() {
-        #if canImport(UIKit)
-        let activeScene = UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .first(where: { $0.activationState == .foregroundActive })
-
-        if let activeScene {
-            AppStore.requestReview(in: activeScene)
-        } else if let anyScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-            AppStore.requestReview(in: anyScene)
-        }
-        #endif
-    }
 }
 
 // MARK: - Tip Button
@@ -278,6 +233,26 @@ struct TipButton: View {
         }
         .disabled(isLoading)
         .buttonStyle(.plain)
+    }
+}
+
+struct TipJarSectionView: View {
+    var body: some View {
+        Section(header: Text(L10n.string("tipjar.section.header", fallback: "Support Development"))) {
+            NavigationLink {
+                TipJarView()
+            } label: {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(L10n.string("tipjar.section.title", fallback: "Leave a Tip"))
+                        .font(.headline)
+                    Text(L10n.string("tipjar.section.subtitle", fallback: "Help support future updates with a one-time in-app purchase."))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.vertical, 4)
+            }
+            .accessibilityHint(L10n.string("tipjar.section.a11y.hint", fallback: "Opens the tip jar screen"))
+        }
     }
 }
 
