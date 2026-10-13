@@ -795,7 +795,9 @@ struct ContentView: View {
 
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(450))
-            guard !Task.isCancelled else { return }
+            // The user may switch modes during the delay. Start the flow only
+            // while the requested mode is still the visible one.
+            guard mode == requested else { return }
             run(requested)
         }
     }
