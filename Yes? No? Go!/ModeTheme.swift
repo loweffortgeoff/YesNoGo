@@ -6,6 +6,7 @@
 //  The palette is anchored on the app icon: deep navy, gold, and silver.
 //
 
+import Foundation
 import SwiftUI
 #if canImport(UIKit)
 import UIKit
@@ -103,6 +104,24 @@ enum DecisionMode: String, CaseIterable, Identifiable {
         case .coin, .yesno, .rps, .orb: return true
         case .custom, .rng: return false
         }
+    }
+
+    // MARK: - External Entry Points
+
+    /// The custom URL scheme the app registers, used by the widgets.
+    static let urlScheme = "yesnogo"
+
+    /// Resolves a Home Screen quick action type, for example
+    /// `com.example.app.flipcoin`.
+    static func fromQuickActionType(_ type: String) -> DecisionMode? {
+        let bundleID = Bundle.main.bundleIdentifier ?? ""
+        return allCases.first { type == "\(bundleID).\($0.quickActionSuffix)" }
+    }
+
+    /// Resolves a deep link such as `yesnogo://coin`.
+    static func fromDeepLink(_ url: URL) -> DecisionMode? {
+        guard url.scheme == urlScheme, let host = url.host else { return nil }
+        return DecisionMode(rawValue: host)
     }
 
     var theme: ModeTheme {

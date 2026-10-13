@@ -2,31 +2,24 @@
 //  AppDelegate.swift
 //  Yes? No? Go!
 //
-//  Home Screen quick action delivery. SwiftUI has no built-in handler for
-//  `UIApplicationShortcutItem`, so the app adopts a delegate for it.
+//  The project generates a scene manifest, so this app is scene based. Home
+//  Screen quick actions arrive on the scene delegate, never on the app
+//  delegate. This delegate only installs the scene delegate.
 //
 
 import UIKit
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
-    /// Cold launch through a quick action.
     func application(
         _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
-    ) -> Bool {
-        if let item = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem {
-            QuickActionManager.shared.pendingQuickAction = item.type
-        }
-        return true
-    }
-
-    /// Quick action chosen while the app is already running or backgrounded.
-    func application(
-        _ application: UIApplication,
-        performActionFor shortcutItem: UIApplicationShortcutItem,
-        completionHandler: @escaping (Bool) -> Void
-    ) {
-        QuickActionManager.shared.pendingQuickAction = shortcutItem.type
-        completionHandler(true)
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        let configuration = UISceneConfiguration(
+            name: "Default Configuration",
+            sessionRole: connectingSceneSession.role
+        )
+        configuration.delegateClass = SceneDelegate.self
+        return configuration
     }
 }

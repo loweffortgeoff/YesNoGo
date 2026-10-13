@@ -18,24 +18,20 @@ struct YesNoGoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .onOpenURL { url in
-                    handleDeepLink(url)
-                }
                 .onAppear {
                     registerLocalizedQuickActions()
                 }
                 .onContinueUserActivity("FlipCoinIntent") { _ in
-                    // Handle Siri shortcuts
-                    QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").flipcoin"
+                    QuickActionManager.shared.requestedMode = .coin
                 }
                 .onContinueUserActivity("YesNoDecisionIntent") { _ in
-                    QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").yesno"
+                    QuickActionManager.shared.requestedMode = .yesno
                 }
                 .onContinueUserActivity("CustomChoiceIntent") { _ in
-                    QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").custom"
+                    QuickActionManager.shared.requestedMode = .custom
                 }
                 .onContinueUserActivity("RPSIntent") { _ in
-                    QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rps"
+                    QuickActionManager.shared.requestedMode = .rps
                 }
         }
     }
@@ -74,27 +70,5 @@ struct YesNoGoApp: App {
             ),
         ]
         #endif
-    }
-    
-    private func handleDeepLink(_ url: URL) {
-        // Handle deep links from quick actions
-        guard url.scheme == "yesnogo" else { return }
-        
-        switch url.host {
-        case "coin":
-            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").flipcoin"
-        case "yesno":
-            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").yesno"
-        case "custom":
-            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").custom"
-        case "rps":
-            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rps"
-        case "orb":
-            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").orb"
-        case "rng":
-            QuickActionManager.shared.pendingQuickAction = "\(Bundle.main.bundleIdentifier ?? "").rng"
-        default:
-            break
-        }
     }
 }

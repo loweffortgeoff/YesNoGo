@@ -14,11 +14,14 @@ import AudioToolbox
 
 // MARK: - Quick Action Manager
 
+/// Carries a mode requested from outside the app: a Home Screen quick action, a
+/// deep link, or a Siri continuation. The scene delegate sets it and the UI
+/// consumes it.
 @Observable
 final class QuickActionManager {
     static let shared = QuickActionManager()
 
-    var pendingQuickAction: String?
+    var requestedMode: DecisionMode?
 
     private init() {}
 }
@@ -146,16 +149,16 @@ struct ContentView: View {
             .sensoryFeedback(.success, trigger: revealTrigger)
             .sensoryFeedback(.error, trigger: errorTrigger)
             .onAppear {
-                handlePendingQuickAction()
+                handlePendingRequest()
             }
-            .onChange(of: quickActions.pendingQuickAction) { _, _ in
-                // Covers the cold launch case, where the URL or shortcut item
-                // arrives after the scene has already appeared.
-                handlePendingQuickAction()
+            .onChange(of: quickActions.requestedMode) { _, _ in
+                // Covers the cold launch case, where the quick action or URL
+                // arrives before this view is on screen.
+                handlePendingRequest()
             }
             .onChange(of: scenePhase) { _, newPhase in
                 if newPhase == .active {
-                    handlePendingQuickAction()
+                    handlePendingRequest()
                 }
             }
             .onDisappear {
@@ -779,30 +782,19 @@ struct ContentView: View {
 
     // MARK: - Quick Actions
 
-    private func handlePendingQuickAction() {
-        guard let quickAction = quickActions.pendingQuickAction else { return }
-        quickActions.pendingQuickAction = nil
-        handleQuickAction(quickAction)
-    }
+    private func handlePendingRequest() {
+        guard let requested = quickActions.requestedMode else { return }
+        quickActions.requestedMode = nil
 
-    private func handleQuickAction(_ actionType: String) {
-        let bundleID = Bundle.main.bundleIdentifier ?? ""
-
-        guard let newMode = DecisionMode.allCases.first(where: {
-            actionType == "\(bundleID).\($0.quickActionSuffix)"
-        }) else {
-            return
-        }
-
-        switchMode(newMode)
+        switchMode(requested)
 
         // Custom and RNG need user input before they can produce a result.
-        guard newMode.runsOnOpen else { return }
+        guard requested.runsOnOpen else { return }
 
         Task { @MainActor in
             try? await Task.sleep(for: .milliseconds(450))
             guard !Task.isCancelled else { return }
-            run(newMode)
+            run(requested)
         }
     }
 
