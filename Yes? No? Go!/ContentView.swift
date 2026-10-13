@@ -958,15 +958,18 @@ struct ContentView: View {
         let winnerIndex = Int.random(in: 0..<choices.count)
         let winner = choices[winnerIndex]
 
+        let step = 360.0 / Double(choices.count)
         wheelChoices = choices
-        wheelAngle = 0
+        // Park the pointer on the winner. The spin below is skipped under
+        // Reduce Motion, so the wheel must start at the winning angle or the
+        // pointer marks the wrong option.
+        wheelAngle = reduceMotion ? -Double(winnerIndex) * step : 0
 
         withAnimation(.easeIn(duration: 0.25)) {
             showWheel = true
         }
 
         if !reduceMotion {
-            let step = 360.0 / Double(choices.count)
             var destination = -Double(winnerIndex) * step
             // Always spin forward at least four full turns.
             while destination < 4 * 360 {
