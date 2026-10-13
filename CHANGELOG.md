@@ -14,7 +14,11 @@
 
 #### Fixed
 - **Widget and deep links did nothing** — `yesnogo://` was never registered. The prepared `Info-QuickActions.plist` is promoted to the real `Info.plist` and wired into the app target.
-- **Quick actions were never delivered** — `UIApplicationShortcutItem` taps reached no handler, and a cold launch through a deep link or shortcut lost the action. Added `AppDelegate` and a cold-launch race fix in `ContentView`.
+- **Quick actions were never delivered** — `UIApplicationShortcutItem` taps reached no handler, and a cold launch through a deep link or shortcut lost the action. The app is scene based, so UIKit delivers both to the scene delegate, not the app delegate. `AppDelegate` now installs `SceneDelegate`, which handles the cold and warm callbacks for shortcut items and URLs. Verified cold and warm on iOS 18.6 and iOS 27.0.
+- **The quick action menu showed "Flip Coin" twice** — the three items listed in `Info.plist` and the three the app registers at launch all appeared, and iOS shows at most four. Quick actions are now registered at launch only.
+- **A quick action could fire after the user had moved on** — the delayed run after a quick action was not cancelable, so switching modes inside the delay still played the old mode's sound, animation, and history entry. It now runs only while the requested mode is still on screen.
+- **The Rock Paper Scissors emojis kept bobbing after the result** — the repeating animation was applied in both directions, so the emojis never settled and overlapped the caption.
+- **With Reduce Motion on, the custom wheel pointer marked the wrong option** — the wheel skipped the spin but still sat at its start angle, so the pointer disagreed with the announced winner for the whole delay.
 - **History stats were English-only** — `coinStats`, `yesNoStats`, `rpsStats`, and `orbStats` matched localized result text, so percentages were wrong in every non-English locale. Entries now store a locale-independent outcome token, with a fallback for existing records.
 - Custom option rows use stable identity, so text field state stays with the right row when an option is removed.
 
