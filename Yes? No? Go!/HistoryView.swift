@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct HistoryView: View {
-    let mode: String
-    let modeLabel: String
-    let accentColor: Color
-    @Environment(\.dismiss) private var dismiss
+    let mode: DecisionMode
 
+    @Environment(\.dismiss) private var dismiss
     @State private var showClearConfirmation = false
 
     private var history: HistoryManager { HistoryManager.shared }
+
+    private var modeLabel: String { mode.label }
 
     private var modeEntries: [HistoryEntry] {
         history.entries(for: mode)
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 if !modeEntries.isEmpty {
                     statsSection
@@ -30,10 +30,13 @@ struct HistoryView: View {
 
                 if modeEntries.isEmpty {
                     Section {
-                        Text("No results yet. Start using \(modeLabel) to build your history!")
-                            .foregroundColor(.secondary)
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.center)
+                        ContentUnavailableView(
+                            "No Results Yet",
+                            systemImage: mode.icon,
+                            description: Text("Start using \(modeLabel) to build your history.")
+                        )
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("No results yet. Start using \(modeLabel) to build your history.")
                     }
                 } else {
                     Section(header: Text("Recent Results")) {
@@ -59,8 +62,9 @@ struct HistoryView: View {
             }
             .navigationTitle("\(modeLabel) History")
             .navigationBarTitleDisplayMode(.inline)
+            .tint(mode.theme.tint)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button("Done") {
                         dismiss()
                     }
@@ -88,25 +92,23 @@ struct HistoryView: View {
     private var statsSection: some View {
         Section(header: Text("Stats")) {
             switch mode {
-            case "coin":
+            case .coin:
                 coinStatsView
-            case "yesno":
+            case .yesno:
                 yesNoStatsView
-            case "rps":
+            case .rps:
                 rpsStatsView
-            case "custom":
+            case .custom:
                 customStatsView
-            case "orb":
+            case .orb:
                 orbStatsView
-            case "rng":
+            case .rng:
                 rngStatsView
-            default:
-                EmptyView()
             }
 
             HStack {
                 Text("Total")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text("\(modeEntries.count)")
                     .fontWeight(.semibold)
@@ -145,7 +147,7 @@ struct HistoryView: View {
         if let top = stats.first {
             HStack {
                 Text("Most Picked")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text("\(top.option) (\(top.count)×)")
                     .fontWeight(.semibold)
@@ -154,7 +156,7 @@ struct HistoryView: View {
         if stats.count > 1 {
             HStack {
                 Text("Unique Options")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text("\(stats.count)")
                     .fontWeight(.semibold)
@@ -176,21 +178,21 @@ struct HistoryView: View {
         if let stats = history.rngStats() {
             HStack {
                 Text("Average")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text(String(format: "%.1f", stats.average))
                     .fontWeight(.semibold)
             }
             HStack {
                 Text("Lowest")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text("\(stats.lowest)")
                     .fontWeight(.semibold)
             }
             HStack {
                 Text("Highest")
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                 Spacer()
                 Text("\(stats.highest)")
                     .fontWeight(.semibold)
@@ -203,7 +205,7 @@ struct HistoryView: View {
     private func statRow(_ label: String, count: Int, total: Int) -> some View {
         HStack {
             Text(label)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
             Spacer()
             if total > 0 {
                 Text("\(count) (\(percentage(count, of: total))%)")
@@ -213,6 +215,7 @@ struct HistoryView: View {
                     .fontWeight(.semibold)
             }
         }
+        .accessibilityElement(children: .combine)
     }
 
     private func percentage(_ count: Int, of total: Int) -> Int {
@@ -228,13 +231,13 @@ struct HistoryView: View {
                 if let detail = entry.detail {
                     Text(detail)
                         .font(.caption)
-                        .foregroundColor(.secondary)
+                        .foregroundStyle(.secondary)
                 }
             }
             Spacer()
             Text(entry.timestamp, format: .dateTime.month(.abbreviated).day().hour().minute())
                 .font(.caption)
-                .foregroundColor(.secondary)
+                .foregroundStyle(.secondary)
         }
         .accessibilityElement(children: .combine)
     }
