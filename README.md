@@ -42,7 +42,6 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 | **SwiftUI** | All UI — views, animations, themes |
 | **WidgetKit** | Home screen & lock screen widgets |
 | **AppIntents** | Siri Shortcuts integration |
-| **ActivityKit** | Live Activities |
 | **AVFoundation** | Sound effect playback |
 | **AudioToolbox** | Haptic feedback |
 | **StoreKit** | Tip jar purchases |
@@ -52,7 +51,8 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 ```
 Yes? No? Go!/
 ├── YesNoGoApp.swift            # App entry point
-├── AppDelegate.swift           # Home Screen quick action delivery
+├── AppDelegate.swift           # Installs the scene delegate
+├── SceneDelegate.swift         # Quick action and deep link delivery
 ├── ContentView.swift           # Mode coordinator, decision flows, sound
 ├── ModeTheme.swift             # Brand palette and the DecisionMode type
 ├── DecisionComponents.swift    # Canvas, card, mode selector, action button
@@ -62,15 +62,15 @@ Yes? No? Go!/
 ├── AppIntents.swift            # Siri Shortcuts definitions
 ├── TipJarManager.swift         # StoreKit purchases
 ├── TipJarView.swift            # Tip jar UI
-├── L10n.swift                  # Localization helper
-└── AboutSectionView.swift      # Cross-app about section
+└── L10n.swift                  # Localization helper
+
+Repository root (shared with the app template)
+├── AboutSectionView.swift      # Cross-app about section
+└── *.mp3                       # Sound effects
 
 YesNoGoWidget/
 ├── YesNoGoWidget.swift         # Widget definition
 └── ...
-
-YesNoGoWidgetExtension/
-└── Widget extension bundle
 ```
 
 ## Design Notes
@@ -80,8 +80,8 @@ for the hero element, the selected mode, and the primary action button. There
 are no full-bleed gradients — see `DECISIONS.md` for why.
 
 Deep links use the `yesnogo://` scheme (`yesnogo://coin`, `yesnogo://yesno`,
-`yesnogo://custom`, `yesnogo://rps`, `yesnogo://orb`, `yesnogo://rng`). Widgets
-and Home Screen quick actions rely on it.
+`yesnogo://custom`, `yesnogo://rps`, `yesnogo://orb`, `yesnogo://rng`). The
+widgets rely on it. Home Screen quick actions use shortcut item types instead.
 
 ## Localization
 
