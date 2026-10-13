@@ -107,7 +107,7 @@ enum RPSChoice: String, CaseIterable {
 
 /// One user-entered option. A stable id keeps text field state attached to the
 /// right row when an option is removed.
-struct CustomOption: Identifiable {
+struct CustomOption: Identifiable, Equatable {
     let id = UUID()
     var text: String = ""
 }
