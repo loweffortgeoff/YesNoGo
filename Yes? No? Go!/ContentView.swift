@@ -495,9 +495,11 @@ struct ContentView: View {
                         .animation(
                             reduceMotion
                                 ? nil
-                                : .easeInOut(duration: 0.42)
-                                    .repeatForever(autoreverses: true)
-                                    .delay(Double(index) * 0.12),
+                                : isAnimating
+                                    ? .easeInOut(duration: 0.42)
+                                        .repeatForever(autoreverses: true)
+                                        .delay(Double(index) * 0.12)
+                                    : .easeInOut(duration: 0.25),
                             value: isAnimating
                         )
                 }
