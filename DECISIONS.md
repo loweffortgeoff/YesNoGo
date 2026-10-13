@@ -1,5 +1,10 @@
 # Decisions
 
+## 2026-10-13 — Root image dumps stay local
+- Untrack repo-root marketing/source images (`yesnogo*.png/jpg`, `Untitled design3.png`) and the already-ignored `tmp/` PDF raster. Keep Asset Catalog copies and all `.mp3` sound files tracked.
+- **Why:** Root files duplicated Assets.xcassets (or were one-off design dumps) and bloated the repo without feeding the app target. Sounds live at the root and are used by `SoundPlayer`.
+- **Alternative considered:** Commit the dumps on `main` before merging `ui-modernization` — rejected; same blobs already exist on both branches, and new binary commits on `main` only add merge noise.
+
 ## 2026-10-13 — Palette is anchored on the app icon
 - Navy, gold, and silver come from `yesnogodarkglass.jpg`. Every mode accent is a muted tone drawn from that family.
 - The six full-bleed gradients are gone. The accent now appears only on the hero element, the selected mode, and the primary button. The canvas is near-neutral with a soft accent wash.

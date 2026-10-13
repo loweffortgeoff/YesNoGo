@@ -2,3 +2,8 @@ DerivedData/
 .DS_Store
 ASC_CHECKLIST.md
 tmp/
+
+# Source dumps / marketing masters at repo root (app uses Assets.xcassets copies)
+/*.png
+/*.jpg
+/*.jpeg

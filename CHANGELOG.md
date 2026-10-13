@@ -27,6 +27,7 @@
 - `TipJarSectionView.swift` at the repo root — never in any target; a same-named type lives in `TipJarView.swift`.
 - `YesNoGoWidgetExtension/` — orphaned folder the project does not reference.
 - Live Activity and Control widget — untouched Xcode templates. The app never started a Live Activity, and the Control widget was a "Start Timer" placeholder.
+- Repo-root image dumps (`yesnogo*.png/jpg`, `Untitled design3.png`) and `tmp/pdfs/yes-no-go-app-summary-1.png` — untracked; files stay on disk. Asset Catalog images and all sounds remain tracked. Root `*.png`/`*.jpg`/`*.jpeg` added to `.gitignore`.
 
 ---
 
