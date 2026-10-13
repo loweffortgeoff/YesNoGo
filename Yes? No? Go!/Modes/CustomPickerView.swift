@@ -28,15 +28,15 @@ struct CustomPickerView: View {
                                 L10n.format(
                                     "custom.option.placeholder_format",
                                     fallback: "Option %d...",
-                                    session.optionNumber(option.id)
+                                    optionNumber(option.id)
                                 ),
-                                text: session.binding(for: option.id)
+                                text: binding(for: option.id)
                             )
                             .foregroundStyle(.primary)
                             .disabled(session.isAnimating)
                         }
                         .accessibilityLabel(
-                            L10n.format("custom.option.label_format", fallback: "Option %d", session.optionNumber(option.id))
+                            L10n.format("custom.option.label_format", fallback: "Option %d", optionNumber(option.id))
                         )
                         .accessibilityHint("Enter a choice for random selection")
 
@@ -55,7 +55,7 @@ struct CustomPickerView: View {
                                 L10n.format(
                                     "custom.option.remove_label_format",
                                     fallback: "Remove option %d",
-                                    session.optionNumber(option.id)
+                                    optionNumber(option.id)
                                 )
                             )
                             .accessibilityHint("Remove this option from the list")
@@ -102,6 +102,20 @@ struct CustomPickerView: View {
     }
 
     private var wheelStageHeight: CGFloat { wheelRadius * 2 + 60 }
+
+    private func optionNumber(_ id: CustomOption.ID) -> Int {
+        (session.customOptions.firstIndex { $0.id == id } ?? 0) + 1
+    }
+
+    private func binding(for id: CustomOption.ID) -> Binding<String> {
+        Binding(
+            get: { session.customOptions.first { $0.id == id }?.text ?? "" },
+            set: { newValue in
+                guard let index = session.customOptions.firstIndex(where: { $0.id == id }) else { return }
+                session.customOptions[index].text = newValue
+            }
+        )
+    }
 
     @ViewBuilder
     private var pickerStage: some View {

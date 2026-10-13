@@ -245,23 +245,6 @@ final class DecisionSession {
         }
     }
 
-    /// The 1-based position of an option, used for its placeholder and label.
-    func optionNumber(_ id: CustomOption.ID) -> Int {
-        (customOptions.firstIndex { $0.id == id } ?? 0) + 1
-    }
-
-    /// A binding to one option's text, so field state follows the row's id
-    /// rather than its index.
-    func binding(for id: CustomOption.ID) -> Binding<String> {
-        Binding(
-            get: { self.customOptions.first { $0.id == id }?.text ?? "" },
-            set: { newValue in
-                guard let index = self.customOptions.firstIndex(where: { $0.id == id }) else { return }
-                self.customOptions[index].text = newValue
-            }
-        )
-    }
-
     private var validCustomChoices: [String] {
         customOptions
             .map(\.text)
