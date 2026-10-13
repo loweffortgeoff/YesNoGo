@@ -18,6 +18,10 @@
 - [ ] Note on the design contract: `ForEach(Array(choices.enumerated()), id: \.offset)` is used for the picker wheel and RPS emoji, and index identity is used for the editable custom option list. Index identity is correct for the editable list; the two static collections could take element identity instead.
 - [ ] Reboot-free way to reset a stuck simulator alert: two simulators had a pending location prompt that blocked app launch and could not be dismissed without rebooting the device.
 - [ ] Performance: the custom option `Binding` is rebuilt on every keystroke. Fine at 6 options, worth watching if the limit grows.
+- [ ] iPad multi-window: `UIApplicationSupportsMultipleScenes` is true and every scene shares `QuickActionManager.shared`, so a deep link opened in one window can be consumed by another. Set the flag to NO, or route the request per scene.
+- [ ] History stat labels do not localize. `HistoryView.statRow` takes a `String`, so SwiftUI passes labels such as "👑 Heads" through untranslated. Take `LocalizedStringKey` and add the strings to the catalog.
+- [ ] `SUPPORTED_PLATFORMS` lists `macosx xros xrsimulator` and `TARGETED_DEVICE_FAMILY` includes 7, but the code has never compiled for macOS or visionOS, so both Xcode Cloud archive actions fail. Narrow the platforms, or remove those two actions.
+- [ ] A fresh install shows no Home Screen quick actions until the app has launched once, because they are registered at launch only. This matches `main`. Decide whether to list them in `Info.plist` as well, with translated titles in `InfoPlist.xcstrings`, to cover the never-launched case without duplicating the menu.
 
 ## Developer Notes
 - The app deploys to iOS 18.6, but the widget target deploys to 26.2. That mismatch is existing and unverified.
