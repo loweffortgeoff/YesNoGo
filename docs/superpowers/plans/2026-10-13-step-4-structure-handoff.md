@@ -274,6 +274,8 @@ Explicitly not part of this step, so the diff stays reviewable:
 - Session-first order. The plan extracted the mode views first (5–9) and introduced `DecisionSession` last (10). Under Option B the views need the session, so the session came first (commit 4) and the views were extracted one per commit after. This avoids writing each mode twice.
 - Flows take `reduceMotion` as a parameter. The flows used to read `@Environment(\.accessibilityReduceMotion)`. Outside a view they cannot, so each flow takes the flag explicitly and each mode view passes it. No behavior change.
 - `optionNumber(_:)` and `binding(for:)` live in `CustomPickerView`, not the session, which keeps `DecisionSession` at 497 lines.
+- The unused `@Environment(\.colorScheme)` property is removed. It was dead in the original `ContentView` (read nowhere), and the removal does not affect light/dark, which was checked live. The adversarial review flagged it as the only non-move change.
+- `CustomOption` gains `Equatable` (separate commit) so the `@Observable` element type follows the design contract. Behavior-neutral.
 
 ### Verification (simulator only)
 
@@ -286,8 +288,14 @@ The app folder is a synchronized group, so no `project.pbxproj` change was neede
 - History: per-mode stats and entries (RNG averages/range detail, coin heads/tails percentages by outcome token), destructive confirmation, clear, and the empty state.
 - Credits moved verbatim and renders.
 - Light and dark appearance, and largest Dynamic Type, render.
+- Reduce Motion on: the Custom wheel parks with the pointer on the announced winner (`Selection result: Beta`) — the mechanism the review flagged as most changed.
+- Deep links: `yesnogo://custom` lands in Custom without auto-running (`runsOnOpen` is false); `yesnogo://rps` lands in RPS and auto-runs to `Opponent chose Scissors`. The scheme raises one "Open in" confirmation on the simulator, which `agent-device` taps.
+
+### Adversarial review
+
+Claude Opus 5.5 reviewed `61d71f0..HEAD`: no blockers, and it confirmed the change is move-only. Its actionable items are resolved — `CustomOption` gains `Equatable` (its own commit), the four remaining computed-property section views are recorded in the TODO Backlog, and the removed dead `@Environment(\.colorScheme)` is documented above.
 
 ### Remaining (physical device)
 
-Deep-link acceptance and Home Screen quick actions cannot be exercised in the simulator (the `yesnogo://` scheme raises an iOS "Open in" confirmation, and quick actions need a Home Screen long-press). Everything else on the section 8 checklist passed in the simulator.
+Home Screen quick actions (cold and warm launch, and the RPS/Orb/RNG menu items) still need a physical device; they cannot be exercised in the simulator. Everything else on the section 8 checklist passed.
 

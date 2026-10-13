@@ -8,6 +8,7 @@
 - [ ] Apple Watch App — Quick decisions from your wrist — coin flip and yes/no on watchOS
 
 ## Backlog
+- [ ] Extract the four remaining section views that are still computed properties into `View` types: `coinDisc` (`CoinFlipView`), `orbHero` (`MagicOrbView`), `pickerStage` and `wheel` (`CustomPickerView`). They are used once each, so the contract's small-fragment exception does not apply.
 - [ ] Preload the audio players in `SoundPlayer` (`playFile` builds a new `AVAudioPlayer` on every play).
 - [ ] Localize the hardcoded English accessibility labels ("Past results", "Credits and information", "Close history", and others).
 - [ ] Register Home Screen quick actions for RPS, Orb, and RNG. Only coin, yes/no, and custom exist today.
