@@ -9,8 +9,6 @@ import SwiftUI
 #if canImport(UIKit)
 import UIKit
 #endif
-import AVFoundation
-import AudioToolbox
 
 // MARK: - Content View
 
@@ -52,9 +50,9 @@ struct ContentView: View {
     @State private var errorTrigger = 0
 
     @State private var decisionTask: Task<Void, Never>?
-    @State private var audioPlayer: AVAudioPlayer?
 
     private let quickActions = QuickActionManager.shared
+    private let sound = SoundPlayer.shared
 
     @ScaledMetric(relativeTo: .largeTitle) private var coinSize: CGFloat = 128
     @ScaledMetric(relativeTo: .largeTitle) private var heroGlyphSize: CGFloat = 58
@@ -739,7 +737,7 @@ struct ContentView: View {
 
         decisionTask?.cancel()
         isAnimating = false
-        playSound("select")
+        sound.play("select")
 
         withAnimation(.snappy(duration: 0.35)) {
             mode = newMode
@@ -794,7 +792,7 @@ struct ContentView: View {
         guard !isAnimating else { return }
 
         decisionTask?.cancel()
-        playSound("coin")
+        sound.play("coin")
         tapTrigger += 1
         isAnimating = true
         showResult = false
@@ -850,7 +848,7 @@ struct ContentView: View {
                 showResult = true
             }
 
-            playSound(isHeads ? "crown" : "eagle")
+            sound.play(isHeads ? "crown" : "eagle")
 
             let spokenSide = isHeads
                 ? L10n.string("coin.result.heads.spoken", fallback: "heads")
@@ -867,7 +865,7 @@ struct ContentView: View {
         guard !isAnimating else { return }
 
         decisionTask?.cancel()
-        playSound("decision")
+        sound.play("decision")
         tapTrigger += 1
         isAnimating = true
         showResult = false
@@ -890,7 +888,7 @@ struct ContentView: View {
                 showResult = true
             }
 
-            playSound(isYes ? "yesChord" : "noTrombone")
+            sound.play(isYes ? "yesChord" : "noTrombone")
 
             let answer = isYes
                 ? L10n.string("yesno.answer.yes.spoken", fallback: "yes")
@@ -928,7 +926,7 @@ struct ContentView: View {
 
         guard choices.count >= 2 else {
             errorTrigger += 1
-            playSound("error")
+            sound.play("error")
             showAlert = true
             return
         }
@@ -936,7 +934,7 @@ struct ContentView: View {
         guard !isAnimating else { return }
 
         decisionTask?.cancel()
-        playSound("shuffle")
+        sound.play("shuffle")
         tapTrigger += 1
         isAnimating = true
         showResult = false
@@ -980,7 +978,7 @@ struct ContentView: View {
                 detail: "From: \(choices.joined(separator: ", "))"
             )
             revealTrigger += 1
-            playSound("success")
+            sound.play("success")
 
             withAnimation(.spring(duration: 0.5, bounce: 0.28)) {
                 showWheel = false
@@ -999,7 +997,7 @@ struct ContentView: View {
         guard !isAnimating else { return }
 
         decisionTask?.cancel()
-        playSound("decision")
+        sound.play("decision")
         tapTrigger += 1
         isAnimating = true
         showResult = false
@@ -1020,7 +1018,7 @@ struct ContentView: View {
                 showResult = true
             }
 
-            playSound(choice.sound)
+            sound.play(choice.sound)
 
             announceForVoiceOver(
                 L10n.format("vo.rps.opponent_chose_format", fallback: "Opponent chose %@", choice.label)
@@ -1034,7 +1032,7 @@ struct ContentView: View {
         guard !isAnimating else { return }
 
         decisionTask?.cancel()
-        playSound("decision")
+        sound.play("decision")
         tapTrigger += 1
         isAnimating = true
         showResult = false
@@ -1062,7 +1060,7 @@ struct ContentView: View {
                 showResult = true
             }
 
-            playSound("mystical")
+            sound.play("mystical")
 
             announceForVoiceOver(
                 L10n.format("orb.a11y.says_format", fallback: "The orb says: %@", response.text)
@@ -1141,7 +1139,7 @@ struct ContentView: View {
                 showResult = true
             }
 
-            playSound("rngDing")
+            sound.play("rngDing")
 
             announceForVoiceOver(
                 L10n.format("rng.a11y.generated_number_format", fallback: "Generated number: %d", generated)
@@ -1152,53 +1150,7 @@ struct ContentView: View {
     private func failRandomNumber(_ message: String) {
         rngErrorMessage = message
         errorTrigger += 1
-        playSound("error")
-    }
-
-    // MARK: - Sound
-
-    private func playSound(_ soundName: String) {
-        // Use system sounds for lightweight playback
-        switch soundName {
-        case "coin":
-            AudioServicesPlaySystemSound(1306) // Peek sound - bright and metallic like coin
-        case "decision":
-            AudioServicesPlaySystemSound(1057) // SMS Received 1 - subtle chime
-        case "shuffle":
-            AudioServicesPlaySystemSound(1519) // Begin Video Record - shuffling sound
-        case "select":
-            AudioServicesPlaySystemSound(1519) // Gentle selection sound
-        case "rngDing":
-            playFile(named: "rng_ding")
-        case "success":
-            AudioServicesPlaySystemSound(1025) // PhotoShutter - success sound
-        case "yesChord":
-            playFile(named: "c-chord-83638")
-        case "noTrombone":
-            playFile(named: "wah-wah-sad-trombone-6347")
-        case "eagle":
-            playFile(named: "eagle-sound-by-torma-368637")
-        case "crown":
-            playFile(named: "success-fanfare-trumpets-6185")
-        case "thud":
-            playFile(named: "thud-82914")
-        case "slick":
-            playFile(named: "steel-blade-slice-4-188216")
-        case "paper":
-            playFile(named: "crumping-paper-109585")
-        case "mystical":
-            playFile(named: "mystical-355968")
-        case "error":
-            AudioServicesPlaySystemSound(1053) // Error sound
-        default:
-            break
-        }
-    }
-
-    private func playFile(named resource: String) {
-        guard let url = Bundle.main.url(forResource: resource, withExtension: "mp3") else { return }
-        audioPlayer = try? AVAudioPlayer(contentsOf: url)
-        audioPlayer?.play()
+        sound.play("error")
     }
 
     // MARK: - Accessibility
