@@ -8,9 +8,7 @@
 - [ ] Apple Watch App — Quick decisions from your wrist — coin flip and yes/no on watchOS
 
 ## Backlog
-- [ ] Split `ContentView.swift` into feature folders (Coin, YesNo, Custom, RPS, Orb, RNG), one file per mode view. It is still ~1500 lines and holds all six modes.
-- [ ] Extract the per-mode views from computed properties into `View` types, per the design contract.
-- [ ] Move `playSound` into a small `SoundPlayer` type and preload the audio players.
+- [ ] Preload the audio players in `SoundPlayer` (`playFile` builds a new `AVAudioPlayer` on every play).
 - [ ] Localize the hardcoded English accessibility labels ("Past results", "Credits and information", "Close history", and others).
 - [ ] Register Home Screen quick actions for RPS, Orb, and RNG. Only coin, yes/no, and custom exist today.
 - [ ] Widget palette is duplicated in `YesNoGoWidget.swift` because the widget target does not share app sources. Consider a shared file added to both targets.
@@ -32,3 +30,8 @@
 ## Exploring
 - [ ] Group Decisions — Share a decision link with friends and see everyone's pick
 - [ ] Custom Themes — Personalize the look with color themes and mode icons
+
+## Done
+- [x] 2026-10-13 — Split `ContentView.swift` into feature folders (`App/`, `Design/`, `History/`, `Modes/`, `Support/`), one file per mode view.
+- [x] 2026-10-13 — Extract the per-mode views from computed properties into `View` types, and move the decision state and the six flows into `Modes/DecisionSession.swift` (Option B).
+- [x] 2026-10-13 — Move `playSound` into a small `SoundPlayer` type.

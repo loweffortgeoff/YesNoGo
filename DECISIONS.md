@@ -18,6 +18,12 @@
 - The cost of that rule: a fresh install has no quick actions until the app has run once.
 - Superseded: an earlier version of this entry said the app delegate owns shortcut items and that `ContentView` watched `pendingQuickAction`. The `d8027b8` attempt did exactly that, and the taps still went nowhere. `c373336` replaced it.
 
+## 2026-10-13 — Decision state lives in DecisionSession
+- Step 4 split `ContentView.swift` into one file per view. The decision state and the six flows now live in `Modes/DecisionSession.swift`, an `@Observable` class; `ContentView` is chrome only.
+- Chosen over thin views that take closures because the flows mutate shared state (`isAnimating`, `result`, `showResult`) that mode switching, history, and the toolbar also read. One owner keeps cancel-on-mode-switch and quick-action auto-run in a single place.
+- The mode views take the whole `DecisionSession` rather than a hand-picked parameter list. That still satisfies "pass a view only the data it reads": `@Observable` tracks per-property reads, so a view invalidates only on the properties it actually touches.
+- The six flows take the Reduce Motion flag as a parameter instead of reading a view environment, so the flows can live outside a view and no hidden view state is read.
+
 ## 2026-04-08 — AboutSectionView is the shared template
 - `AboutSectionView.swift` at `/Users/geoffreysilva/Developer/AboutSectionView.swift` is the canonical template across all apps
 - Rate & Review lives only in `AboutSectionView` — removed duplicate from `TipJarView`

@@ -30,6 +30,14 @@
 
 ---
 
+### 2026-10-13 — UI Modernization: Internal Structure
+
+#### Changed
+- **Structure** — `ContentView.swift` (1297 lines) is split into one file per view, grouped into `App/`, `Design/`, `History/`, `Modes/`, and `Support/`. The decision state and the six flows move into `Modes/DecisionSession.swift`; `ContentView` is chrome only (124 lines). Move-only: no behavior, copy, timing, or visual change.
+- **Sound** — `playSound` moves into a small `SoundPlayer` type in `Support/SoundPlayer.swift`.
+
+---
+
 ### 2026-04-08 — AboutSectionView Cleanup
 
 #### Changed

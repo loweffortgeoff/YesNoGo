@@ -248,3 +248,46 @@ Explicitly not part of this step, so the diff stays reviewable:
 2. Get Geoff's decision on Option A, B, or C before writing any code.
 3. Build and run the app once to confirm a green baseline.
 4. Do commit 1 of section 6. Build. Run. Repeat.
+
+---
+
+## Execution status
+
+**Status:** implementation complete; physical-device testing pending. Local commits only — not pushed.
+**Branch:** `step-4-structure`, based on `ui-modernization` at `61d71f0` (the real PR #1 head; the local branch was 12 commits stale when this started).
+**Decision:** Option B, chosen by Geoff. New branch rather than adding to PR #1.
+
+### Commits (12)
+
+| # | Commit | Scope |
+| --- | --- | --- |
+| 1 | `Move QuickActionManager into its own file` | App/QuickActionManager.swift |
+| 2 | `Move the sound engine into SoundPlayer` | Support/SoundPlayer.swift |
+| 3 | `Move idleBreathing and CreditsView out of ContentView` | Design/, Support/ |
+| 4 | `Give DecisionSession the state and the six flows` | Modes/DecisionSession.swift; ContentView slimmed |
+| 5–10 | `Extract <Mode>View` | Modes/CoinFlipView, YesNoDecisionView, CustomPickerView, RockPaperScissorsView, MagicOrbView, RandomNumberView |
+| — | `Move the custom-option field helpers into CustomPickerView` | keeps DecisionSession under the cap |
+| 11 | `Group the app sources into feature folders` | pure `git mv` |
+
+### Deviations from section 6
+
+- Session-first order. The plan extracted the mode views first (5–9) and introduced `DecisionSession` last (10). Under Option B the views need the session, so the session came first (commit 4) and the views were extracted one per commit after. This avoids writing each mode twice.
+- Flows take `reduceMotion` as a parameter. The flows used to read `@Environment(\.accessibilityReduceMotion)`. Outside a view they cannot, so each flow takes the flag explicitly and each mode view passes it. No behavior change.
+- `optionNumber(_:)` and `binding(for:)` live in `CustomPickerView`, not the session, which keeps `DecisionSession` at 497 lines.
+
+### Verification (simulator only)
+
+The app folder is a synchronized group, so no `project.pbxproj` change was needed.
+
+- `xcodebuild` Debug and Release, zero warnings, on the iPhone 18 Pro (iOS 27.0) simulator. Debug built after every commit.
+- Source-level proof of move-only: every string literal, `L10n` key + fallback, `.accessibilityLabel`/`.accessibilityHint`/`.accessibilityElement` modifier, `.sensoryFeedback` trigger, and `HistoryManager.shared.add` call in the original `ContentView.swift` has an identical counterpart in the new files (the only diffs are the four interpolated strings that gained a `session.` qualifier, which do not change rendered text).
+- Driven with `agent-device` on iPhone 18 Pro: coin flip → `Coin flip result: HEADS`; Yes/No → `Decision result: NO!`; RPS → `Opponent chose Rock`; Orb → `The orb says: Don't count on it`; Custom → alert on empty options, add/fill/remove-middle, `Selection result: Pizza`; RNG → generated number, inverted range, non-numeric, and No-Immediate-Repeat errors, plus 1 → 2 → 1 no-repeat.
+- Mode switch mid-run: switched Yes/No → RPS while the Yes/No flow was animating; after the old delay elapsed, no stale result leaked into RPS.
+- History: per-mode stats and entries (RNG averages/range detail, coin heads/tails percentages by outcome token), destructive confirmation, clear, and the empty state.
+- Credits moved verbatim and renders.
+- Light and dark appearance, and largest Dynamic Type, render.
+
+### Remaining (physical device)
+
+Deep-link acceptance and Home Screen quick actions cannot be exercised in the simulator (the `yesnogo://` scheme raises an iOS "Open in" confirmation, and quick actions need a Home Screen long-press). Everything else on the section 8 checklist passed in the simulator.
+
