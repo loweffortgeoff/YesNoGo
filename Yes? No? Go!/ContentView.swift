@@ -12,20 +12,6 @@ import UIKit
 import AVFoundation
 import AudioToolbox
 
-// MARK: - Quick Action Manager
-
-/// Carries a mode requested from outside the app: a Home Screen quick action, a
-/// deep link, or a Siri continuation. The scene delegate sets it and the UI
-/// consumes it.
-@Observable
-final class QuickActionManager {
-    static let shared = QuickActionManager()
-
-    var requestedMode: DecisionMode?
-
-    private init() {}
-}
-
 // MARK: - Content View
 
 struct ContentView: View {
