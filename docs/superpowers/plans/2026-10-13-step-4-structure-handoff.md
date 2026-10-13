@@ -254,20 +254,28 @@ Explicitly not part of this step, so the diff stays reviewable:
 ## Execution status
 
 **Status:** implementation complete; physical-device testing pending. Local commits only — not pushed.
-**Branch:** `step-4-structure`, based on `ui-modernization` at `61d71f0` (the real PR #1 head; the local branch was 12 commits stale when this started).
+**Branch:** `ui-modernization`, at the Step 4 head (15 commits on top of `61d71f0`). The work was first built on a separate `step-4-structure` branch and then fast-forwarded into `ui-modernization` at Geoff's request, so there is one branch. PR #1 therefore carries Step 4 too once pushed.
 **Decision:** Option B, chosen by Geoff. New branch rather than adding to PR #1.
 
-### Commits (12)
+### Commits (15)
 
 | # | Commit | Scope |
 | --- | --- | --- |
-| 1 | `Move QuickActionManager into its own file` | App/QuickActionManager.swift |
-| 2 | `Move the sound engine into SoundPlayer` | Support/SoundPlayer.swift |
-| 3 | `Move idleBreathing and CreditsView out of ContentView` | Design/, Support/ |
-| 4 | `Give DecisionSession the state and the six flows` | Modes/DecisionSession.swift; ContentView slimmed |
-| 5–10 | `Extract <Mode>View` | Modes/CoinFlipView, YesNoDecisionView, CustomPickerView, RockPaperScissorsView, MagicOrbView, RandomNumberView |
-| — | `Move the custom-option field helpers into CustomPickerView` | keeps DecisionSession under the cap |
-| 11 | `Group the app sources into feature folders` | pure `git mv` |
+| 1 | `ca71364` Move QuickActionManager into its own file | App/QuickActionManager.swift |
+| 2 | `01ed368` Move the sound engine into SoundPlayer | Support/SoundPlayer.swift |
+| 3 | `bac6505` Move idleBreathing and CreditsView out of ContentView | Design/, Support/ |
+| 4 | `89e95c7` Give DecisionSession the state and the six flows | Modes/DecisionSession.swift; ContentView slimmed |
+| 5 | `da5e836` Extract CoinFlipView | Modes/CoinFlipView.swift |
+| 6 | `7217aaa` Extract YesNoDecisionView | Modes/YesNoDecisionView.swift |
+| 7 | `29ba0c0` Extract CustomPickerView | Modes/CustomPickerView.swift |
+| 8 | `8d43e37` Extract RockPaperScissorsView | Modes/RockPaperScissorsView.swift |
+| 9 | `fb97811` Extract MagicOrbView | Modes/MagicOrbView.swift |
+| 10 | `cecf877` Extract RandomNumberView | Modes/RandomNumberView.swift |
+| 11 | `ef1b3af` Move the custom-option field helpers into CustomPickerView | keeps DecisionSession under the cap |
+| 12 | `480a333` Group the app sources into feature folders | pure `git mv` |
+| 13 | `325bcb3` Record the Step 4 structure refactor | DECISIONS, TODO, CHANGELOG, plan |
+| 14 | `346caef` Make CustomOption Equatable | review follow-up |
+| 15 | `1294f38` Record the Step 4 review follow-ups | review follow-up |
 
 ### Deviations from section 6
 
