@@ -12,7 +12,5 @@ import SwiftUI
 struct YesNoGoWidgetBundle: WidgetBundle {
     var body: some Widget {
         YesNoGoWidget()
-        YesNoGoWidgetControl()
-        YesNoGoWidgetLiveActivity()
     }
 }

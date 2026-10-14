@@ -29,8 +29,7 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 - **Quick Actions** — 3D Touch shortcuts for instant access to any mode
 - **Siri Shortcuts** — Voice command support via AppIntents
 - **Home Screen Widgets** — Quick access from the home and lock screens
-- **Live Activities** — Dynamic Island experiences
-- **Haptic Feedback** — Impact, selection, and notification haptics
+- **Haptic Feedback** — Sensory feedback on selection and every result
 - **Sound Effects** — Custom audio for different outcomes
 - **Localization** — Multi-language support
 - **Accessibility** — VoiceOver, high contrast, and reduce motion support
@@ -43,7 +42,6 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 | **SwiftUI** | All UI — views, animations, themes |
 | **WidgetKit** | Home screen & lock screen widgets |
 | **AppIntents** | Siri Shortcuts integration |
-| **ActivityKit** | Live Activities |
 | **AVFoundation** | Sound effect playback |
 | **AudioToolbox** | Haptic feedback |
 | **StoreKit** | Tip jar purchases |
@@ -52,24 +50,38 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 
 ```
 Yes? No? Go!/
-├── YesNoGoApp.swift            # App entry point & quick actions
-├── ContentView.swift           # All modes & UI logic
+├── YesNoGoApp.swift            # App entry point
+├── AppDelegate.swift           # Installs the scene delegate
+├── SceneDelegate.swift         # Quick action and deep link delivery
+├── ContentView.swift           # Mode coordinator, decision flows, sound
+├── ModeTheme.swift             # Brand palette and the DecisionMode type
+├── DecisionComponents.swift    # Canvas, card, mode selector, action button
+├── DecisionData.swift          # Orb responses, RPS choices, custom options
 ├── HistoryManager.swift        # Past results storage & stats
 ├── HistoryView.swift           # Per-mode history & statistics UI
 ├── AppIntents.swift            # Siri Shortcuts definitions
 ├── TipJarManager.swift         # StoreKit purchases
 ├── TipJarView.swift            # Tip jar UI
-├── L10n.swift                  # Localization helper
-└── AboutSectionView.swift      # Cross-app about section
+└── L10n.swift                  # Localization helper
+
+Repository root (shared with the app template)
+├── AboutSectionView.swift      # Cross-app about section
+└── *.mp3                       # Sound effects
 
 YesNoGoWidget/
 ├── YesNoGoWidget.swift         # Widget definition
-├── YesNoGoWidgetLiveActivity.swift  # Live Activity definition
 └── ...
-
-YesNoGoWidgetExtension/
-└── Widget extension bundle
 ```
+
+## Design Notes
+
+The app is one navy canvas. Each mode supplies a single muted accent, used only
+for the hero element, the selected mode, and the primary action button. There
+are no full-bleed gradients — see `DECISIONS.md` for why.
+
+Deep links use the `yesnogo://` scheme (`yesnogo://coin`, `yesnogo://yesno`,
+`yesnogo://custom`, `yesnogo://rps`, `yesnogo://orb`, `yesnogo://rng`). The
+widgets rely on it. Home Screen quick actions use shortcut item types instead.
 
 ## Localization
 

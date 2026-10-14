@@ -76,11 +76,21 @@
 			);
 			target = 3ACB9DBE2EF665C4001488F6 /* YesNoGoWidgetExtension */;
 		};
+		3A5038A02EB6C3A500D411FF /* Exceptions for "Yes? No? Go!" folder in "Yes? No? Go!" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 3A5038862EB6C3A400D411FF /* Yes? No? Go! */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		3A5038892EB6C3A400D411FF /* Yes? No? Go! */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3A5038A02EB6C3A500D411FF /* Exceptions for "Yes? No? Go!" folder in "Yes? No? Go!" target */,
+			);
 			path = "Yes? No? Go!";
 			sourceTree = "<group>";
 		};
@@ -441,6 +451,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Yes? No? Go!/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -487,6 +498,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Yes? No? Go!/Info.plist";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

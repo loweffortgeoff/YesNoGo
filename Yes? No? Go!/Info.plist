@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Home Screen quick actions are registered at launch, with localized
+	     titles, in YesNoGoApp.registerLocalizedQuickActions(). Do not list them
+	     here too: iOS shows static and dynamic items together, and the menu
+	     then shows duplicates. -->
+
+	<!-- Deep links used by the widgets and by Home Screen quick actions. -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>yesnogo</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>

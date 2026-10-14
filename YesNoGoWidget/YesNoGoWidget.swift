@@ -30,24 +30,62 @@ struct SimpleEntry: TimelineEntry {
 
 // MARK: - Mode Button Model
 
+/// One mode shortcut. The palette mirrors `ModeTheme` in the app target:
+/// a muted accent that stays readable in light and dark widgets.
 struct ModeButton {
     let icon: String
     let label: String
     let deepLink: String
-    let colors: [Color]
+    let accent: Color
+    let accentDeep: Color
+    let onAccent: Color
+
+    var gradient: LinearGradient {
+        LinearGradient(colors: [accent, accentDeep], startPoint: .topLeading, endPoint: .bottomTrailing)
+    }
 }
 
 private let allModes: [String: ModeButton] = [
-    "flip": ModeButton(icon: "circle.circle", label: "Flip", deepLink: "yesnogo://coin",
-                        colors: [Color(red: 1.0, green: 0.75, blue: 0.0), .orange]),
-    "yesno": ModeButton(icon: "hand.thumbsup.fill", label: "Yes/No", deepLink: "yesnogo://yesno",
-                         colors: [Color(red: 0.2, green: 0.6, blue: 1.0), .cyan]),
-    "custom": ModeButton(icon: "list.bullet", label: "Custom", deepLink: "yesnogo://custom",
-                          colors: [Color(red: 0.15, green: 0.8, blue: 0.55), .mint]),
-    "rps": ModeButton(icon: "hand.raised.fill", label: "RPS", deepLink: "yesnogo://rps",
-                       colors: [Color(red: 0.9, green: 0.2, blue: 0.5), .pink]),
-    "orb": ModeButton(icon: "circle.hexagongrid.fill", label: "Orb", deepLink: "yesnogo://orb",
-                       colors: [.indigo, Color(red: 0.6, green: 0.3, blue: 1.0)]),
+    "flip": ModeButton(
+        icon: "centsign.circle.fill",
+        label: "Flip",
+        deepLink: "yesnogo://coin",
+        accent: Color(rgbHex: 0xE0B053),
+        accentDeep: Color(rgbHex: 0xB07E1C),
+        onAccent: Color(rgbHex: 0x2A2004)
+    ),
+    "yesno": ModeButton(
+        icon: "questionmark.circle.fill",
+        label: "Yes/No",
+        deepLink: "yesnogo://yesno",
+        accent: Color(rgbHex: 0x4C7ED8),
+        accentDeep: Color(rgbHex: 0x2F5FA8),
+        onAccent: .white
+    ),
+    "custom": ModeButton(
+        icon: "shuffle",
+        label: "Custom",
+        deepLink: "yesnogo://custom",
+        accent: Color(rgbHex: 0x4E9E6E),
+        accentDeep: Color(rgbHex: 0x2F6B49),
+        onAccent: .white
+    ),
+    "rps": ModeButton(
+        icon: "hand.raised.fill",
+        label: "RPS",
+        deepLink: "yesnogo://rps",
+        accent: Color(rgbHex: 0xCE6A58),
+        accentDeep: Color(rgbHex: 0xA84A38),
+        onAccent: .white
+    ),
+    "orb": ModeButton(
+        icon: "bubbles.and.sparkles.fill",
+        label: "Orb",
+        deepLink: "yesnogo://orb",
+        accent: Color(rgbHex: 0x7B68C9),
+        accentDeep: Color(rgbHex: 0x56449B),
+        onAccent: .white
+    ),
 ]
 
 // MARK: - Shared Button View
@@ -65,17 +103,11 @@ struct WidgetModeButton: View {
                     .fontWeight(.semibold)
                 Text(mode.label)
                     .font(labelFont)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .foregroundStyle(.white)
-            .background(
-                LinearGradient(
-                    colors: mode.colors,
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
+            .foregroundStyle(mode.onAccent)
+            .background(mode.gradient)
             .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
     }
@@ -123,7 +155,6 @@ struct YesNoGoWidgetEntryView: View {
         let bottomRow = ["rps", "orb"].compactMap { allModes[$0] }
 
         return VStack(spacing: 8) {
-            // Header
             HStack(spacing: 6) {
                 Image(systemName: "sparkles")
                     .font(.subheadline)
@@ -136,14 +167,12 @@ struct YesNoGoWidgetEntryView: View {
                 Spacer()
             }
 
-            // Top row: 3 buttons
             HStack(spacing: 8) {
                 ForEach(topRow, id: \.label) { mode in
                     WidgetModeButton(mode: mode, iconFont: .title3, labelFont: .caption2)
                 }
             }
 
-            // Bottom row: 2 buttons
             HStack(spacing: 8) {
                 ForEach(bottomRow, id: \.label) { mode in
                     WidgetModeButton(mode: mode, iconFont: .title3, labelFont: .caption2)
@@ -153,6 +182,8 @@ struct YesNoGoWidgetEntryView: View {
         .padding(14)
     }
 }
+
+// MARK: - Widget
 
 struct YesNoGoWidget: Widget {
     let kind: String = "YesNoGoWidget"
@@ -178,4 +209,20 @@ struct YesNoGoWidget: Widget {
     YesNoGoWidget()
 } timeline: {
     SimpleEntry(date: .now)
+}
+
+// MARK: - Color Helper
+
+extension Color {
+    /// Builds a color from a packed 0xRRGGBB value.
+    /// Kept local to the widget target, which does not share app sources.
+    init(rgbHex: UInt32) {
+        self.init(
+            .sRGB,
+            red: Double((rgbHex >> 16) & 0xFF) / 255,
+            green: Double((rgbHex >> 8) & 0xFF) / 255,
+            blue: Double(rgbHex & 0xFF) / 255,
+            opacity: 1
+        )
+    }
 }
