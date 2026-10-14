@@ -1,4 +1,4 @@
-# Release Notes — next version (version number to be set; the project is at 1.6.4)
+# Release Notes — v1.7.0
 
 Theme: Yes? No? Go! gets a new look and a working widget. The six loud gradients are gone. The app is now one navy canvas with a single muted accent per mode. Widgets and Home Screen quick actions now work as intended.
 
