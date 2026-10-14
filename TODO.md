@@ -19,7 +19,6 @@
 - [ ] Performance: the custom option `Binding` is rebuilt on every keystroke. Fine at 6 options, worth watching if the limit grows.
 - [ ] iPad multi-window: `UIApplicationSupportsMultipleScenes` is true and every scene shares `QuickActionManager.shared`, so a deep link opened in one window can be consumed by another. Set the flag to NO, or route the request per scene.
 - [ ] History stat labels do not localize. `HistoryView.statRow` takes a `String`, so SwiftUI passes labels such as "👑 Heads" through untranslated. Take `LocalizedStringKey` and add the strings to the catalog.
-- [ ] `SUPPORTED_PLATFORMS` lists `macosx xros xrsimulator` and `TARGETED_DEVICE_FAMILY` includes 7, but the code has never compiled for macOS or visionOS, so both Xcode Cloud archive actions fail. Narrow the platforms, or remove those two actions.
 - [ ] A fresh install shows no Home Screen quick actions until the app has launched once, because they are registered at launch only. This matches `main`. Decide whether to list them in `Info.plist` as well, with translated titles in `InfoPlist.xcstrings`, to cover the never-launched case without duplicating the menu.
 
 ## Developer Notes
@@ -33,6 +32,7 @@
 - [ ] Custom Themes — Personalize the look with color themes and mode icons
 
 ## Done
+- [x] 2026-10-14 — Narrow `SUPPORTED_PLATFORMS` to iPhone and iPad and drop device family 7, so the Xcode Cloud archive actions no longer target macOS or visionOS. Build verified in the simulator; the cloud run itself is not yet checked.
 - [x] 2026-10-13 — Split `ContentView.swift` into feature folders (`App/`, `Design/`, `History/`, `Modes/`, `Support/`), one file per mode view.
 - [x] 2026-10-13 — Extract the per-mode views from computed properties into `View` types, and move the decision state and the six flows into `Modes/DecisionSession.swift` (Option B).
 - [x] 2026-10-13 — Move `playSound` into a small `SoundPlayer` type.

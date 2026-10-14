@@ -2,6 +2,17 @@
 
 ## In Progress
 
+### 2026-10-14 — Version 1.7.0 and Xcode Cloud Platforms
+
+#### Changed
+- **Version** — `MARKETING_VERSION` is 1.7.0.
+- **Platforms** — The app target builds for iPhone and iPad only (`SUPPORTED_PLATFORMS = iphoneos iphonesimulator`, device family `1,2`). It no longer lists macOS or visionOS, which the code has never compiled for.
+
+#### Fixed
+- **Xcode Cloud archive actions failed** — they targeted macOS and visionOS. They now match the platforms the app supports.
+
+---
+
 ### 2026-10-13 — UI Modernization: Palette, Motion, and Layout
 
 #### Changed
