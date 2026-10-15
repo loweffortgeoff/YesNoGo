@@ -37,22 +37,7 @@
         }
       }
     },
-    "✂️" : {
-
-    },
-    "✅" : {
-
-    },
-    "❌" : {
-
-    },
     "🎉" : {
-
-    },
-    "👑" : {
-
-    },
-    "📄" : {
 
     },
     "🔮" : {
@@ -61,19 +46,7 @@
     "🤔" : {
 
     },
-    "🦅" : {
-
-    },
-    "🪨" : {
-
-    },
     "0" : {
-
-    },
-    "1" : {
-
-    },
-    "100" : {
 
     },
     "a11y.coin.result_format" : {
@@ -719,6 +692,9 @@
     "Cancel" : {
 
     },
+    "Choosing rock, paper, or scissors" : {
+
+    },
     "Choosing..." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -799,6 +775,12 @@
       }
     },
     "Close history" : {
+
+    },
+    "Coin is flipping" : {
+
+    },
+    "Coin showing %@" : {
 
     },
     "coin.result.heads" : {
@@ -1545,13 +1527,7 @@
         }
       }
     },
-    "Flip Coin!" : {
-
-    },
     "Flipping coin" : {
-
-    },
-    "Flipping..." : {
 
     },
     "Generate a random whole number within a selected range." : {
@@ -1589,6 +1565,9 @@
         }
       }
     },
+    "Generate Number" : {
+
+    },
     "Generated Number" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1623,6 +1602,9 @@
           }
         }
       }
+    },
+    "Generating..." : {
+
     },
     "Get a random rock, paper, or scissors choice" : {
       "extractionState" : "manual",
@@ -1693,6 +1675,12 @@
           }
         }
       }
+    },
+    "Get yes or no answer" : {
+
+    },
+    "Hand emojis, ready to play" : {
+
     },
     "Haptic feedback" : {
       "extractionState" : "manual",
@@ -2225,6 +2213,15 @@
     "Lowest" : {
 
     },
+    "Making choice" : {
+
+    },
+    "Making decision" : {
+
+    },
+    "Making selection" : {
+
+    },
     "Maximum Number" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2546,7 +2543,10 @@
         }
       }
     },
-    "No results yet. Start using %@ to build your history!" : {
+    "No Results Yet" : {
+
+    },
+    "No results yet. Start using %@ to build your history." : {
 
     },
     "Open the tip jar to support the developer" : {
@@ -3996,6 +3996,21 @@
         }
       }
     },
+    "Pick random option" : {
+
+    },
+    "Please wait while a choice is being made" : {
+
+    },
+    "Please wait while a decision is being made" : {
+
+    },
+    "Please wait while a number is generated" : {
+
+    },
+    "Please wait while a random choice is being selected" : {
+
+    },
     "Please wait while the coin is being flipped" : {
 
     },
@@ -4400,6 +4415,9 @@
       }
     },
     "Removes all past results for this mode" : {
+
+    },
+    "Reveal opponent's choice" : {
 
     },
     "rng.a11y.generated_number_format" : {
@@ -4822,6 +4840,9 @@
         }
       }
     },
+    "Start using %@ to build your history." : {
+
+    },
     "Stats" : {
 
     },
@@ -4863,7 +4884,25 @@
         }
       }
     },
+    "Tap the button below to get a yes or no answer" : {
+
+    },
+    "Tap the button below to see what the opponent chose" : {
+
+    },
     "Tap to flip the coin and get heads or tails" : {
+
+    },
+    "Tap to generate a random number in your selected range" : {
+
+    },
+    "Tap to get a random yes or no answer to your question" : {
+
+    },
+    "Tap to randomly select one of your custom options" : {
+
+    },
+    "Tap to see what the opponent chose" : {
 
     },
     "The answer to your yes or no question is \\(decisionResult)" : {
@@ -4902,6 +4941,9 @@
       }
     },
     "The answer to your yes or no question is %@" : {
+
+    },
+    "The coin is ready to flip" : {
 
     },
     "The coin landed on \\(result.lowercased())" : {
@@ -5084,6 +5126,12 @@
           }
         }
       }
+    },
+    "Thinking and deciding" : {
+
+    },
+    "Thinking emoji, ready to decide" : {
+
     },
     "This app supports:" : {
       "extractionState" : "manual",
@@ -6044,6 +6092,15 @@
           }
         }
       }
+    },
+    "Wait for the coin to land" : {
+
+    },
+    "Wait while a choice is being made" : {
+
+    },
+    "Wait while a yes or no decision is being made" : {
+
     },
     "Whole numbers only." : {
       "extractionState" : "manual",
