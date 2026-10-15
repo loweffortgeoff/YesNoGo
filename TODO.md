@@ -32,6 +32,7 @@
 - [ ] Custom Themes — Personalize the look with color themes and mode icons
 
 ## Done
+- [x] 2026-10-15 — Restyle Settings after Offshoots, remove the tip jar, and point Weather in Words at App Store id 6806063498 with its current icon.
 - [x] 2026-10-14 — Narrow `SUPPORTED_PLATFORMS` to iPhone and iPad and drop device family 7, so the Xcode Cloud archive actions no longer target macOS or visionOS. Build verified in the simulator. The Xcode Cloud workflow is now disabled (noted 2026-10-15), because its Mac and Apple Vision Pro uploads will never pass, so the cloud run won't be checked.
 - [x] 2026-10-13 — Split `ContentView.swift` into feature folders (`App/`, `Design/`, `History/`, `Modes/`, `Support/`), one file per mode view.
 - [x] 2026-10-13 — Extract the per-mode views from computed properties into `View` types, and move the decision state and the six flows into `Modes/DecisionSession.swift` (Option B).

@@ -10,11 +10,11 @@ import SwiftUI
 // MARK: - Content View
 
 /// The app chrome around the current decision mode: the mode selector, the
-/// decision card, the toolbar, and the history and credits sheets. The decision
+/// decision card, the toolbar, and the history and settings sheets. The decision
 /// state and the six flows live in `DecisionSession`.
 struct ContentView: View {
     @State private var session = DecisionSession()
-    @State private var showCredits = false
+    @State private var showSettings = false
     @State private var showHistory = false
 
     @Environment(\.scenePhase) private var scenePhase
@@ -65,12 +65,12 @@ struct ContentView: View {
 
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        showCredits = true
+                        showSettings = true
                     } label: {
-                        Image(systemName: "info.circle")
+                        Image(systemName: "gearshape")
                     }
-                    .accessibilityLabel("Credits and information")
-                    .accessibilityHint("View sound credits and app information")
+                    .accessibilityLabel("Settings")
+                    .accessibilityHint("View sound credits, accessibility, and app information")
                 }
             }
             .alert(
@@ -82,8 +82,8 @@ struct ContentView: View {
             .sheet(isPresented: $showHistory) {
                 HistoryView(mode: session.mode)
             }
-            .sheet(isPresented: $showCredits) {
-                CreditsView()
+            .sheet(isPresented: $showSettings) {
+                SettingsView()
             }
             .sensoryFeedback(.selection, trigger: session.mode)
             .sensoryFeedback(.impact(weight: .medium), trigger: session.tapTrigger)

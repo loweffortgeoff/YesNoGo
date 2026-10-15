@@ -1,5 +1,12 @@
 # Decisions
 
+## 2026-10-15 — Settings follows Offshoots, and the tip jar is gone
+- The info sheet is Settings. It uses the same form treatment as Offshoots: `Palette.canvas` behind the form, `Palette.surface` on each row, a large title, and "We Also Make" above About.
+- App Store links are `https://apps.apple.com/app/id<id>`. Building a slug from the display name produces `task(ed)`, which is not a valid path.
+- Weather in Words is App Store id `6806063498`. `6760272161` was the previous listing. The row uses that app's current light and dark icon in one imageset.
+- The tip jar is removed from the app, not only hidden. There is no StoreKit purchase code left.
+- **Why:** The sheet was a credits list with a gradient tip jar on top, and the Weather row pointed at a dead listing with an old icon.
+
 ## 2026-10-13 — Root image dumps stay local
 - Untrack repo-root marketing/source images (`yesnogo*.png/jpg`, `Untitled design3.png`) and the already-ignored `tmp/` PDF raster. Keep Asset Catalog copies and all `.mp3` sound files tracked.
 - **Why:** Root files duplicated Assets.xcassets (or were one-off design dumps) and bloated the repo without feeding the app target. Sounds live at the root and are used by `SoundPlayer`.

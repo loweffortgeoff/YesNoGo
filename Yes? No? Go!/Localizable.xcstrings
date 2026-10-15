@@ -1,16 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@ (%@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ (%2$@)"
-          }
-        }
-      }
-    },
     "%@ (%lld×)" : {
       "localizations" : {
         "en" : {
@@ -616,6 +606,9 @@
         }
       }
     },
+    "All sound effects come from creators on Pixabay." : {
+
+    },
     "All sound effects in this app were sourced from creators on Pixabay." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -775,6 +768,9 @@
       }
     },
     "Close history" : {
+
+    },
+    "Close settings" : {
 
     },
     "Coin is flipping" : {
@@ -992,9 +988,6 @@
           }
         }
       }
-    },
-    "Company Website" : {
-
     },
     "Compare this to your mental choice to see if you won" : {
       "extractionState" : "manual",
@@ -3882,9 +3875,6 @@
         }
       }
     },
-    "Our Other Apps" : {
-
-    },
     "Past results" : {
 
     },
@@ -4048,9 +4038,6 @@
           }
         }
       }
-    },
-    "Privacy Policy" : {
-
     },
     "quick_action.custom.subtitle" : {
       "extractionState" : "manual",
@@ -4336,9 +4323,6 @@
       }
     },
     "Rate & Review" : {
-
-    },
-    "Read My Substack" : {
 
     },
     "Recent Results" : {
@@ -4770,6 +4754,9 @@
         }
       }
     },
+    "Settings" : {
+
+    },
     "settings.nav.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4844,9 +4831,6 @@
 
     },
     "Stats" : {
-
-    },
-    "Support" : {
 
     },
     "Support Development" : {
@@ -5091,6 +5075,9 @@
           }
         }
       }
+    },
+    "These follow the settings on this iPhone." : {
+
     },
     "Think of your choice..." : {
       "extractionState" : "manual",
@@ -5918,6 +5905,9 @@
         }
       }
     },
+    "View sound credits, accessibility, and app information" : {
+
+    },
     "vo.answer.is_format" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6100,6 +6090,9 @@
 
     },
     "Wait while a yes or no decision is being made" : {
+
+    },
+    "We Also Make" : {
 
     },
     "Whole numbers only." : {

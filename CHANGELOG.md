@@ -2,6 +2,18 @@
 
 ## In Progress
 
+### 2026-10-15 — Settings
+
+#### Changed
+- **Settings** — The info sheet is now Settings, laid out like Offshoots: a form on the brand canvas, card-colored rows, and a large title. The toolbar button is a gear. The Substack link is gone.
+- **Other apps** — App Store links use the id-only URL (`https://apps.apple.com/app/id…`). A name slug breaks on "Task(ed)".
+- **Weather in Words** — The row opens `id6806063498`. The previous id, `6760272161`, no longer opens the app. The icon is the current light and dark app icon.
+
+#### Removed
+- **Tip jar** — The settings row, the purchase screen, and the StoreKit manager are gone. The app no longer offers in-app tips.
+
+---
+
 ### 2026-10-14 — Version 1.7.0 and Xcode Cloud Platforms
 
 #### Changed

@@ -33,7 +33,6 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 - **Sound Effects** — Custom audio for different outcomes
 - **Localization** — Multi-language support
 - **Accessibility** — VoiceOver, high contrast, and reduce motion support
-- **Tip Jar** — Optional in-app purchases (4 tiers)
 
 ## Tech Stack
 
@@ -44,7 +43,7 @@ Can't decide? Yes? No? Go! gives you six ways to make a choice — flip a coin, 
 | **AppIntents** | Siri Shortcuts integration |
 | **AVFoundation** | Sound effect playback |
 | **AudioToolbox** | Haptic feedback |
-| **StoreKit** | Tip jar purchases |
+| **StoreKit** | The Rate & Review prompt |
 
 ## Project Structure
 
@@ -60,8 +59,7 @@ Yes? No? Go!/
 ├── HistoryManager.swift        # Past results storage & stats
 ├── HistoryView.swift           # Per-mode history & statistics UI
 ├── AppIntents.swift            # Siri Shortcuts definitions
-├── TipJarManager.swift         # StoreKit purchases
-├── TipJarView.swift            # Tip jar UI
+├── SettingsView.swift          # Settings sheet
 └── L10n.swift                  # Localization helper
 
 Repository root (shared with the app template)
